@@ -1,2174 +1,841 @@
-<!DOCTYPE html>
+from pathlib import Path
+import textwrap, re
 
+out = Path("/mnt/data/TCE504_Exercise_Metabolism_COMPLETE_WEBSITE.html")
+
+html = r'''<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>
-TCE504 Interactive Learning
-</title>
-
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TCE504 Applied Exercise Physiology | Exercise Metabolism</title>
 <style>
-
-* {
-  box-sizing: border-box;
+:root{
+ --purple:#53257f;--gold:#ffb703;--ink:#29243a;--muted:#6b6675;
+ --bg:#f5f3fa;--card:#fff;--green:#27864a;--red:#b33a3a;--blue:#2d6cdf;
 }
-
-body {
-
-  margin: 0;
-
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
-  background:
-    #f5f3fa;
-
-  color:
-    #29243a;
-
-}
-
-
-header {
-
-  background:
-    #53257f;
-
-  color:
-    white;
-
-  padding:
-    18px 35px;
-
-  position:
-    sticky;
-
-  top: 0;
-
-  z-index: 100;
-
-}
-
-
-.header-inner {
-
-  max-width:
-    1200px;
-
-  margin:
-    auto;
-
-  display:
-    flex;
-
-  justify-content:
-    space-between;
-
-  align-items:
-    center;
-
-}
-
-
-.logo {
-
-  font-size:
-    21px;
-
-  font-weight:
-    bold;
-
-}
-
-
-.progress {
-
-  width:
-    300px;
-
-}
-
-
-.progress-label {
-
-  font-size:
-    13px;
-
-  margin-bottom:
-    5px;
-
-}
-
-
-.progress-track {
-
-  height:
-    8px;
-
-  background:
-    rgba(255,255,255,.3);
-
-  border-radius:
-    20px;
-
-}
-
-
-.progress-fill {
-
-  height:
-    100%;
-
-  width:
-    0%;
-
-  background:
-    #ffb703;
-
-  transition:
-    .4s;
-
-}
-
-
-main {
-
-  max-width:
-    1100px;
-
-  margin:
-    40px auto;
-
-  padding:
-    0 20px;
-
-}
-
-
-.page {
-
-  display:
-    none;
-
-}
-
-
-.page.active {
-
-  display:
-    block;
-
-}
-
-
-.card {
-
-  background:
-    white;
-
-  border-radius:
-    18px;
-
-  padding:
-    35px;
-
-  margin-bottom:
-    25px;
-
-  box-shadow:
-    0 8px 25px
-    rgba(40,20,60,.08);
-
-}
-
-
-h1 {
-
-  font-size:
-    38px;
-
-  margin-top:
-    0;
-
-}
-
-
-h2 {
-
-  color:
-    #53257f;
-
-}
-
-
-h3 {
-
-  color:
-    #53257f;
-
-}
-
-
-.subtitle {
-
-  color:
-    #666;
-
-  font-size:
-    18px;
-
-}
-
-
-input,
-textarea,
-select {
-
-  width:
-    100%;
-
-  padding:
-    13px;
-
-  margin:
-    7px 0 18px;
-
-  border:
-    1px solid #ccc;
-
-  border-radius:
-    9px;
-
-  font-size:
-    15px;
-
-}
-
-
-textarea {
-
-  min-height:
-    120px;
-
-  resize:
-    vertical;
-
-}
-
-
-button {
-
-  border:
-    none;
-
-  border-radius:
-    10px;
-
-  padding:
-    13px 22px;
-
-  background:
-    #53257f;
-
-  color:
-    white;
-
-  cursor:
-    pointer;
-
-  font-size:
-    15px;
-
-  margin:
-    5px;
-
-}
-
-
-button:hover {
-
-  opacity:
-    .9;
-
-}
-
-
-.gold {
-
-  background:
-    #ffb703;
-
-  color:
-    #222;
-
-}
-
-
-.secondary {
-
-  background:
-    #ddd;
-
-  color:
-    #333;
-
-}
-
-
-.identity {
-
-  background:
-    #f3effa;
-
-  border-left:
-    5px solid #53257f;
-
-  padding:
-    20px;
-
-  border-radius:
-    10px;
-
-  margin-bottom:
-    25px;
-
-}
-
-
-.question {
-
-  margin:
-    30px 0;
-
-}
-
-
-.option {
-
-  display:
-    block;
-
-  padding:
-    15px;
-
-  margin:
-    10px 0;
-
-  border:
-    2px solid #ddd;
-
-  border-radius:
-    10px;
-
-  cursor:
-    pointer;
-
-}
-
-
-.option:hover {
-
-  border-color:
-    #53257f;
-
-  background:
-    #faf8ff;
-
-}
-
-
-.result {
-
-  display:
-    none;
-
-  padding:
-    25px;
-
-  background:
-    #edf8ef;
-
-  border-left:
-    5px solid #3b8c4a;
-
-  border-radius:
-    10px;
-
-  margin-top:
-    20px;
-
-}
-
-
-.module-box {
-
-  background:
-    #f7f4fc;
-
-  padding:
-    25px;
-
-  border-radius:
-    15px;
-
-}
-
-
-.concept-grid {
-
-  display:
-    grid;
-
-  grid-template-columns:
-    repeat(
-      auto-fit,
-      minmax(180px,1fr)
-    );
-
-  gap:
-    15px;
-
-}
-
-
-.concept {
-
-  padding:
-    20px;
-
-  border-radius:
-    12px;
-
-  background:
-    white;
-
-  box-shadow:
-    0 3px 12px
-    rgba(0,0,0,.06);
-
-}
-
-
-.success {
-
-  text-align:
-    center;
-
-  padding:
-    45px;
-
-}
-
-
-.big-check {
-
-  font-size:
-    60px;
-
-}
-
-
-.score {
-
-  font-size:
-    40px;
-
-  color:
-    #53257f;
-
-  font-weight:
-    bold;
-
-}
-
-
-@media(max-width:700px) {
-
-  .header-inner {
-
-    flex-direction:
-      column;
-
-    gap:
-      12px;
-
-  }
-
-  .progress {
-
-    width:
-      100%;
-
-  }
-
-  h1 {
-
-    font-size:
-      30px;
-
-  }
-
-  .card {
-
-    padding:
-      22px;
-
-  }
-
-}
-
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+header{position:sticky;top:0;z-index:100;background:var(--purple);color:#fff;padding:12px 20px}
+.header{max-width:1250px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font-weight:800;font-size:18px}.progressbox{width:360px}.progresslabel{font-size:12px;margin-bottom:4px}
+.track{height:8px;background:rgba(255,255,255,.25);border-radius:99px}.fill{height:100%;width:0;background:var(--gold);border-radius:99px;transition:.3s}
+main{max-width:1150px;margin:28px auto;padding:0 18px}.page{display:none}.page.active{display:block}
+.card{background:#fff;border-radius:18px;padding:30px;margin-bottom:22px;box-shadow:0 7px 24px rgba(50,30,70,.08)}
+h1{font-size:40px;line-height:1.15;margin-top:0}h2{color:var(--purple);margin-top:0}h3{color:var(--purple)}
+.subtitle{font-size:19px;color:var(--muted)}
+button{border:0;border-radius:10px;padding:12px 20px;background:var(--purple);color:#fff;cursor:pointer;font-size:15px;margin:5px}
+button:hover{opacity:.9}.gold{background:var(--gold);color:#222}.secondary{background:#ddd;color:#222}
+input,textarea,select{width:100%;padding:12px;border:1px solid #ccc;border-radius:9px;margin:5px 0 15px;font-size:15px}
+textarea{min-height:110px;resize:vertical}
+label{font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px}
+.box{background:#f7f4fc;border-radius:14px;padding:20px;margin:18px 0}
+.concept{background:#fff;border-radius:13px;padding:18px;box-shadow:0 3px 12px rgba(0,0,0,.06)}
+.concept h3{margin-top:0}.journey{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin:25px 0}
+.journey span{padding:10px 14px;border-radius:20px;background:#eee6f8;color:var(--purple);font-weight:700}.arrow{font-size:22px;color:var(--purple)}
+.option{display:block;border:2px solid #ddd;border-radius:10px;padding:13px;margin:9px 0;cursor:pointer;font-weight:normal}
+.option:hover{border-color:var(--purple);background:#faf8ff}
+.answer{display:none;background:#edf8ef;border-left:5px solid var(--green);padding:18px;border-radius:8px;margin-top:15px}
+.warning{background:#fff7df;border-left:5px solid var(--gold);padding:18px;border-radius:8px}
+.case{border-left:6px solid var(--purple);background:#fbf9fe;padding:20px;border-radius:10px;margin:18px 0}
+.result{display:none;padding:20px;border-radius:10px;background:#edf8ef;border-left:5px solid var(--green);margin-top:18px}
+.bad{background:#fff0f0;border-left-color:var(--red)}
+.identity{background:#fffaf0;border:2px solid var(--gold);padding:20px;border-radius:14px;margin-bottom:22px}
+.identitygrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.sectiontag{display:inline-block;background:var(--purple);color:#fff;padding:5px 10px;border-radius:20px;font-size:12px;font-weight:bold}
+.big{font-size:30px;font-weight:800;color:var(--purple)}
+.formula{font-family:Georgia,serif;font-size:21px;text-align:center;background:#f0ebf8;padding:18px;border-radius:12px;margin:15px 0}
+.barwrap{background:#ddd;height:25px;border-radius:20px;overflow:hidden;margin:8px 0}.bar{height:100%;width:0;background:var(--purple);transition:1s}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:25px}.small{font-size:13px;color:var(--muted)}
+table{border-collapse:collapse;width:100%;margin:15px 0;background:#fff}th,td{border:1px solid #ddd;padding:9px;text-align:left}th{background:#f0ebf8}
+details{margin:18px 0}summary{cursor:pointer;font-weight:700;color:var(--purple);padding:10px}
+.flash{padding:16px;border-radius:12px;background:#eef5ff;border-left:5px solid var(--blue)}
+.badge{display:inline-block;padding:5px 9px;border-radius:15px;background:#eee;margin:3px}
+@media(max-width:700px){.header{flex-direction:column;align-items:stretch}.progressbox{width:100%}.identitygrid{grid-template-columns:1fr}h1{font-size:31px}.card{padding:21px}}
 </style>
-
 </head>
-
-
 <body>
 
-
 <header>
-
-<div class="header-inner">
-
-<div class="logo">
-
-TCE504 | Interactive Learning
-
+<div class="header">
+<div class="brand">TCE504 | Applied Exercise Physiology</div>
+<div class="progressbox">
+<div class="progresslabel">Learning Progress: <span id="progressText">0%</span></div>
+<div class="track"><div class="fill" id="progressFill"></div></div>
 </div>
-
-<div class="progress">
-
-<div class="progress-label">
-
-Learning Progress:
-<span id="progressText">
-0%
-</span>
-
 </div>
-
-<div class="progress-track">
-
-<div
-class="progress-fill"
-id="progressFill">
-</div>
-
-</div>
-
-</div>
-
-</div>
-
 </header>
-
 
 <main>
 
-
-<!-- =========================
-WELCOME
-========================= -->
-
-<section
-class="page active"
-id="page1">
-
+<!-- 1 WELCOME -->
+<section class="page active" id="p1">
 <div class="card">
+<span class="sectiontag">FLIPPED CLASSROOM</span>
+<h1>Exercise Metabolism</h1>
+<p class="subtitle">From food to ATP, energy systems, exercise response, adaptation and clinical exercise prescription.</p>
 
-<h1>
-Exercise Metabolism
-</h1>
-
-<p class="subtitle">
-
-Pre-Class Interactive Learning
-
-</p>
-
-
-<div class="module-box">
-
-<h2>
-Your Learning Journey
-</h2>
-
-<p>
-
-You will first complete a
-<strong>Pre-Test</strong>.
-
-Then you will explore the
-interactive learning material.
-
-After learning, you will complete
-a reflection and finally a
-<strong>Post-Test</strong>.
-
-</p>
-
+<div class="journey">
+<span>FOOD</span><b class="arrow">→</b><span>SUBSTRATES</span><b class="arrow">→</b>
+<span>ATP</span><b class="arrow">→</b><span>ENERGY SYSTEMS</span><b class="arrow">→</b>
+<span>EXERCISE DEMAND</span><b class="arrow">→</b><span>RESPONSE</span><b class="arrow">→</b>
+<span>ADAPTATION</span>
 </div>
 
-
-<button
-onclick="goTo(2)">
-
-Start Pre-Test →
-
-</button>
-
+<div class="box">
+<h2>What you will do</h2>
+<ol>
+<li>Complete the <strong>Pre-Test</strong> independently.</li>
+<li>Work through the interactive notes and mechanisms.</li>
+<li>Predict before revealing explanations.</li>
+<li>Interpret exercise and nutrition cases.</li>
+<li>Complete the Reflection.</li>
+<li>Complete the Post-Test.</li>
+<li>Attend class ready to <strong>explain, analyse and apply</strong> the concepts.</li>
+</ol>
 </div>
 
+<div class="warning">
+<strong>Flipped classroom rule:</strong> Do not treat this as a PowerPoint replacement where you simply read slides.
+Your task is to actively think, predict, calculate, explain and make decisions.
+</div>
+
+<button onclick="go(2)">Start Pre-Test →</button>
+</div>
 </section>
 
-
-
-<!-- =========================
-IDENTITY
-========================= -->
-
-<section
-class="page"
-id="page2">
-
+<!-- 2 PRE ID -->
+<section class="page" id="p2">
 <div class="card">
-
-<h2>
-Student Information
-</h2>
-
-<p>
-
-Please enter your information before
-starting the Pre-Test.
-
-</p>
-
-
-<label>
-Full Name
-</label>
-
-<input
-id="name"
-placeholder="Enter your full name">
-
-
-<label>
-Matric Number
-</label>
-
-<input
-id="matric"
-placeholder="e.g. P12345">
-
-
-<label>
-USM Email
-</label>
-
-<input
-id="email"
-type="email"
-placeholder="yourname@usm.my">
-
-
-<button
-onclick="saveIdentity()">
-
-Continue to Pre-Test →
-
-</button>
-
+<h2>Pre-Test: Student Registration</h2>
+<p>Complete this section before attempting the questions. Your record is stored separately from your Reflection and Post-Test.</p>
+<div class="identity">
+<div class="identitygrid">
+<div><label>Name</label><input id="preName" placeholder="Full name"></div>
+<div><label>Matric Number</label><input id="preMatric" placeholder="e.g. P12345"></div>
+<div><label>USM Email</label><input id="preEmail" type="email" placeholder="name@usm.my"></div>
 </div>
-
+</div>
+<button onclick="startPre()">Start Pre-Test →</button>
+</div>
 </section>
 
-
-
-<!-- =========================
-PRE TEST
-========================= -->
-
-<section
-class="page"
-id="page3">
-
+<!-- 3 PRETEST -->
+<section class="page" id="p3">
 <div class="card">
-
-<div
-class="identity"
-id="identityPre">
+<h2>Pre-Test</h2>
+<p class="small">Answer without notes. This is a baseline measure, not a grading exercise.</p>
+<div id="preQuestions"></div>
+<button onclick="submitPre()">Submit Pre-Test</button>
+<div class="result" id="preResult"></div>
 </div>
-
-
-<h2>
-Pre-Test
-</h2>
-
-<p>
-
-Don't worry about your score.
-This establishes your starting point
-before learning.
-
-</p>
-
-
-<div
-id="preQuestions">
-</div>
-
-
-<button
-onclick="submitPreTest()">
-
-Submit Pre-Test
-
-</button>
-
-
-<div
-class="result"
-id="preResult">
-</div>
-
-</div>
-
 </section>
 
-
-
-<!-- =========================
-LEARNING
-========================= -->
-
-<section
-class="page"
-id="page4">
-
+<!-- 4 LEARNING 1 -->
+<section class="page" id="p4">
 <div class="card">
+<span class="sectiontag">PART 1</span>
+<h2>Why Does Exercise Need Energy?</h2>
+<p>Every muscle contraction requires chemical energy. The immediate molecule used for cellular work is <strong>ATP</strong>.</p>
 
-<h2>
-Interactive Learning
-</h2>
-
-<p>
-
-Now explore the topic before coming
-to class.
-
-</p>
-
-
-<div class="concept-grid">
-
-
-<div class="concept">
-
-<h3>
-FOOD
-</h3>
-
-<p>
-Carbohydrate<br>
-Fat<br>
-Protein
-</p>
-
+<div class="grid">
+<div class="concept"><h3>ATP</h3><p>Immediate energy currency for cellular work.</p></div>
+<div class="concept"><h3>ATP stores</h3><p>Limited. They cannot sustain prolonged exercise by themselves.</p></div>
+<div class="concept"><h3>ATP regeneration</h3><p>Must occur continuously as exercise continues.</p></div>
 </div>
 
+<div class="formula">ATP → ADP + Pi + energy for cellular work</div>
 
-<div class="concept">
-
-<h3>
-SUBSTRATES
-</h3>
-
-<p>
-Glucose<br>
-Fatty acids<br>
-Amino acids
-</p>
-
+<div class="box">
+<h3>Think Before Reveal</h3>
+<p>If food contains chemical energy, why can't the muscle simply use the carbohydrate or fat directly for every contraction?</p>
+<button onclick="reveal('a1')">Reveal explanation</button>
+<div class="answer" id="a1">
+Food nutrients must be processed through metabolic pathways. ATP provides the immediate transferable energy used for cellular work. Therefore, exercise metabolism is fundamentally about maintaining ATP supply to match ATP demand.
+</div>
 </div>
 
-
-<div class="concept">
-
-<h3>
-ENERGY
-</h3>
-
-<p>
-ATP production
-</p>
-
+<h3>Key takeaway</h3>
+<p><strong>Food is the source of nutrients and stored chemical energy; ATP is the immediate energy currency.</strong></p>
+<button onclick="go(5)">Continue →</button>
 </div>
-
-
-<div class="concept">
-
-<h3>
-EXERCISE
-</h3>
-
-<p>
-Muscle contraction
-</p>
-
-</div>
-
-
-</div>
-
-
-<br>
-
-
-<div class="module-box">
-
-<h3>
-Think Before You Continue
-</h3>
-
-<p>
-
-You ate a carbohydrate-rich meal
-two hours before exercise.
-
-You then start moderate-intensity
-exercise.
-
-<strong>
-What happens to the energy
-from your food?
-</strong>
-
-</p>
-
-
-<button
-onclick="reveal('mechanism')">
-
-Reveal Explanation
-
-</button>
-
-
-<div
-id="mechanism"
-style="display:none">
-
-<hr>
-
-<p>
-
-Food is digested and absorbed,
-nutrients enter the circulation,
-and substrates can subsequently
-contribute to ATP production.
-
-During exercise, multiple energy
-pathways contribute simultaneously.
-Their relative contribution depends
-on factors such as exercise intensity,
-duration and substrate availability.
-
-</p>
-
-</div>
-
-</div>
-
-
-<br>
-
-
-<h3>
-Quick Concept Check
-</h3>
-
-<p>
-
-Do the energy systems operate
-completely independently?
-
-</p>
-
-
-<label class="option">
-
-<input
-type="radio"
-name="activity"
-value="yes">
-
-Yes
-
-</label>
-
-
-<label class="option">
-
-<input
-type="radio"
-name="activity"
-value="no">
-
-No — they contribute simultaneously
-with changing relative contributions.
-
-</label>
-
-
-<button
-onclick="completeLearning()">
-
-Complete Learning Activity →
-
-</button>
-
-</div>
-
 </section>
 
-
-
-<!-- =========================
-REFLECTION
-========================= -->
-
-<section
-class="page"
-id="page5">
-
+<!-- 5 LEARNING 2 -->
+<section class="page" id="p5">
 <div class="card">
+<span class="sectiontag">PART 2</span>
+<h2>Food → Nutrients → Metabolic Substrates</h2>
 
-<div
-class="identity"
-id="identityReflection">
+<table>
+<tr><th>Food component</th><th>Important metabolic forms / examples</th><th>Exercise relevance</th></tr>
+<tr><td>Carbohydrate</td><td>Glucose, glycogen</td><td>Important substrate, especially as exercise intensity rises.</td></tr>
+<tr><td>Fat</td><td>Fatty acids, triglycerides</td><td>Important contributor, particularly during lower/moderate intensity and prolonged exercise.</td></tr>
+<tr><td>Protein</td><td>Amino acids</td><td>Can contribute to metabolism, with contribution affected by physiological conditions.</td></tr>
+</table>
+
+<div class="journey">
+<span>Food</span><b class="arrow">→</b><span>Digestion</span><b class="arrow">→</b><span>Absorption</span><b class="arrow">→</b><span>Circulation</span><b class="arrow">→</b><span>Storage / Utilisation</span>
 </div>
 
+<div class="box">
+<h3>Case: carbohydrate-rich meal</h3>
+<p>A student eats a carbohydrate-rich meal two hours before exercise. What can happen to the carbohydrate?</p>
+<button onclick="reveal('a2')">Reveal</button>
+<div class="answer" id="a2">
+Carbohydrate is digested and absorbed. Glucose may be used by tissues, stored as glycogen, or contribute to metabolic pathways supporting ATP regeneration. The size and timing of the meal, insulin response, glycogen status and subsequent exercise demand all influence what happens.
+</div>
+</div>
 
-<h2>
-Learning Reflection
-</h2>
+<div class="box">
+<h3>Quick check</h3>
+<p>Which statement is most accurate?</p>
+<label class="option"><input type="radio" name="q5a" value="0"> Food is the same thing as ATP.</label>
+<label class="option"><input type="radio" name="q5a" value="1"> Nutrients can provide substrates that support ATP regeneration.</label>
+<label class="option"><input type="radio" name="q5a" value="2"> Fat cannot contribute to exercise metabolism.</label>
+<button onclick="check('q5a',1,'q5feedback')">Check</button>
+<div id="q5feedback" class="answer"></div>
+</div>
 
-<p>
+<button onclick="go(6)">Continue →</button>
+</div>
+</section>
 
-Now that you have explored the topic,
-reflect on your understanding.
+<!-- 6 LEARNING 3 -->
+<section class="page" id="p6">
+<div class="card">
+<span class="sectiontag">PART 3</span>
+<h2>The Three Major Energy Pathways</h2>
 
-</p>
+<div class="grid">
+<div class="concept"><h3>Phosphagen</h3><p>Very rapid ATP regeneration. Important when ATP demand rises suddenly and greatly.</p></div>
+<div class="concept"><h3>Glycolytic</h3><p>Rapid ATP support through carbohydrate metabolism; important during higher-intensity work.</p></div>
+<div class="concept"><h3>Oxidative</h3><p>Slower but substantial ATP production capacity; supports sustained activity.</p></div>
+</div>
 
+<div class="box">
+<h3>Critical concept: They overlap</h3>
+<p>Do the energy systems switch on one at a time?</p>
+<label class="option"><input type="radio" name="systems" value="yes"> Yes. Only one operates at a time.</label>
+<label class="option"><input type="radio" name="systems" value="no"> No. They contribute simultaneously with changing relative contribution.</label>
+<button onclick="check('systems','no','sysfeedback')">Check</button>
+<div id="sysfeedback" class="answer"></div>
+</div>
 
-<label>
+<div class="box">
+<h3>Interactive intensity model</h3>
+<p>Move the slider and observe the conceptual shift in ATP demand.</p>
+<input type="range" id="intensity" min="1" max="100" value="30" oninput="updateIntensity()">
+<p>Exercise intensity: <strong id="intensityValue">30%</strong></p>
+<div class="barwrap"><div class="bar" id="intensityBar"></div></div>
+<p id="intensityText">At lower intensity, oxidative metabolism can make a substantial contribution.</p>
+</div>
 
-<strong>
-1. What did you learn from this
-interactive module?
-</strong>
+<button onclick="go(7)">Continue →</button>
+</div>
+</section>
 
-</label>
+<!-- 7 LEARNING 4 -->
+<section class="page" id="p7">
+<div class="card">
+<span class="sectiontag">PART 4</span>
+<h2>Exercise Intensity, Duration and Substrate Use</h2>
 
-<textarea
-id="reflection1"
-placeholder="Write your answer...">
-</textarea>
+<p>Never interpret substrate contribution using intensity alone. Consider <strong>intensity + duration + training status + nutritional state + environmental/individual factors</strong>.</p>
 
+<table>
+<tr><th>Situation</th><th>Metabolic thinking</th></tr>
+<tr><td>Very short maximal effort</td><td>Rapid ATP regeneration is essential; phosphagen contribution is important.</td></tr>
+<tr><td>High-intensity repeated intervals</td><td>Rapid pathways contribute strongly, with oxidative contribution during work and recovery.</td></tr>
+<tr><td>Moderate prolonged exercise</td><td>Oxidative metabolism is important; carbohydrate and fat both contribute.</td></tr>
+<tr><td>Very prolonged exercise</td><td>Duration, glycogen availability, fat mobilisation, nutrition and pacing become increasingly relevant.</td></tr>
+</table>
 
-<label>
+<div class="case">
+<h3>Case A — 10-second maximal sprint</h3>
+<p>Which energy demand characteristic is most important?</p>
+<button onclick="reveal('caseA')">Reveal reasoning</button>
+<div class="answer" id="caseA">ATP must be regenerated extremely rapidly. The phosphagen system is highly relevant, while other pathways also contribute depending on the exact duration and context.</div>
+</div>
 
-<strong>
-2. What concept is still unclear
-or confusing?
-</strong>
+<div class="case">
+<h3>Case B — 90-minute moderate cycling</h3>
+<p>Why would it be inappropriate to say “only the aerobic system is working”?</p>
+<button onclick="reveal('caseB')">Reveal reasoning</button>
+<div class="answer" id="caseB">Energy pathways overlap. Oxidative metabolism is highly important during prolonged moderate exercise, but ATP regeneration remains an integrated process with contributions from multiple pathways.</div>
+</div>
 
-</label>
+<button onclick="go(8)">Continue →</button>
+</div>
+</section>
 
-<textarea
-id="reflection2"
-placeholder="Write your answer...">
-</textarea>
+<!-- 8 LEARNING 5 -->
+<section class="page" id="p8">
+<div class="card">
+<span class="sectiontag">PART 5</span>
+<h2>Fasting, Feeding and Carbohydrate Availability</h2>
 
+<h3>Fasted exercise</h3>
+<p>After an overnight fast, nutritional conditions differ from the fed state. Hormonal regulation, liver glycogen availability, adipose tissue lipolysis and exercise intensity influence substrate availability and utilisation.</p>
 
-<label>
+<div class="case">
+<h3>Morning fasted exercise</h3>
+<p>A person performs 45 minutes of moderate exercise before breakfast.</p>
+<p><strong>Predict:</strong> What changes in fuel availability might influence the response?</p>
+<button onclick="reveal('fast')">Reveal</button>
+<div class="answer" id="fast">
+Fasting changes circulating nutrient availability and promotes mobilisation of stored fuels. Fat mobilisation and oxidation can become more prominent, while carbohydrate availability and utilisation remain dependent on glycogen stores, exercise intensity and individual factors.
+</div>
+</div>
 
-<strong>
-3. What question would you like
-your lecturer to discuss in class?
-</strong>
+<h3>Carbohydrate loading</h3>
+<p>For selected endurance events, carbohydrate availability is relevant because muscle glycogen is an important fuel reserve during prolonged exercise. Nutritional strategy should match the planned exercise demand.</p>
 
-</label>
+<div class="box">
+<h3>Clinical Exercise Scientist Question</h3>
+<p>If two clients perform the same 60-minute exercise session but have different nutritional states, should you automatically assume their metabolic responses are identical?</p>
+<button onclick="reveal('nutrition')">Reveal</button>
+<div class="answer" id="nutrition">No. Exercise metabolism is influenced by both the exercise stimulus and the physiological/nutritional context of the individual.</div>
+</div>
 
-<textarea
-id="question"
-placeholder="Write your question...">
-</textarea>
+<button onclick="go(9)">Continue →</button>
+</div>
+</section>
 
+<!-- 9 LEARNING 6 -->
+<section class="page" id="p9">
+<div class="card">
+<span class="sectiontag">PART 6</span>
+<h2>Why Can Breath Smell Change?</h2>
 
-<label>
+<p>This is a useful example of connecting a simple observation to metabolism.</p>
 
-<strong>
-4. How confident are you now?
-</strong>
+<div class="case">
+<h3>Observation</h3>
+<p>A person has been fasting for a prolonged period and notices a distinctive breath odour.</p>
+<p>What metabolic clue could you consider?</p>
+<button onclick="reveal('ketone')">Reveal</button>
+<div class="answer" id="ketone">
+During prolonged fasting or low carbohydrate availability, increased fat metabolism can contribute to ketone body production in the liver. Acetone is volatile and can contribute to a characteristic breath odour. This is a metabolic clue, not by itself a diagnostic test.
+</div>
+</div>
 
-</label>
+<div class="warning">
+<strong>Clinical reasoning:</strong> One observation rarely proves one mechanism. Use it as a clue and integrate it with history, context and appropriate physiological measurements.
+</div>
 
+<button onclick="go(10)">Continue →</button>
+</div>
+</section>
+
+<!-- 10 LEARNING 7 -->
+<section class="page" id="p10">
+<div class="card">
+<span class="sectiontag">PART 7</span>
+<h2>What Should We Monitor During Exercise?</h2>
+
+<p>To understand exercise demand and response, the exercise scientist needs observable variables.</p>
+
+<div class="grid">
+<div class="concept"><h3>Heart rate</h3><p>Useful indicator of cardiovascular response and exercise intensity context.</p></div>
+<div class="concept"><h3>RPE</h3><p>Subjective indicator of perceived exercise effort.</p></div>
+<div class="concept"><h3>VO₂</h3><p>Reflects oxygen consumption and aerobic metabolic demand.</p></div>
+<div class="concept"><h3>VCO₂</h3><p>Provides information about carbon dioxide production.</p></div>
+<div class="concept"><h3>RER</h3><p>Useful for interpreting whole-body gas exchange and substrate oxidation context.</p></div>
+<div class="concept"><h3>Lactate</h3><p>Can help characterise metabolic response when measured appropriately.</p></div>
+</div>
+
+<div class="formula">RER = VCO₂ / VO₂</div>
+
+<div class="box">
+<h3>Mini Calculation</h3>
+<p>During exercise, VO₂ = 2.0 L/min and VCO₂ = 1.8 L/min. Calculate RER.</p>
+<input id="rer" type="number" step="0.01" placeholder="Enter RER">
+<button onclick="checkRER()">Check RER</button>
+<div id="rerFeedback" class="answer"></div>
+</div>
+
+<div class="box">
+<h3>Important interpretation</h3>
+<p>RER is not simply “the percentage of carbohydrate burned.” Interpretation depends on exercise conditions, steady state and other physiological factors.</p>
+</div>
+
+<button onclick="go(11)">Continue →</button>
+</div>
+</section>
+
+<!-- 11 LEARNING 8 -->
+<section class="page" id="p11">
+<div class="card">
+<span class="sectiontag">PART 8</span>
+<h2>Immediate, Acute and Chronic Responses</h2>
+
+<table>
+<tr><th>Concept</th><th>What to ask?</th></tr>
+<tr><td>Immediate response</td><td>What changes within seconds to minutes when exercise starts?</td></tr>
+<tr><td>Acute response</td><td>What happens during and shortly after a single exercise session?</td></tr>
+<tr><td>Chronic adaptation</td><td>What changes after repeated exercise over weeks/months?</td></tr>
+<tr><td>Detraining</td><td>What happens when the training stimulus is reduced or removed?</td></tr>
+</table>
+
+<div class="journey">
+<span>Exercise stimulus</span><b class="arrow">→</b>
+<span>Repeated stimulus</span><b class="arrow">→</b>
+<span>Physiological adaptation</span><b class="arrow">→</b>
+<span>Functional change</span>
+</div>
+
+<div class="case">
+<h3>12-week exercise programme</h3>
+<p>A sedentary adult begins supervised exercise 3 times/week for 12 weeks.</p>
+<p>What should a clinical exercise scientist monitor over time?</p>
+<button onclick="reveal('adapt')">Reveal</button>
+<div class="answer" id="adapt">Monitor adherence, exercise tolerance, HR/RPE responses, functional capacity, relevant clinical variables and outcomes appropriate to the programme. Adaptation should be evaluated against baseline and the exercise dose delivered.</div>
+</div>
+
+<button onclick="go(12)">Continue →</button>
+</div>
+</section>
+
+<!-- 12 LEARNING 9 -->
+<section class="page" id="p12">
+<div class="card">
+<span class="sectiontag">PART 9</span>
+<h2>Clinical Exercise Scientist Application</h2>
+
+<div class="case">
+<h3>Case 1 — Sedentary adult with obesity</h3>
+<p>A client has low exercise tolerance and becomes breathless early during walking.</p>
+<p><strong>Design your thinking, not the final prescription:</strong></p>
+<ol>
+<li>What information should you obtain first?</li>
+<li>Which intensity indicators could you use?</li>
+<li>Which physiological responses should be monitored?</li>
+<li>How would you progress the exercise?</li>
+<li>What safety/clinical factors need consideration?</li>
+</ol>
+<textarea id="case1Text" placeholder="Write your reasoning..."></textarea>
+<button onclick="reveal('case1answer')">Compare with key principles</button>
+<div class="answer" id="case1answer">A sound approach starts with assessment and clinical context, then selects an appropriate mode, initial intensity, duration and monitoring strategy. Progression should be individualised and based on tolerance and response rather than a one-size-fits-all rule.</div>
+</div>
+
+<div class="case">
+<h3>Case 2 — High-intensity intervals</h3>
+<p>A participant completes repeated 30-second high-intensity cycling intervals.</p>
+<p>Explain why rapid ATP regeneration is important and why recovery periods also involve oxidative metabolism.</p>
+<textarea id="case2Text" placeholder="Write your explanation..."></textarea>
+<button onclick="reveal('case2answer')">Reveal</button>
+<div class="answer" id="case2answer">The work interval creates a rapid ATP demand. Fast ATP-regeneration pathways contribute strongly. During recovery, oxidative metabolism contributes to restoration of energy stores and physiological recovery. The pathways overlap rather than operating as isolated switches.</div>
+</div>
+
+<div class="case">
+<h3>Case 3 — Prolonged endurance exercise</h3>
+<p>A trained cyclist performs 2 hours of moderate exercise.</p>
+<p>Identify at least five variables that could influence the metabolic response.</p>
+<textarea id="case3Text" placeholder="Intensity, duration, nutrition, training status..."></textarea>
+<button onclick="reveal('case3answer')">Reveal</button>
+<div class="answer" id="case3answer">Exercise intensity, duration, training status, glycogen availability, nutritional state, pacing, environment, hydration and individual physiological characteristics can influence the response.</div>
+</div>
+
+<button onclick="go(13)">Continue →</button>
+</div>
+</section>
+
+<!-- 13 SYNTHESIS -->
+<section class="page" id="p13">
+<div class="card">
+<span class="sectiontag">SYNTHESIS</span>
+<h2>Your Exercise Metabolism Framework</h2>
+
+<div class="journey">
+<span>1. FOOD</span><b class="arrow">→</b>
+<span>2. SUBSTRATES</span><b class="arrow">→</b>
+<span>3. ATP DEMAND</span><b class="arrow">→</b>
+<span>4. ENERGY PATHWAYS</span><b class="arrow">→</b>
+<span>5. PHYSIOLOGICAL RESPONSE</span><b class="arrow">→</b>
+<span>6. ADAPTATION</span>
+</div>
+
+<div class="box">
+<h3>Use this six-question framework for every exercise case</h3>
+<ol>
+<li><strong>What is the exercise?</strong> Mode, intensity, duration.</li>
+<li><strong>What is the ATP demand?</strong> How rapidly must ATP be regenerated?</li>
+<li><strong>Which pathways contribute?</strong> Remember overlap.</li>
+<li><strong>What substrates are available?</strong> Consider carbohydrate, fat, protein and physiological state.</li>
+<li><strong>What should I monitor?</strong> HR, RPE, VO₂/VCO₂, RER, lactate or other appropriate variables.</li>
+<li><strong>How does this influence exercise prescription?</strong> Assessment, dose, progression and monitoring.</li>
+</ol>
+</div>
+
+<div class="flash">
+<strong>Before moving to Reflection:</strong> If you can explain the six questions above using a real exercise example, you are ready for the next stage.
+</div>
+
+<button onclick="go(14)">Go to Reflection →</button>
+</div>
+</section>
+
+<!-- 14 REFLECTION ID + FORM -->
+<section class="page" id="p14">
+<div class="card">
+<h2>Flipped Classroom Reflection</h2>
+<p>This is not a “correct answer” section. Your lecturer will use your responses to plan the face-to-face discussion.</p>
+
+<div class="identity">
+<h3>Confirm your identity</h3>
+<div class="identitygrid">
+<div><label>Name</label><input id="refName"></div>
+<div><label>Matric Number</label><input id="refMatric"></div>
+<div><label>USM Email</label><input id="refEmail" type="email"></div>
+</div>
+</div>
+
+<label>1. What is the most important concept you learned?</label>
+<textarea id="r1" placeholder="Explain in your own words."></textarea>
+
+<label>2. What concept is still unclear?</label>
+<textarea id="r2" placeholder="Be specific."></textarea>
+
+<label>3. Which activity/case helped you understand the topic?</label>
+<textarea id="r3"></textarea>
+
+<label>4. What question would you like your lecturer to discuss in class?</label>
+<textarea id="r4"></textarea>
+
+<label>5. How confident are you explaining exercise metabolism?</label>
 <select id="confidence">
-
-<option value="">
-Select your confidence
-</option>
-
-<option value="1">
-1 — Very unsure
-</option>
-
-<option value="2">
-2 — Slightly unsure
-</option>
-
-<option value="3">
-3 — Moderate
-</option>
-
-<option value="4">
-4 — Confident
-</option>
-
-<option value="5">
-5 — Very confident
-</option>
-
+<option value="">Select</option><option value="1">1 — Very unsure</option><option value="2">2 — Unsure</option>
+<option value="3">3 — Moderate</option><option value="4">4 — Confident</option><option value="5">5 — Very confident</option>
 </select>
 
-
-<button
-class="gold"
-onclick="submitReflection()">
-
-Submit Reflection →
-
-</button>
-
-
-<div
-class="result"
-id="reflectionResult">
+<button class="gold" onclick="submitReflection()">Submit Reflection →</button>
+<div class="result" id="refResult"></div>
 </div>
-
-</div>
-
 </section>
 
-
-
-<!-- =========================
-POST TEST
-========================= -->
-
-<section
-class="page"
-id="page6">
-
+<!-- 15 POST ID -->
+<section class="page" id="p15">
 <div class="card">
-
-<div
-class="identity"
-id="identityPost">
+<h2>Post-Test: Student Confirmation</h2>
+<p>Complete the Post-Test independently after finishing the learning module and Reflection.</p>
+<div class="identity">
+<div class="identitygrid">
+<div><label>Name</label><input id="postName"></div>
+<div><label>Matric Number</label><input id="postMatric"></div>
+<div><label>USM Email</label><input id="postEmail" type="email"></div>
 </div>
-
-
-<h2>
-Post-Test
-</h2>
-
-<p>
-
-Now answer the questions again
-after completing the learning activity.
-
-These questions are designed to test
-your understanding and application.
-
-</p>
-
-
-<div
-id="postQuestions">
 </div>
-
-
-<button
-onclick="submitPostTest()">
-
-Submit Post-Test
-
-</button>
-
-
-<div
-class="result"
-id="postResult">
+<button onclick="startPost()">Start Post-Test →</button>
 </div>
-
-</div>
-
 </section>
 
-
-
-<!-- =========================
-COMPLETE
-========================= -->
-
-<section
-class="page"
-id="page7">
-
-<div class="card success">
-
-<div class="big-check">
-✓
+<!-- 16 POST -->
+<section class="page" id="p16">
+<div class="card">
+<h2>Post-Test</h2>
+<p class="small">These questions assess application and understanding. Answer independently.</p>
+<div id="postQuestions"></div>
+<button onclick="submitPost()">Submit Post-Test</button>
+<div class="result" id="postResult"></div>
 </div>
-
-<h1>
-Learning Journey Complete
-</h1>
-
-<p>
-
-You have completed:
-
-</p>
-
-<p>
-
-✓ Pre-Test<br>
-✓ Interactive Learning<br>
-✓ Reflection<br>
-✓ Post-Test
-
-</p>
-
-
-<div
-class="score"
-id="finalScore">
-</div>
-
-
-<p>
-
-Thank you for preparing before class.
-
-Come to class ready to discuss,
-analyse and apply what you have learned.
-
-</p>
-
-</div>
-
 </section>
 
+<!-- 17 COMPLETION -->
+<section class="page" id="p17">
+<div class="card">
+<div style="text-align:center">
+<div class="big">✓</div>
+<h1>Pre-Class Preparation Complete</h1>
+<p>You have completed the online Exercise Metabolism learning journey.</p>
+</div>
+
+<div class="grid">
+<div class="concept"><div class="big" id="finalPre">—</div><strong>Pre-Test</strong></div>
+<div class="concept"><div class="big" id="finalPost">—</div><strong>Post-Test</strong></div>
+<div class="concept"><div class="big" id="finalGain">—</div><strong>Learning Gain</strong></div>
+<div class="concept"><div class="big">✓</div><strong>Reflection</strong></div>
+</div>
+
+<div class="box" id="finalStudent"></div>
+
+<div class="warning">
+<strong>Come to class prepared to:</strong>
+<ul>
+<li>Explain why ATP must be continuously regenerated.</li>
+<li>Explain why energy systems overlap.</li>
+<li>Interpret exercise intensity and metabolic demand.</li>
+<li>Discuss the effects of nutritional state.</li>
+<li>Interpret HR, RPE and metabolic variables.</li>
+<li>Apply metabolism concepts to clinical exercise cases.</li>
+</ul>
+</div>
+
+<h2>One final question</h2>
+<p><strong>What is one concept you can now explain to another student without looking at your notes?</strong></p>
+<textarea id="finalTakeaway"></textarea>
+<button onclick="saveFinalTakeaway()">Save My Takeaway</button>
+<div id="takeawayResult" class="result"></div>
+</div>
+</section>
 
 </main>
 
-
-
 <script>
-
-
-/* =====================================================
-GOOGLE APPS SCRIPT URL
-
-PASTE YOUR DEPLOYED WEB APP URL HERE
-===================================================== */
-
-const GOOGLE_SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbzawMrdcdA55TrrjW7PlIApkwDrgxirOVUJM4mZ4EpKnOw0F7r3yEN4ml5ht3viDm9N/exec";
-
-
-/* =====================================================
-COURSE INFORMATION
-===================================================== */
-
-const COURSE =
-"TCE504";
-
-const TOPIC =
-"Exercise Metabolism";
-
-
-/* =====================================================
-STUDENT
-===================================================== */
-
-let student = {
-
-  name: "",
-
-  matric: "",
-
-  email: ""
-
-};
-
-
-/* =====================================================
-SCORES
-===================================================== */
-
-let preScore = 0;
-
-let postScore = 0;
-
-let prePercentage = 0;
-
-let postPercentage = 0;
-
-
-/* =====================================================
-QUESTIONS
-===================================================== */
-
-const questions = [
-
-{
-
-q:
-"Which nutrient can provide carbon substrates that contribute to ATP production?",
-
-options: [
-
-"Carbohydrate",
-
-"Water",
-
-"Minerals",
-
-"Oxygen"
-
-],
-
-answer: 0
-
-},
-
-{
-
-q:
-"Do the major energy systems operate completely independently during exercise?",
-
-options: [
-
-"Yes",
-
-"No, they contribute simultaneously",
-
-"Only during endurance exercise",
-
-"Only during sprinting"
-
-],
-
-answer: 1
-
-},
-
-{
-
-q:
-"Which variable generally increases as exercise intensity increases?",
-
-options: [
-
-"Heart rate",
-
-"ATP demand disappears",
-
-"Muscle contraction stops",
-
-"Energy demand becomes zero"
-
-],
-
-answer: 0
-
-},
-
-{
-
-q:
-"Which molecule is the immediate energy currency used for cellular work?",
-
-options: [
-
-"ATP",
-
-"DNA",
-
-"Water",
-
-"Urea"
-
-],
-
-answer: 0
-
-},
-
-{
-
-q:
-"Which factor strongly influences the relative contribution of energy pathways?",
-
-options: [
-
-"Exercise intensity and duration",
-
-"Hair colour",
-
-"Height only",
-
-"Eye colour"
-
-],
-
-answer: 0
-
-}
-
+const GOOGLE_SCRIPT_URL="https://script.google.com/macros/s/AKfycbzawMrdcdA55TrrjW7PlIApkwDrgxirOVUJM4mZ4EpKnOw0F7r3yEN4ml5ht3viDm9N/exec";
+const COURSE="TCE504";
+const TOPIC="Exercise Metabolism";
+let current=1;
+let student={name:"",matric:"",email:""};
+let preScore=0,postScore=0,prePct=0,postPct=0;
+
+const questions=[
+{q:"What is the immediate energy currency used for cellular work?",o:["ATP","Glucose","Fat","Oxygen"],a:0},
+{q:"Why must ATP be continuously regenerated during exercise?",o:["Muscle ATP stores are unlimited","Stored ATP is limited relative to prolonged demand","ATP cannot be used by muscle","Exercise stops ATP breakdown"],a:1},
+{q:"How do the major energy pathways behave during exercise?",o:["Only one works at a time","They contribute simultaneously with changing relative contribution","Only oxidative metabolism works","They are completely independent"],a:1},
+{q:"Which factors strongly influence metabolic contribution?",o:["Intensity and duration","Eye colour","Matric number","Height only"],a:0},
+{q:"Why is exercise metabolism important to a clinical exercise scientist?",o:["It links exercise demand, physiological response, monitoring and prescription","It is only relevant to elite athletes","It removes the need for assessment","It means everyone gets the same programme"],a:0}
 ];
 
-
-/* =====================================================
-NAVIGATION
-===================================================== */
-
-let currentPage = 1;
-
-
-function goTo(page) {
-
-  document
-  .querySelectorAll(".page")
-  .forEach(
-    p => p.classList.remove("active")
-  );
-
-  document
-  .getElementById("page" + page)
-  .classList.add("active");
-
-  currentPage = page;
-
-  updateProgress();
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
+function go(n){
+document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+document.getElementById("p"+n).classList.add("active");
+current=n; updateProgress(); window.scrollTo({top:0,behavior:"smooth"});
 }
 
-
-/* =====================================================
-PROGRESS
-===================================================== */
-
-function updateProgress() {
-
-  const percent =
-    Math.round(
-      ((currentPage - 1) / 6) * 100
-    );
-
-  document
-  .getElementById("progressFill")
-  .style.width =
-    percent + "%";
-
-  document
-  .getElementById("progressText")
-  .innerText =
-    percent + "%";
-
+function updateProgress(){
+let pct=Math.round(((current-1)/16)*100);
+document.getElementById("progressFill").style.width=pct+"%";
+document.getElementById("progressText").innerText=pct+"%";
 }
 
+function reveal(id){document.getElementById(id).style.display="block"}
 
-/* =====================================================
-IDENTITY
-===================================================== */
-
-function saveIdentity() {
-
-  student.name =
-    document
-    .getElementById("name")
-    .value
-    .trim();
-
-  student.matric =
-    document
-    .getElementById("matric")
-    .value
-    .trim();
-
-  student.email =
-    document
-    .getElementById("email")
-    .value
-    .trim();
-
-
-  if (
-    !student.name ||
-    !student.matric ||
-    !student.email
-  ) {
-
-    alert(
-      "Please complete your name, matric number and USM email."
-    );
-
-    return;
-
-  }
-
-
-  localStorage.setItem(
-    "student",
-    JSON.stringify(student)
-  );
-
-
-  displayIdentity();
-
-  generateQuestions(
-    "preQuestions"
-  );
-
-  goTo(3);
-
+function check(name,correct,target){
+let el=document.querySelector('input[name="'+name+'"]:checked');
+let box=document.getElementById(target);
+box.style.display="block";
+if(!el){box.innerHTML="<strong>Please select an answer.</strong>";return}
+if(String(el.value)===String(correct)){
+box.innerHTML="<strong>Correct.</strong> "+feedback(name);
+}else{
+box.innerHTML="<strong>Not quite.</strong> "+feedback(name);
+}
 }
 
-
-/* =====================================================
-DISPLAY IDENTITY
-===================================================== */
-
-function displayIdentity() {
-
-  const text = `
-
-  <strong>Student:</strong>
-  ${student.name}
-
-  &nbsp; | &nbsp;
-
-  <strong>Matric:</strong>
-  ${student.matric}
-
-  &nbsp; | &nbsp;
-
-  <strong>Email:</strong>
-  ${student.email}
-
-  `;
-
-
-  document
-  .getElementById("identityPre")
-  .innerHTML = text;
-
-  document
-  .getElementById("identityReflection")
-  .innerHTML = text;
-
-  document
-  .getElementById("identityPost")
-  .innerHTML = text;
-
+function feedback(name){
+if(name==="systems")return"Energy pathways overlap. The relative contribution changes with exercise demand.";
+if(name==="q5a")return"Nutrients can provide substrates that support ATP regeneration.";
+return"Use the mechanism explained in this section.";
 }
 
-
-/* =====================================================
-GENERATE QUESTIONS
-===================================================== */
-
-function generateQuestions(containerID) {
-
-  const container =
-    document
-    .getElementById(containerID);
-
-  container.innerHTML = "";
-
-
-  questions.forEach(
-    (item, index) => {
-
-      let html = `
-
-      <div class="question">
-
-      <strong>
-      ${index + 1}. ${item.q}
-      </strong>
-
-      `;
-
-
-      item.options.forEach(
-        (option, optionIndex) => {
-
-          html += `
-
-          <label class="option">
-
-          <input
-          type="radio"
-          name="${containerID}_q${index}"
-          value="${optionIndex}">
-
-          ${option}
-
-          </label>
-
-          `;
-
-        }
-      );
-
-
-      html += `</div>`;
-
-      container.innerHTML += html;
-
-    }
-  );
-
+function updateIntensity(){
+let v=Number(document.getElementById("intensity").value);
+document.getElementById("intensityValue").innerText=v+"%";
+document.getElementById("intensityBar").style.width=v+"%";
+let t=v<30?"Lower intensity: oxidative metabolism can make a substantial contribution."
+:v<70?"Moderate intensity: carbohydrate and fat both contribute substantially."
+:"Higher intensity: rapid ATP demand rises and carbohydrate-dependent pathways become increasingly important.";
+document.getElementById("intensityText").innerText=t;
 }
 
-
-/* =====================================================
-PRE TEST
-===================================================== */
-
-async function submitPreTest() {
-
-  const answers = [];
-
-  preScore = 0;
-
-
-  for (
-    let i = 0;
-    i < questions.length;
-    i++
-  ) {
-
-    const selected =
-      document.querySelector(
-        `input[name="preQuestions_q${i}"]:checked`
-      );
-
-
-    if (!selected) {
-
-      alert(
-        "Please answer all Pre-Test questions."
-      );
-
-      return;
-
-    }
-
-
-    const answer =
-      Number(selected.value);
-
-    answers.push(answer);
-
-
-    if (
-      answer ===
-      questions[i].answer
-    ) {
-
-      preScore++;
-
-    }
-
-  }
-
-
-  prePercentage =
-    Math.round(
-      (preScore / questions.length) * 100
-    );
-
-
-  const data = {
-
-    type:
-      "pretest",
-
-    name:
-      student.name,
-
-    matric:
-      student.matric,
-
-    email:
-      student.email,
-
-    course:
-      COURSE,
-
-    topic:
-      TOPIC,
-
-    score:
-      preScore,
-
-    percentage:
-      prePercentage,
-
-    q1:
-      answers[0],
-
-    q2:
-      answers[1],
-
-    q3:
-      answers[2],
-
-    q4:
-      answers[3],
-
-    q5:
-      answers[4]
-
-  };
-
-
-  await sendData(data);
-
-
-  document
-  .getElementById("preResult")
-  .style.display =
-    "block";
-
-
-  document
-  .getElementById("preResult")
-  .innerHTML = `
-
-  <h3>
-  Pre-Test Recorded
-  </h3>
-
-  <p>
-  Your starting score:
-  <strong>
-  ${preScore}/${questions.length}
-  </strong>
-  (${prePercentage}%)
-  </p>
-
-  <p>
-  Don't worry about the score.
-  This is your baseline before learning.
-  </p>
-
-  <button
-  onclick="goTo(4)">
-
-  Start Interactive Learning →
-
-  </button>
-
-  `;
-
+function checkRER(){
+let v=Number(document.getElementById("rer").value);
+let b=document.getElementById("rerFeedback");b.style.display="block";
+if(Math.abs(v-.9)<.03)b.innerHTML="<strong>Correct.</strong> RER = 1.8 / 2.0 = 0.90.";
+else b.innerHTML="<strong>Check your calculation.</strong> RER = VCO₂ / VO₂ = 1.8 / 2.0 = 0.90.";
 }
 
-
-/* =====================================================
-LEARNING
-===================================================== */
-
-function reveal(id) {
-
-  document
-  .getElementById(id)
-  .style.display =
-    "block";
-
+function fillQuestions(container,type){
+let c=document.getElementById(container);c.innerHTML="";
+questions.forEach((x,i)=>{
+let d=document.createElement("div");d.className="box";
+let h="<h3>"+(i+1)+". "+x.q+"</h3>";
+x.o.forEach((o,j)=>{h+='<label class="option"><input type="radio" name="'+type+i+'" value="'+j+'"> '+o+"</label>"});
+d.innerHTML=h;c.appendChild(d);
+});
 }
 
-
-function completeLearning() {
-
-  const selected =
-    document.querySelector(
-      'input[name="activity"]:checked'
-    );
-
-
-  if (!selected) {
-
-    alert(
-      "Please complete the concept check."
-    );
-
-    return;
-
-  }
-
-
-  if (
-    selected.value === "yes"
-  ) {
-
-    alert(
-      "Think again. The systems interact during exercise."
-    );
-
-    return;
-
-  }
-
-
-  alert(
-    "Correct. The energy systems contribute simultaneously."
-  );
-
-
-  goTo(5);
-
+function identity(prefix){
+let n=document.getElementById(prefix+"Name").value.trim();
+let m=document.getElementById(prefix+"Matric").value.trim();
+let e=document.getElementById(prefix+"Email").value.trim();
+if(!n||!m||!e){alert("Please complete Name, Matric Number and USM Email.");return null}
+if(!e.toLowerCase().endsWith("@usm.my")){alert("Please use your USM email.");return null}
+return{name:n,matric:m,email:e};
 }
 
-
-/* =====================================================
-REFLECTION
-===================================================== */
-
-async function submitReflection() {
-
-  const reflection1 =
-    document
-    .getElementById("reflection1")
-    .value
-    .trim();
-
-
-  const reflection2 =
-    document
-    .getElementById("reflection2")
-    .value
-    .trim();
-
-
-  const question =
-    document
-    .getElementById("question")
-    .value
-    .trim();
-
-
-  const confidence =
-    document
-    .getElementById("confidence")
-    .value;
-
-
-  if (
-    !reflection1 ||
-    !reflection2 ||
-    !question ||
-    !confidence
-  ) {
-
-    alert(
-      "Please complete all reflection fields."
-    );
-
-    return;
-
-  }
-
-
-  const data = {
-
-    type:
-      "reflection",
-
-    name:
-      student.name,
-
-    matric:
-      student.matric,
-
-    email:
-      student.email,
-
-    course:
-      COURSE,
-
-    topic:
-      TOPIC,
-
-    reflection1:
-      reflection1,
-
-    reflection2:
-      reflection2,
-
-    question:
-      question,
-
-    confidence:
-      confidence
-
-  };
-
-
-  await sendData(data);
-
-
-  document
-  .getElementById("reflectionResult")
-  .style.display =
-    "block";
-
-
-  document
-  .getElementById("reflectionResult")
-  .innerHTML = `
-
-  <h3>
-  Reflection Recorded ✓
-  </h3>
-
-  <p>
-  Your reflection has been saved.
-  </p>
-
-  <button
-  onclick="startPostTest()">
-
-  Continue to Post-Test →
-
-  </button>
-
-  `;
-
+function startPre(){
+let s=identity("pre");if(!s)return;student=s;
+fillQuestions("preQuestions","pre");go(3);
 }
 
-
-/* =====================================================
-POST TEST
-===================================================== */
-
-function startPostTest() {
-
-  generateQuestions(
-    "postQuestions"
-  );
-
-  goTo(6);
-
+async function submitPre(){
+let a=[],score=0;
+for(let i=0;i<questions.length;i++){
+let x=document.querySelector('input[name="pre'+i+'"]:checked');
+if(!x){alert("Please answer all Pre-Test questions.");return}
+a.push(Number(x.value));if(Number(x.value)===questions[i].a)score++;
+}
+preScore=score;prePct=Math.round(score/questions.length*100);
+await send({type:"pretest",name:student.name,matric:student.matric,email:student.email,course:COURSE,topic:TOPIC,score:score,percentage:prePct,q1:a[0],q2:a[1],q3:a[2],q4:a[3],q5:a[4]});
+document.getElementById("preResult").style.display="block";
+document.getElementById("preResult").innerHTML="<h3>Pre-Test Recorded ✓</h3><p>Baseline score: <strong>"+prePct+"%</strong></p><button onclick='go(4)'>Begin Learning →</button>";
 }
 
-
-async function submitPostTest() {
-
-  const answers = [];
-
-  postScore = 0;
-
-
-  for (
-    let i = 0;
-    i < questions.length;
-    i++
-  ) {
-
-    const selected =
-      document.querySelector(
-        `input[name="postQuestions_q${i}"]:checked`
-      );
-
-
-    if (!selected) {
-
-      alert(
-        "Please answer all Post-Test questions."
-      );
-
-      return;
-
-    }
-
-
-    const answer =
-      Number(selected.value);
-
-    answers.push(answer);
-
-
-    if (
-      answer ===
-      questions[i].answer
-    ) {
-
-      postScore++;
-
-    }
-
-  }
-
-
-  postPercentage =
-    Math.round(
-      (postScore / questions.length) * 100
-    );
-
-
-  const data = {
-
-    type:
-      "posttest",
-
-    name:
-      student.name,
-
-    matric:
-      student.matric,
-
-    email:
-      student.email,
-
-    course:
-      COURSE,
-
-    topic:
-      TOPIC,
-
-    score:
-      postScore,
-
-    percentage:
-      postPercentage,
-
-    q1:
-      answers[0],
-
-    q2:
-      answers[1],
-
-    q3:
-      answers[2],
-
-    q4:
-      answers[3],
-
-    q5:
-      answers[4]
-
-  };
-
-
-  await sendData(data);
-
-
-  const gain =
-    postPercentage -
-    prePercentage;
-
-
-  document
-  .getElementById("postResult")
-  .style.display =
-    "block";
-
-
-  document
-  .getElementById("postResult")
-  .innerHTML = `
-
-  <h3>
-  Post-Test Recorded ✓
-  </h3>
-
-  <p>
-  Post-Test:
-  <strong>
-  ${postPercentage}%
-  </strong>
-  </p>
-
-  <p>
-  Learning gain:
-  <strong>
-  ${gain >= 0 ? "+" : ""}
-  ${gain}
-  percentage points
-  </strong>
-  </p>
-
-  <button
-  onclick="finishLearning()">
-
-  Finish Learning Journey →
-
-  </button>
-
-  `;
-
+async function submitReflection(){
+let s=identity("ref");if(!s)return;student=s;
+let r1=document.getElementById("r1").value.trim(),r2=document.getElementById("r2").value.trim(),r3=document.getElementById("r3").value.trim(),r4=document.getElementById("r4").value.trim(),c=document.getElementById("confidence").value;
+if(!r1||!r2||!r3||!r4||!c){alert("Please complete all Reflection fields.");return}
+await send({type:"reflection",name:student.name,matric:student.matric,email:student.email,course:COURSE,topic:TOPIC,reflection1:r1,reflection2:r2,question:r4,confidence:c,reflection3:r3});
+document.getElementById("refResult").style.display="block";
+document.getElementById("refResult").innerHTML="<h3>Reflection Recorded ✓</h3><p>Your lecturer can now review your questions before class.</p><button onclick='go(15)'>Continue to Post-Test →</button>";
 }
 
-
-/* =====================================================
-FINISH
-===================================================== */
-
-function finishLearning() {
-
-  document
-  .getElementById("finalScore")
-  .innerHTML =
-
-  `
-
-  Pre-Test:
-  ${prePercentage}%
-
-  →
-  
-  Post-Test:
-  ${postPercentage}%
-
-  `;
-
-
-  goTo(7);
-
+function startPost(){
+let s=identity("post");if(!s)return;student=s;fillQuestions("postQuestions","post");go(16);
 }
 
-
-/* =====================================================
-SEND TO GOOGLE SHEET
-===================================================== */
-
-async function sendData(data) {
-
-  try {
-
-    await fetch(
-      GOOGLE_SCRIPT_URL,
-      {
-
-        method:
-          "POST",
-
-        mode:
-          "no-cors",
-
-        headers: {
-
-          "Content-Type":
-            "text/plain;charset=utf-8"
-
-        },
-
-        body:
-          JSON.stringify(data)
-
-      }
-    );
-
-
-    console.log(
-      "Data submitted:",
-      data.type
-    );
-
-
-  }
-
-  catch(error) {
-
-    console.error(
-      "Submission error:",
-      error
-    );
-
-    alert(
-      "Submission may not have been recorded. Please try again."
-    );
-
-  }
-
+async function submitPost(){
+let a=[],score=0;
+for(let i=0;i<questions.length;i++){
+let x=document.querySelector('input[name="post'+i+'"]:checked');
+if(!x){alert("Please answer all Post-Test questions.");return}
+a.push(Number(x.value));if(Number(x.value)===questions[i].a)score++;
+}
+postScore=score;postPct=Math.round(score/questions.length*100);
+await send({type:"posttest",name:student.name,matric:student.matric,email:student.email,course:COURSE,topic:TOPIC,score:score,percentage:postPct,q1:a[0],q2:a[1],q3:a[2],q4:a[3],q5:a[4]});
+let gain=postPct-prePct;
+document.getElementById("postResult").style.display="block";
+document.getElementById("postResult").innerHTML="<h3>Post-Test Recorded ✓</h3><p>Post-Test: <strong>"+postPct+"%</strong></p><p>Learning gain: <strong>"+(gain>=0?"+":"")+gain+" percentage points</strong></p><button onclick='finish()'>Finish →</button>";
 }
 
+function finish(){
+let gain=postPct-prePct;
+document.getElementById("finalPre").innerText=prePct+"%";
+document.getElementById("finalPost").innerText=postPct+"%";
+document.getElementById("finalGain").innerText=(gain>=0?"+":"")+gain+" pp";
+document.getElementById("finalStudent").innerHTML="<strong>"+student.name+"</strong> | "+student.matric+" | "+student.email;
+go(17);
+}
 
-/* =====================================================
-LOAD SAVED STUDENT
-===================================================== */
+async function saveFinalTakeaway(){
+let t=document.getElementById("finalTakeaway").value.trim();
+if(!t){alert("Please write your takeaway.");return}
+await send({type:"takeaway",name:student.name,matric:student.matric,email:student.email,course:COURSE,topic:TOPIC,takeaway:t});
+let b=document.getElementById("takeawayResult");b.style.display="block";b.innerHTML="Takeaway recorded ✓";
+}
 
-window.onload =
-function() {
+async function send(data){
+try{
+await fetch(GOOGLE_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)});
+}catch(e){console.error(e);alert("The submission may not have been recorded. Please check your connection and try again.");}
+}
 
-  const saved =
-    localStorage.getItem(
-      "student"
-    );
-
-
-  if (saved) {
-
-    student =
-      JSON.parse(saved);
-
-    document
-    .getElementById("name")
-    .value =
-      student.name || "";
-
-    document
-    .getElementById("matric")
-    .value =
-      student.matric || "";
-
-    document
-    .getElementById("email")
-    .value =
-      student.email || "";
-
-  }
-
-
-  updateProgress();
-
-};
-
+updateProgress();
 </script>
-
-
 </body>
-
 </html>
+'''
+
+out.write_text(html, encoding="utf-8")
+
+# Create matching complete Apps Script backend supporting takeaway and reflection3.
+gs = Path("/mnt/data/TCE504_COMPLETE_GOOGLE_APPS_SCRIPT.gs")
+gs.write_text(r'''const SPREADSHEET_ID = SpreadsheetApp.getActiveSpreadsheet().getId();
+
+function doGet(){
+  return ContentService.createTextOutput(JSON.stringify({
+    success:true,
+    message:"TCE504 Complete Learning API is running."
+  })).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e){
+  try{
+    if(!e || !e.postData || !e.postData.contents) throw new Error("No POST data.");
+    const d=JSON.parse(e.postData.contents);
+    const type=String(d.type||"").toLowerCase();
+
+    if(type==="pretest") savePre(d);
+    else if(type==="reflection") saveReflection(d);
+    else if(type==="posttest") savePost(d);
+    else if(type==="takeaway") saveTakeaway(d);
+    else throw new Error("Unknown type: "+type);
+
+    updateSummary(d);
+
+    return response({success:true,type:type});
+  }catch(err){
+    return response({success:false,error:String(err)});
+  }
+}
+
+function response(x){
+  return ContentService.createTextOutput(JSON.stringify(x))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function ss(){return SpreadsheetApp.openById(SPREADSHEET_ID);}
+
+function sheet(name,headers){
+  let s=ss().getSheetByName(name);
+  if(!s)s=ss().insertSheet(name);
+  if(s.getLastRow()===0){
+    s.getRange(1,1,1,headers.length).setValues([headers]).setFontWeight("bold");
+    s.setFrozenRows(1);
+  }
+  return s;
+}
+
+function savePre(d){
+  sheet("Pre_Test",["Timestamp","Name","Matric No","USM Email","Course","Topic","Score","Percentage","Q1","Q2","Q3","Q4","Q5","Submission"])
+  .appendRow([new Date(),d.name||"",d.matric||"",d.email||"",d.course||"TCE504",d.topic||"Exercise Metabolism",d.score||0,d.percentage||0,d.q1??"",d.q2??"",d.q3??"",d.q4??"",d.q5??"","Completed"]);
+}
+
+function saveReflection(d){
+  sheet("Reflection",["Timestamp","Name","Matric No","USM Email","Course","Topic","Reflection 1","Reflection 2","Activity Helpful","Question for Lecturer","Confidence","Submission"])
+  .appendRow([new Date(),d.name||"",d.matric||"",d.email||"",d.course||"TCE504",d.topic||"Exercise Metabolism",d.reflection1||"",d.reflection2||"",d.reflection3||"",d.question||"",d.confidence||"","Completed"]);
+}
+
+function savePost(d){
+  sheet("Post_Test",["Timestamp","Name","Matric No","USM Email","Course","Topic","Score","Percentage","Q1","Q2","Q3","Q4","Q5","Submission"])
+  .appendRow([new Date(),d.name||"",d.matric||"",d.email||"",d.course||"TCE504",d.topic||"Exercise Metabolism",d.score||0,d.percentage||0,d.q1??"",d.q2??"",d.q3??"",d.q4??"",d.q5??"","Completed"]);
+}
+
+function saveTakeaway(d){
+  sheet("Final_Takeaway",["Timestamp","Name","Matric No","USM Email","Course","Topic","Takeaway","Submission"])
+  .appendRow([new Date(),d.name||"",d.matric||"",d.email||"",d.course||"TCE504",d.topic||"Exercise Metabolism",d.takeaway||"","Completed"]);
+}
+
+function updateSummary(d){
+  const s=sheet("Student_Summary",["Name","Matric No","USM Email","Pre-Test %","Reflection","Confidence","Post-Test %","Learning Gain","Takeaway","Last Activity","Status"]);
+  const m=String(d.matric||"").trim(); if(!m)return;
+  const last=s.getLastRow(); let row=-1;
+  if(last>1){
+    const vals=s.getRange(2,2,last-1,1).getValues();
+    for(let i=0;i<vals.length;i++) if(String(vals[i][0]).trim()===m){row=i+2;break;}
+  }
+  if(row<0){
+    row=s.getLastRow()+1;
+    s.getRange(row,1,1,11).setValues([[d.name||"",m,d.email||"","","","","","","",new Date(),"Started"]]);
+  }
+  const r=s.getRange(row,1,1,11).getValues()[0];
+  r[0]=d.name||r[0]; r[1]=m; r[2]=d.email||r[2]; r[9]=new Date();
+
+  if(d.type==="pretest"){r[3]=Number(d.percentage)||0;r[10]="Pre-Test completed";}
+  if(d.type==="reflection"){r[4]="Completed";r[5]=d.confidence||"";r[10]="Reflection completed";}
+  if(d.type==="posttest"){r[6]=Number(d.percentage)||0;r[7]=r[6]-(Number(r[3])||0);r[10]="Completed";}
+  if(d.type==="takeaway"){r[8]="Completed";r[10]="Completed";}
+
+  s.getRange(row,1,1,11).setValues([r]);
+}
+''', encoding="utf-8")
+
+print("CREATED COMPLETE WEBSITE")
+print(out)
+print("CREATED COMPLETE BACKEND")
+print(gs)
+print("Pages: 17")
+print("Includes full notes, flipped instructions, pre/post tests, reflection, cases, calculations, interactive intensity, nutrition, monitoring, clinical application and Google Sheet recording.")
