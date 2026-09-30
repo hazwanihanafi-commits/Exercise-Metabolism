@@ -1,645 +1,1007 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TCE 504 | Applied Exercise Physiology — Exercise Metabolism</title>
-<style>
-:root{
- --purple:#53257f;--gold:#ffb703;--ink:#172033;--muted:#64748b;--soft:#f6f3fa;
- --card:#fff;--line:#e5e7eb;--green:#15803d;--blue:#2563eb;--red:#dc2626;
-}
-*{box-sizing:border-box} html{scroll-behavior:smooth}
-body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);background:#f7f8fc;line-height:1.65}
-button,input,select{font:inherit} button{cursor:pointer}
-.container{max-width:1180px;margin:auto;padding:0 22px}
-header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.nav{height:64px;display:flex;align-items:center;justify-content:space-between;gap:15px}
-.brand{font-weight:900;color:var(--purple);letter-spacing:.3px}.brand small{display:block;color:var(--muted);font-weight:600;font-size:10px;line-height:1}
-.navlinks{display:flex;gap:6px;overflow:auto}.navlinks a{padding:8px 11px;border-radius:9px;color:#475569;text-decoration:none;font-size:13px;white-space:nowrap}.navlinks a:hover{background:var(--soft);color:var(--purple)}
-.hero{padding:70px 0 55px;background:linear-gradient(135deg,#fff 0%,#f7f0fc 55%,#fff 100%);overflow:hidden}
-.eyebrow{color:var(--purple);font-weight:800;text-transform:uppercase;letter-spacing:1.4px;font-size:12px}
-h1{font-size:clamp(40px,6vw,72px);line-height:1.02;margin:12px 0 18px;letter-spacing:-2px}
-h2{font-size:34px;line-height:1.15;margin:0 0 12px}h3{margin:0 0 8px}
-.lead{font-size:19px;color:#475569;max-width:760px}
-.hero-flow{display:flex;align-items:center;justify-content:center;gap:10px;margin:40px 0 10px;flex-wrap:wrap}
-.flow-node{background:white;border:1px solid var(--line);border-radius:18px;padding:16px 20px;min-width:125px;text-align:center;box-shadow:0 8px 25px #53257f12;animation:float 4s ease-in-out infinite}
-.flow-node:nth-child(2){animation-delay:.4s}.flow-node:nth-child(3){animation-delay:.8s}.flow-node:nth-child(4){animation-delay:1.2s}
-.arrow{color:var(--purple);font-size:26px;font-weight:900}
-@keyframes float{50%{transform:translateY(-7px)}} @keyframes pulse{50%{transform:scale(1.08);opacity:.75}}
-@keyframes dash{to{stroke-dashoffset:-30}} @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-section{padding:62px 0}.section-head{margin-bottom:28px}.section-head p{color:var(--muted);max-width:820px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 8px 25px #0f172a08}
-.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-.tag{display:inline-block;padding:4px 9px;border-radius:999px;background:#f0e9f7;color:var(--purple);font-size:12px;font-weight:800}
-button.primary{border:0;background:var(--purple);color:#fff;padding:12px 18px;border-radius:12px;font-weight:800}
-button.secondary{border:1px solid #d8c7e8;background:white;color:var(--purple);padding:11px 16px;border-radius:12px;font-weight:750}
-.reveal{display:none;margin-top:15px;padding:16px;border-radius:14px;background:#faf8fc;border-left:4px solid var(--gold)}.reveal.show{display:block;animation:fade .35s}
-.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.time{padding:15px;border-radius:14px;background:white;border:1px solid var(--line);text-align:center}.time strong{display:block;color:var(--purple)}
-.map{position:relative;padding:25px;background:linear-gradient(135deg,#fbf9fd,#fff);border:1px solid var(--line);border-radius:24px;overflow:hidden}
-.map svg{width:100%;height:auto;display:block}.node{cursor:pointer}.node circle{transition:.25s}.node:hover circle,.node.active circle{stroke:var(--gold);stroke-width:5}.node text{font-weight:800;font-size:13px}
-.poster{min-height:245px;border-radius:22px;padding:25px;position:relative;overflow:hidden;color:white;background:linear-gradient(145deg,#53257f,#241034)}
-.poster:after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;right:-35px;top:-35px;background:#ffb70355;animation:pulse 3s infinite}.poster>*{position:relative;z-index:1}
-.poster .big{font-size:44px;font-weight:900}.poster p{color:#eee}
-.story{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:20px}.story span{padding:10px 13px;border:1px solid var(--line);background:white;border-radius:12px;font-weight:800}.story b{color:var(--purple)}
-.energy{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.energy .card{position:relative;overflow:hidden}.energy .card:before{content:"";position:absolute;left:0;top:0;width:100%;height:5px;background:var(--purple)}
-.exercise-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.exercise{padding:17px;border-radius:16px;border:1px solid var(--line);background:white;text-align:center;transition:.25s}.exercise:hover{transform:translateY(-4px);border-color:#cbb2df}.exercise .icon{font-size:32px}
-.monitor-table{width:100%;border-collapse:collapse;background:white;border-radius:18px;overflow:hidden}.monitor-table th,.monitor-table td{padding:13px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.monitor-table th{background:#f7f3fa;color:var(--purple)}
-.calc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.calc label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}.calc input,.calc select{width:100%;padding:11px 12px;border:1px solid #d8dee8;border-radius:10px}.result{margin-top:15px;padding:18px;border-radius:15px;background:#f8fafc;border:1px solid var(--line)}.result strong.big{font-size:30px;color:var(--purple)}
-.rpe{display:grid;grid-template-columns:repeat(8,1fr);gap:7px}.rpe button{border:1px solid var(--line);background:white;border-radius:10px;padding:10px 4px}.rpe button.selected{background:var(--purple);color:#fff;border-color:var(--purple)}
-.journey{background:#0f172a;color:white;border-radius:28px;padding:30px;position:relative;overflow:hidden}.journey h2,.journey h3{color:white}.stagebar{display:flex;gap:7px;overflow:auto;margin-bottom:28px}.stagebtn{flex:1;min-width:145px;background:#1e293b;color:#cbd5e1;border:1px solid #334155;border-radius:13px;padding:12px;font-weight:800}.stagebtn.active{background:var(--gold);color:#172033;border-color:var(--gold)}
-.stage-panel{display:none;animation:fade .4s}.stage-panel.active{display:block}.stage-visual{min-height:250px;display:flex;align-items:center;justify-content:center;position:relative}.athlete{font-size:92px;filter:drop-shadow(0 10px 15px #0008)}.stage-panel.active .athlete{animation:athleteMove 2.5s ease-in-out infinite}.rest .athlete{animation:float 3s ease-in-out infinite!important}@keyframes athleteMove{0%,100%{transform:translateX(-15px)}50%{transform:translateX(15px) scale(1.05)}}
-.orbit{position:absolute;border:1px dashed #64748b;border-radius:50%;width:280px;height:180px;animation:spin 9s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
-.pills{display:flex;flex-wrap:wrap;gap:8px}.pill{background:#1e293b;border:1px solid #334155;padding:8px 11px;border-radius:999px;font-size:13px}.pill b{color:#fff}
-.metric-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{background:#111c2e;border:1px solid #334155;border-radius:14px;padding:14px}.metric strong{display:block;font-size:23px;color:var(--gold)}
-.case{border:1px solid var(--line);border-radius:18px;padding:20px;background:white}.option{display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--line);padding:12px;border-radius:11px;margin-top:8px}.option:hover{border-color:#b99bcf}.option.correct{background:#ecfdf5;border-color:#86efac}.option.wrong{background:#fef2f2;border-color:#fca5a5}
-.quiz-q{margin-bottom:22px}.quiz-q p{font-weight:800}.score{font-size:22px;font-weight:900;color:var(--purple)}
-.progress-wrap{height:9px;background:#e5e7eb;border-radius:99px;overflow:hidden}.progress{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--gold));transition:.4s}
-footer{background:#171225;color:#ddd;padding:35px 0}.footerbrand{color:#fff;font-weight:900}
-@media(max-width:850px){.grid3,.grid4,.energy,.metric-cards{grid-template-columns:repeat(2,1fr)}.timeline{grid-template-columns:repeat(2,1fr)}.exercise-strip{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:620px){.grid2,.calc-grid,.grid3,.grid4,.energy,.metric-cards{grid-template-columns:1fr}.rpe{grid-template-columns:repeat(4,1fr)}h1{font-size:42px}.hero{padding-top:45px}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Metabolism | Applied Exercise Physiology</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            scroll-behavior: smooth;
+        }
 
-<style id="tce-basic-layer">
-.basic-start{background:linear-gradient(135deg,#f8f5fb,#fffaf0);border:2px solid #F2A900;border-radius:18px;padding:22px;margin:0 0 24px 0;box-shadow:0 8px 24px rgba(75,29,82,.08)}
-.basic-start h3{color:#4B1D52;margin:0 0 10px;font-size:1.35rem}
-.basic-start .big-idea{font-size:1.08rem;line-height:1.75}
-.basic-start .teach-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:16px}
-.basic-start .teach-card{background:white;border-radius:12px;padding:13px;border:1px solid #eadff0}
-.basic-start .teach-card b{color:#4B1D52;display:block;margin-bottom:5px}
-.basic-start .simple-rule{margin-top:16px;background:#4B1D52;color:white;border-radius:12px;padding:14px 16px;font-weight:600}
-.glossary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.glossary-item{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:14px}
-.glossary-item b{color:#4B1D52}
-@media(max-width:640px){.basic-start{padding:16px}.basic-start .big-idea{font-size:1rem}}
-</style>
+        .section-container {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
 
+        .section-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lecturer-note {
+            display: none;
+            background-color: #fef9c3;
+            border-left: 4px solid #eab308;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+        body.lecturer-mode .lecturer-note {
+            display: block;
+        }
+
+        .reveal-content {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #cbd5e1;
+        }
+
+        /* Custom Animations */
+        .molecule {
+            transition: all 1s ease-in-out;
+        }
+        
+        #atp-animation-container {
+            position: relative;
+            height: 200px;
+            background: #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .atom {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            color: white;
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .atom-adp { width: 80px; height: 80px; background: #3b82f6; left: 10%; top: 50%; transform: translateY(-50%); }
+        .atom-p-loose { width: 40px; height: 40px; background: #ef4444; left: 80%; top: 50%; transform: translateY(-50%); }
+        .atom-cr { width: 60px; height: 60px; background: #10b981; left: 65%; top: 50%; transform: translateY(-50%); }
+
+        .anim-playing .atom-p-loose {
+            left: 35%;
+        }
+        .anim-playing .atom-cr {
+            left: 85%;
+            opacity: 0.5;
+        }
+        
+        /* Crossover Graph */
+        .graph-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            background: white;
+            border-left: 2px solid #cbd5e1;
+            border-bottom: 2px solid #cbd5e1;
+            display: flex;
+            align-items: flex-end;
+            padding-top: 20px;
+        }
+
+        .bar-fat, .bar-cho {
+            width: 50px;
+            transition: height 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding-top: 5px;
+        }
+        
+        .bar-fat { background: #f59e0b; border-radius: 4px 4px 0 0; }
+        .bar-cho { background: #3b82f6; border-radius: 4px 4px 0 0; }
+
+        .progress-bar-fill {
+            transition: width 0.3s ease;
+        }
+
+        .concept-map-node {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .concept-map-node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
-<body>
+<body class="antialiased flex flex-col min-h-screen">
 
-<header>
-<div class="container nav">
-<div class="brand">TCE 504 <small>APPLIED EXERCISE PHYSIOLOGY</small></div>
-<nav class="navlinks">
-<a href="#start">Start</a><a href="#food">Food</a><a href="#atp">ATP</a><a href="#systems">Energy Systems</a><a href="#journey">Exercise Journey</a><a href="#monitor">Monitor</a><a href="#calculators">Calculators</a><a href="#cases">Cases</a><a href="#test">Post-Test</a>
-</nav>
-</div>
-</header>
+    <!-- Top Navigation / Progress -->
+    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold">Applied Exercise Physiology</h1>
+                <p class="text-xs text-slate-400">Topic: Exercise Metabolism</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="text-sm font-semibold" id="mode-indicator">Student Mode</div>
+                <button id="toggle-mode-btn" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-sm transition" onclick="toggleMode()">
+                    Switch to Lecturer Mode
+                </button>
+            </div>
+        </div>
+        <div class="w-full bg-slate-700 h-2">
+            <div id="main-progress" class="progress-bar-fill bg-blue-500 h-2 w-0"></div>
+        </div>
+    </header>
 
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-5xl mx-auto w-full px-4 py-8 pb-32 relative">
+        
+        <!-- SECTION 0: Setup & Intro -->
+        <section id="sec-0" class="section-container active">
+            <div class="bg-white rounded-xl shadow-lg p-8 text-center border-t-4 border-blue-600">
+                <i class="fa-solid fa-bolt text-6xl text-blue-600 mb-4"></i>
+                <h1 class="text-4xl font-bold mb-4">Exercise Metabolism Masterclass</h1>
+                <p class="text-xl text-slate-600 mb-8">From Food to Fuel: The Bioenergetics of Human Performance</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mb-8">
+                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                        <h3 class="font-bold text-lg mb-2"><i class="fa-solid fa-graduation-cap text-blue-600 mr-2"></i>Course Details</h3>
+                        <ul class="text-sm space-y-2 text-slate-600">
+                            <li><strong>Level:</strong> Degree (Sports Science / Kinesiology)</li>
+                            <li><strong>Duration:</strong> ~3 Hours of interactive content</li>
+                            <li><strong>Prerequisites:</strong> Basic cellular biology</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                        <h3 class="font-bold text-lg mb-2"><i class="fa-solid fa-bullseye text-blue-600 mr-2"></i>How to use this site</h3>
+                        <ul class="text-sm space-y-2 text-slate-600">
+                            <li>Follow the guided sections progressively.</li>
+                            <li>Engage with all predictive questions and micro-quizzes.</li>
+                            <li>Your progress is saved locally.</li>
+                        </ul>
+                    </div>
+                </div>
+                <button onclick="nextSection()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transition transform hover:scale-105">
+                    Start Learning Journey <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
 
-<main>
+        <!-- SECTION 1: Pre-Test -->
+        <section id="sec-1" class="section-container">
+            <h2 class="text-3xl font-bold mb-2">Before We Begin: What Do You Already Know?</h2>
+            <p class="text-slate-600 mb-6">Your pre-test is not graded. It is simply a starting point to activate prior knowledge. You will have another opportunity to answer similar questions after completing the lesson.</p>
+            
+            <div id="pretest-container" class="space-y-6">
+                <!-- JS will inject questions here -->
+            </div>
+            
+            <div id="pretest-results" class="hidden mt-8 bg-green-50 border border-green-200 p-6 rounded-lg text-center">
+                <h3 class="text-2xl font-bold text-green-800 mb-2">Pre-test Complete!</h3>
+                <p class="text-lg">Your Score: <span id="pretest-score-display" class="font-bold"></span></p>
+                <p class="text-sm text-green-700 mt-2">Don't worry if you didn't get them all. By the end of this module, these concepts will be clear.</p>
+                <button onclick="nextSection()" class="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-full transition">Proceed to Objectives</button>
+            </div>
+            
+            <button id="submit-pretest-btn" onclick="submitPretest()" class="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition">Submit Pre-Test</button>
+        </section>
 
-<!-- PRE-TEST FIRST -->
-<section id="pretest" class="hero" style="padding-top:48px">
-<div class="container">
-<div class="eyebrow">START HERE • PRE-TEST</div>
-<h1 style="font-size:clamp(38px,5vw,62px)">Before We Begin:<br><span style="color:var(--purple)">What Do You Already Know?</span></h1>
-<p class="lead">Do this <b>before reading the lesson</b>. Do not worry if you do not know the answers. The purpose is to activate what you already know and give you a baseline for comparison at the end.</p>
+        <!-- SECTION 2: Learning Objectives -->
+        <section id="sec-2" class="section-container">
+            <div class="bg-white rounded-xl shadow-lg p-8 border-l-4 border-indigo-600">
+                <h2 class="text-3xl font-bold mb-6">Learning Objectives</h2>
+                <p class="mb-4">By the end of this interactive lecture, you will be able to:</p>
+                <ul class="space-y-4 text-lg">
+                    <li class="flex items-center"><i class="fa-regular fa-square text-slate-400 mr-3 obj-check" data-obj="1"></i> <strong>Explain</strong> the continuum of energy turnover from rest to maximal exercise.</li>
+                    <li class="flex items-center"><i class="fa-regular fa-square text-slate-400 mr-3 obj-check" data-obj="2"></i> <strong>Differentiate</strong> between the ATP-PCr system, Glycolysis, and Oxidative Phosphorylation.</li>
+                    <li class="flex items-center"><i class="fa-regular fa-square text-slate-400 mr-3 obj-check" data-obj="3"></i> <strong>Describe</strong> the specific metabolic pathways of carbohydrates (Glycogenolysis) and fats (Beta-oxidation).</li>
+                    <li class="flex items-center"><i class="fa-regular fa-square text-slate-400 mr-3 obj-check" data-obj="4"></i> <strong>Apply</strong> the Crossover Concept to predict substrate utilization across varying intensities.</li>
+                    <li class="flex items-center"><i class="fa-regular fa-square text-slate-400 mr-3 obj-check" data-obj="5"></i> <strong>Analyse</strong> realistic physiological case studies of athletes.</li>
+                </ul>
+                <div class="lecturer-note">
+                    <strong>LECTURER NOTE:</strong> Briefly read through these objectives. Emphasize that metabolism is not a series of isolated boxes, but a dynamic, integrated continuum that shifts constantly.
+                </div>
+            </div>
+        </section>
 
-<div class="card" style="margin-top:24px">
-<div class="progress-wrap"><div id="preProgress" class="progress"></div></div>
-<div id="preQuiz" style="margin-top:24px"></div>
-<button class="primary" onclick="gradePre()">Submit Pre-Test</button>
-<div id="preScore" class="result">Your score will appear here.</div>
-</div>
+        <!-- SECTION 3: The Hook -->
+        <section id="sec-3" class="section-container">
+            <h2 class="text-3xl font-bold mb-6">The Starting Block</h2>
+            <div class="bg-slate-900 text-white rounded-xl p-8 shadow-2xl relative overflow-hidden">
+                <!-- Decorative track background -->
+                <div class="absolute inset-0 opacity-20 bg-[repeating-linear-gradient(90deg,transparent,transparent_40px,rgba(255,255,255,0.1)_40px,rgba(255,255,255,0.1)_42px)]"></div>
+                
+                <div class="relative z-10">
+                    <i class="fa-solid fa-stopwatch text-4xl mb-4 text-red-500"></i>
+                    <p class="text-2xl font-light italic mb-6">"You are standing at the starting line of a 100-m sprint. The stadium is quiet. The gun fires. You explode off the blocks."</p>
+                    
+                    <div class="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
+                        <h3 class="text-xl font-bold mb-4">Where does the energy for your very first step come from?</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="hook-options">
+                            <button onclick="handleHook(this, false)" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 p-4 rounded text-left transition">A. The rapid breakdown of blood glucose</button>
+                            <button onclick="handleHook(this, false)" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 p-4 rounded text-left transition">B. The oxidation of fat in the mitochondria</button>
+                            <button onclick="handleHook(this, true)" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 p-4 rounded text-left transition">C. ATP already stored inside the muscle cell</button>
+                            <button onclick="handleHook(this, false)" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 p-4 rounded text-left transition">D. Oxygen delivered rapidly by the lungs</button>
+                        </div>
+                        <div id="hook-response" class="hidden mt-6 p-4 rounded-lg"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="lecturer-note">
+                <strong>LECTURER NOTE:</strong> Ask students to raise hands for A, B, C, or D before revealing the answer. Use this to introduce the concept that energy must be instantly available, ruling out slow processes like fat oxidation and lung delivery.
+            </div>
+        </section>
 
-<div class="card" style="margin-top:20px;background:#fffdf3;border-color:#f5d77b">
-<b>Important:</b> A low pre-test score is completely fine. This class is designed for students who are still building their foundation in exercise metabolism.
-</div>
-</div>
-</section>
+        <!-- SECTION 4: The Core Sequence (Food to Energy) -->
+        <section id="sec-4" class="section-container">
+            <h2 class="text-3xl font-bold mb-4">The Big Picture: From Food to Performance</h2>
+            <p class="text-lg mb-6">Before we dive into the microscopic pathways, we must understand the macro sequence. Exercise metabolism is the continuous flow of energy transformation.</p>
+            
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 mb-8">
+                <h3 class="font-bold text-xl mb-4 text-center">The Bioenergetic Sequence</h3>
+                
+                <div class="flex flex-wrap justify-center items-center gap-2 md:gap-4 text-sm md:text-base font-semibold">
+                    <div class="bg-green-100 text-green-800 px-4 py-2 rounded-lg shadow cursor-pointer hover:bg-green-200 transition" onclick="showSeqDetail('food')">FOOD</div>
+                    <i class="fa-solid fa-arrow-right text-slate-400"></i>
+                    <div class="bg-emerald-100 text-emerald-800 px-4 py-2 rounded-lg shadow cursor-pointer hover:bg-emerald-200 transition" onclick="showSeqDetail('substrates')">SUBSTRATES</div>
+                    <i class="fa-solid fa-arrow-right text-slate-400"></i>
+                    <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg shadow cursor-pointer hover:bg-blue-200 transition" onclick="showSeqDetail('energy')">ENERGY (ATP)</div>
+                    <i class="fa-solid fa-arrow-right text-slate-400"></i>
+                    <div class="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-lg shadow cursor-pointer hover:bg-indigo-200 transition" onclick="showSeqDetail('demand')">EXERCISE DEMAND</div>
+                    <i class="fa-solid fa-arrow-right text-slate-400"></i>
+                    <div class="bg-purple-100 text-purple-800 px-4 py-2 rounded-lg shadow cursor-pointer hover:bg-purple-200 transition" onclick="showSeqDetail('response')">ACUTE RESPONSE</div>
+                </div>
+                
+                <div id="seq-detail-box" class="mt-8 bg-slate-50 p-6 rounded-lg border-l-4 border-slate-400 hidden">
+                    <h4 id="seq-title" class="font-bold text-lg mb-2"></h4>
+                    <p id="seq-text" class="text-slate-700"></p>
+                </div>
+            </div>
 
-<section id="orientation">
-<div class="container">
-<div class="section-head"><span class="tag">01 • ORIENTATION</span><h2>What will you learn today?</h2>
-<p>By the end of this 3-hour guided lesson, you should be able to explain <b>where energy comes from, how ATP is regenerated, how the major metabolic pathways work, how exercise changes energy demand, what we monitor during exercise, and what happens during recovery.</b></p></div>
-<div class="grid3">
-<div class="card"><h3>🧠 Explain</h3><p>Explain carbohydrate, fat and protein metabolism from food to cellular energy.</p></div>
-<div class="card"><h3>⚡ Connect</h3><p>Connect ATP-PCr, glycolysis and oxidative metabolism to exercise intensity and duration.</p></div>
-<div class="card"><h3>📈 Apply</h3><p>Calculate and interpret HR, HRR, target HR, RPE, RER and METs, then apply them to exercise cases.</p></div>
-</div>
-<div class="card" style="margin-top:20px">
-<h3>Our learning story</h3>
-<div class="hero-flow" style="margin:22px 0 5px">
-<div class="flow-node">🍚<br><b>FOOD</b></div><div class="arrow">→</div>
-<div class="flow-node">🧬<br><b>SUBSTRATES</b></div><div class="arrow">→</div>
-<div class="flow-node">⚙️<br><b>PATHWAYS</b></div><div class="arrow">→</div>
-<div class="flow-node">⚡<br><b>ATP</b></div><div class="arrow">→</div>
-<div class="flow-node">🏃<br><b>EXERCISE</b></div><div class="arrow">→</div>
-<div class="flow-node">🧘<br><b>RECOVERY</b></div>
-</div>
-</div>
-</div>
-</section>
+            <div class="lecturer-note">
+                <strong>LECTURER NOTE:</strong> Click through each step in the sequence. Explain that today's lecture focuses heavily on the bridge between SUBSTRATES and ENERGY (ATP).
+            </div>
 
-<section id="food">
-<div class="container">
-<div class="section-head"><span class="tag">02 • FROM FOOD TO FUEL</span><h2>First: Where does exercise energy come from?</h2>
-<p>Your muscle does not use a plate of rice, a banana or a piece of chicken directly to make a contraction. Food must first be <b>digested, absorbed, transported and metabolically processed</b>.</p></div>
+            <!-- Micro Quiz -->
+            <div class="bg-blue-50 p-6 rounded-lg mt-8">
+                <h4 class="font-bold text-blue-800 mb-2">QUICK CHECK</h4>
+                <p class="mb-4">Which of the following is the direct, immediate energy currency used by working muscles?</p>
+                <div class="space-y-2">
+                    <button class="w-full text-left bg-white border border-blue-200 p-3 rounded hover:bg-blue-100 transition" onclick="checkMicroQuiz(this, false, 'Incorrect. Glucose must first be broken down to synthesize ATP.')">Glucose</button>
+                    <button class="w-full text-left bg-white border border-blue-200 p-3 rounded hover:bg-blue-100 transition" onclick="checkMicroQuiz(this, true, 'Correct! Adenosine Triphosphate (ATP) is the only molecule muscles can use directly for contraction.')">ATP</button>
+                    <button class="w-full text-left bg-white border border-blue-200 p-3 rounded hover:bg-blue-100 transition" onclick="checkMicroQuiz(this, false, 'Incorrect. Triglycerides are a storage form of fat.')">Triglycerides</button>
+                </div>
+                <div class="micro-quiz-feedback hidden mt-4 p-3 rounded text-sm font-bold"></div>
+            </div>
+        </section>
 
-<div class="card">
-<h3>The journey from meal to muscle</h3>
-<div class="story">
-<span>🍽️ Food</span><b>→</b><span>Digestion</span><b>→</b><span>Absorption</span><b>→</b><span>Blood</span><b>→</b><span>Muscle cell</span><b>→</b><span>Metabolism</span><b>→</b><span>ATP</span>
-</div>
-<p style="margin-top:18px">The three major macronutrients contribute differently. Carbohydrate is closely linked to glucose and glycogen metabolism; fat provides fatty acids; protein provides amino acids whose carbon skeletons can enter metabolic pathways.</p>
-</div>
+        <!-- SECTION 5: ATP-PCr System -->
+        <section id="sec-5" class="section-container">
+            <h2 class="text-3xl font-bold mb-4">1. The ATP-PCr System (Phosphagen System)</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-blue-700">Simple Explanation</h3>
+                    <p class="mb-4 text-slate-700">Think of the ATP-PCr system as a "battery jump-starter". When you sprint, the tiny amount of ATP stored in your muscle runs out in 1-2 seconds. Phosphocreatine (PCr) is sitting nearby. It quickly donates a piece of itself (a phosphate) to rebuild ATP instantly. It's incredibly fast, but only lasts about 10 seconds.</p>
+                    
+                    <h3 class="text-xl font-semibold mb-2 text-indigo-700 mt-6">Scientific Detail</h3>
+                    <p class="mb-2 text-slate-700"><strong>Where:</strong> Cytoplasm (Sarcoplasm) of the muscle cell.</p>
+                    <p class="mb-2 text-slate-700"><strong>Why:</strong> To match massive, immediate energy turnover demands.</p>
+                    <p class="mb-2 text-slate-700"><strong>Mechanism:</strong> The enzyme <em>Creatine Kinase</em> facilitates the breakdown of PCr into Creatine (Cr) and an inorganic phosphate (Pi). The energy released couples with ADP to resynthesize ATP.</p>
+                    <div class="bg-slate-100 p-3 rounded font-mono text-sm border border-slate-300">
+                        PCr + ADP + H<sup>+</sup> ⇌ ATP + Cr
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-slate-200 flex flex-col items-center justify-center">
+                    <h3 class="font-bold mb-4 text-slate-600">Interactive Pathway</h3>
+                    
+                    <!-- Animation Canvas -->
+                    <div id="atp-animation-container" class="w-full mb-4">
+                        <div class="atom atom-adp shadow-inner text-sm text-center leading-tight">ADP</div>
+                        <div class="atom atom-p-loose shadow-lg text-sm">Pi</div>
+                        <div class="atom atom-cr shadow-inner text-sm">Cr</div>
+                    </div>
+                    
+                    <div class="flex space-x-4">
+                        <button onclick="playATPAnim()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow"><i class="fa-solid fa-play"></i> Contract Muscle</button>
+                        <button onclick="resetATPAnim()" class="bg-slate-500 hover:bg-slate-600 text-white px-4 py-2 rounded shadow"><i class="fa-solid fa-rotate-left"></i> Rest/Recover</button>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-4 text-center">Notice how the Pi breaks from Creatine (Cr) to bond with ADP, creating ATP.</p>
+                </div>
+            </div>
 
-<div class="grid3" style="margin-top:20px">
-<div class="card">
-<span class="tag">CARBOHYDRATE</span><h3>🍚 What happens to carbohydrate?</h3>
-<p>Dietary carbohydrate is digested into smaller sugars. Glucose enters the circulation and can be stored as <b>glycogen</b> in liver and skeletal muscle or used in energy metabolism.</p>
-<button class="secondary" onclick="reveal('foodCarb')">Go deeper</button>
-<div id="foodCarb" class="reveal"><b>Exercise connection:</b> Muscle glycogen is an important carbohydrate store for exercise. During exercise, glycogen can provide glucose for glycolysis. Carbohydrate becomes particularly important as exercise intensity increases because it can support rapid ATP production.</div>
-</div>
-<div class="card">
-<span class="tag">FAT</span><h3>🥑 What happens to fat?</h3>
-<p>Dietary fat is processed largely as triglycerides and fatty acids. Stored body fat provides a very large energy reserve.</p>
-<button class="secondary" onclick="reveal('foodFat')">Go deeper</button>
-<div id="foodFat" class="reveal"><b>Exercise connection:</b> Fatty acids can be transported to mitochondria and undergo β-oxidation. Fat oxidation is important during rest and lower-to-moderate intensity/prolonged exercise, although substrate use changes with intensity and nutritional state.</div>
-</div>
-<div class="card">
-<span class="tag">PROTEIN</span><h3>🍗 What happens to protein?</h3>
-<p>Protein is digested into amino acids. Amino acids primarily support tissue synthesis and other functions, but some can contribute to energy metabolism.</p>
-<button class="secondary" onclick="reveal('foodProtein')">Go deeper</button>
-<div id="foodProtein" class="reveal"><b>Exercise connection:</b> Amino acid metabolism separates nitrogen handling from the carbon skeleton. The carbon skeleton can enter metabolic pathways; nitrogen is handled through pathways including urea formation. Protein is generally a smaller direct energy contributor than carbohydrate and fat during most exercise conditions.</div>
-</div>
-</div>
-</div>
-</section>
+            <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded mb-8">
+                <h4 class="font-bold text-red-800 mb-2"><i class="fa-solid fa-triangle-exclamation mr-2"></i>COMMON MISCONCEPTION</h4>
+                <p class="mb-2"><em>"Creatine supplements give you magical energy."</em></p>
+                <p class="text-sm text-slate-700"><strong>Reality:</strong> Creatine supplementation simply increases the intramuscular store of PCr by about 20%. This doesn't make you faster, but it allows the ATP-PCr system to last a few seconds longer before fatiguing, and speeds up recovery between short, explosive bouts (like weightlifting sets).</p>
+            </div>
 
-<section id="atp">
-<div class="container">
-<div class="section-head"><span class="tag">03 • ATP: THE IMMEDIATE ENERGY CURRENCY</span><h2>What exactly is ATP?</h2>
-<p>Before learning the energy systems, students need one idea: <b>muscle work requires ATP, and ATP must be continuously regenerated.</b></p></div>
+            <div class="lecturer-note">
+                <strong>LECTURER NOTE:</strong> Run the animation. Emphasize the reversible arrow in the equation. Ask the class: "If this system is exhausted in 10 seconds, what happens when we run a 400m sprint (approx 50 seconds)?" Lead into Glycolysis.
+            </div>
+        </section>
 
-<div class="grid2">
-<div class="card">
-<h3>ATP = adenosine triphosphate</h3>
-<p>ATP contains adenine, ribose and three phosphate groups. The molecule can participate in energy-coupling reactions that support cellular work.</p>
-<div style="text-align:center;font-size:70px;margin:12px">⚡</div>
-<div class="story" style="justify-content:center"><span>ATP</span><b>→</b><span>ADP + Pi</span><b>+</b><span>usable energy</span></div>
-</div>
-<div class="card">
-<h3>Why can't we simply store lots of ATP?</h3>
-<p>The amount of ATP stored in skeletal muscle is relatively small. If exercise demand suddenly rises, the body therefore needs systems that can regenerate ATP at different speeds.</p>
-<div class="story"><span>Small ATP store</span><b>+</b><span>Huge exercise demand</span><b>→</b><span>continuous ATP regeneration</span></div>
-<button class="primary" style="margin-top:15px" onclick="reveal('atpDeeper')">Think like an exercise physiologist</button>
-<div id="atpDeeper" class="reveal"><b>Key question:</b> not “Which energy system is on?” but “Which pathways are contributing most strongly to meet the current ATP demand?” All three major systems can contribute simultaneously.</div>
-</div>
-</div>
+        <!-- SECTION 6: Glycolysis & Lactate -->
+        <section id="sec-6" class="section-container">
+            <h2 class="text-3xl font-bold mb-4">2. Glycolysis & Lactate Metabolism</h2>
+            
+            <p class="text-lg mb-6">When exercise lasts longer than 10 seconds (e.g., 400m sprint), the ATP-PCr system depletes. The body must rapidly break down carbohydrates to sustain ATP regeneration.</p>
+            
+            <!-- Predict before reveal -->
+            <div class="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
+                <h3 class="font-bold text-amber-800 mb-4"><i class="fa-solid fa-brain mr-2"></i>THINK FIRST</h3>
+                <p class="mb-4">Where do the carbohydrates come from during high-intensity exercise?</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button class="bg-white border border-amber-300 p-3 rounded hover:bg-amber-100 transition" onclick="revealPrediction('glycolysis-pred', 'Mostly Incorrect. While some blood glucose is used, it is too slow to transport for peak high-intensity demand.')">A. Blood Glucose</button>
+                    <button class="bg-white border border-amber-300 p-3 rounded hover:bg-amber-100 transition" onclick="revealPrediction('glycolysis-pred', 'Mostly Incorrect. Liver glycogen maintains blood sugar; it is not the primary immediate fuel for working muscles.')">B. Liver Glycogen</button>
+                    <button class="bg-white border border-amber-300 p-3 rounded hover:bg-amber-100 transition" onclick="revealPrediction('glycolysis-pred', 'Correct! Muscle glycogen is stored locally right next to the mitochondria. It provides a rapid, easily accessible fuel source.')">C. Muscle Glycogen</button>
+                </div>
+                <div id="glycolysis-pred" class="hidden mt-4 p-4 bg-white rounded border border-amber-200 text-slate-700"></div>
+            </div>
 
-<div class="card" style="margin-top:20px">
-<h3>ATP regeneration: three routes</h3>
-<div class="grid3">
-<div><span class="tag">FASTEST</span><h3>ATP-PCr</h3><p>Uses stored ATP and phosphocreatine to regenerate ATP rapidly.</p></div>
-<div><span class="tag">FAST</span><h3>Glycolysis</h3><p>Breaks down glucose/glycogen through a series of reactions to pyruvate, with rapid ATP generation.</p></div>
-<div><span class="tag">SUSTAINED</span><h3>Oxidative metabolism</h3><p>Uses mitochondrial pathways, oxygen-dependent electron transport and oxidative phosphorylation to support prolonged ATP supply.</p></div>
-</div>
-</div>
-</div>
-</section>
+            <div class="bg-white rounded-xl shadow p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4">The Fate of Pyruvate</h3>
+                <p class="mb-4">Glycolysis breaks a 6-carbon glucose molecule into two 3-carbon <strong>Pyruvate</strong> molecules. Pyruvate sits at a metabolic crossroads depending on exercise intensity.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Interactive Compare -->
+                    <div class="border border-slate-200 rounded p-4">
+                        <h4 class="font-bold text-center bg-green-100 text-green-800 py-1 rounded mb-2">Moderate Intensity (Aerobic)</h4>
+                        <p class="text-sm">Energy demand is manageable. Oxygen availability is adequate.</p>
+                        <ul class="text-sm mt-2 list-disc list-inside text-slate-600">
+                            <li>Pyruvate enters mitochondria.</li>
+                            <li>Converts to Acetyl-CoA.</li>
+                            <li>Massive ATP yield (slower).</li>
+                        </ul>
+                    </div>
+                    <div class="border border-slate-200 rounded p-4">
+                        <h4 class="font-bold text-center bg-red-100 text-red-800 py-1 rounded mb-2">High Intensity (Anaerobic)</h4>
+                        <p class="text-sm">Energy demand is massive. Mitochondria cannot process pyruvate fast enough.</p>
+                        <ul class="text-sm mt-2 list-disc list-inside text-slate-600">
+                            <li>Pyruvate accumulates in cytosol.</li>
+                            <li>Converted to <strong>Lactate</strong> by LDH.</li>
+                            <li>Fast ATP yield, but causes fatigue.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-<section id="glycolysis" style="background:#fff">
-<div class="container">
-<div class="section-head"><span class="tag">04 • GLYCOLYSIS</span><h2>What is glycolysis?</h2>
-<p><b>Glycolysis is a series of reactions that breaks one glucose molecule into two pyruvate molecules.</b> It occurs in the cytosol and does not directly require oxygen.</p></div>
+            <!-- Lactate Reveal -->
+            <div class="text-center mb-8">
+                <button onclick="toggleVisibility('lactate-details')" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold py-2 px-6 rounded-full transition">Why is Lactate formed? <i class="fa-solid fa-chevron-down ml-1"></i></button>
+            </div>
+            
+            <div id="lactate-details" class="hidden bg-slate-50 p-6 rounded-lg border-l-4 border-blue-500 mb-8">
+                <h4 class="font-bold text-lg mb-2">The Rescue Mechanism</h4>
+                <p class="text-sm mb-4">Glycolysis requires a continuous supply of <strong>NAD<sup>+</sup></strong> to keep running. During intense exercise, NAD<sup>+</sup> is quickly consumed and turns into NADH. If NAD<sup>+</sup> runs out, glycolysis stops, and the muscle fails.</p>
+                <p class="text-sm">By converting Pyruvate to Lactate, the enzyme <em>Lactate Dehydrogenase (LDH)</em> takes the hydrogen off NADH, regenerating <strong>NAD<sup>+</sup></strong>. Therefore, <strong>lactate formation allows glycolysis to continue during a sprint.</strong> It is a rescue mechanism, not a waste product!</p>
+            </div>
 
-<div class="card">
-<h3>The big picture</h3>
-<div class="story">
-<span>Glucose (6C)</span><b>→</b><span>Glycolysis</span><b>→</b><span>2 Pyruvate (3C each)</span>
-</div>
-<div class="grid3" style="margin-top:22px">
-<div><h3>1. Investment</h3><p>Early reactions use ATP to prepare and rearrange glucose. Think of this as an <b>energy investment</b> required to make the pathway proceed.</p></div>
-<div><h3>2. Splitting</h3><p>The six-carbon molecule is rearranged and eventually split into two three-carbon molecules.</p></div>
-<div><h3>3. Payoff</h3><p>Later reactions generate ATP and NADH. Because two three-carbon molecules continue through the pathway, the products are doubled.</p></div>
-</div>
-</div>
+            <div class="lecturer-note">
+                <strong>LECTURER NOTE:</strong> This is a major paradigm shift for students. Emphasize strongly that lactate does NOT cause delayed onset muscle soreness (DOMS). Lactate clears from the blood within 60 minutes post-exercise.
+            </div>
+        </section>
 
-<div class="grid2" style="margin-top:20px">
-<div class="card">
-<h3>What does glycolysis produce?</h3>
-<ul>
-<li><b>2 pyruvate</b> per glucose</li>
-<li><b>Net 2 ATP</b> per glucose through substrate-level phosphorylation</li>
-<li><b>NADH</b>, which can support further ATP production under oxidative conditions</li>
-</ul>
-<p><b>Important:</b> exact ATP accounting can depend on the substrate and shuttle assumptions used in the teaching model. For this course, focus on the pathway logic and exercise application.</p>
-</div>
-<div class="card">
-<h3>What happens to pyruvate?</h3>
-<div class="story"><span>Pyruvate</span><b>→</b><span>lactate</span></div>
-<div class="story"><span>Pyruvate</span><b>→</b><span>acetyl-CoA</span></div>
-<p style="margin-top:15px">The metabolic fate depends on exercise intensity, glycolytic flux, mitochondrial oxidative capacity and cellular conditions. Lactate is not simply a “waste product”; it can be transported and metabolised.</p>
-</div>
-</div>
+        <!-- SECTION 7: Fat Oxidation -->
+        <section id="sec-7" class="section-container">
+            <h2 class="text-3xl font-bold mb-4">3. Aerobic Metabolism: Fat Oxidation</h2>
+            
+            <p class="text-lg mb-6">For long-duration, low-to-moderate intensity exercise, fat is the primary metabolic engine. It yields massive ATP but requires a complex, highly oxygen-dependent process.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-4 rounded shadow border border-slate-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-bold">1. Lipolysis</h4>
+                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Adipose/Muscle</span>
+                    </div>
+                    <p class="text-sm text-slate-600">Triglycerides are broken down into 1 Glycerol and 3 Free Fatty Acids (FFAs) by Hormone Sensitive Lipase (HSL).</p>
+                </div>
+                <div class="bg-white p-4 rounded shadow border border-slate-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-bold">2. Beta-Oxidation</h4>
+                        <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">Mitochondria</span>
+                    </div>
+                    <p class="text-sm text-slate-600">A spiral pathway chops the long FFA carbon chains into 2-carbon molecules called Acetyl-CoA. Produces NADH and FADH2.</p>
+                </div>
+                <div class="bg-white p-4 rounded shadow border border-slate-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-bold">3. TCA & ETC</h4>
+                        <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded">Mitochondria</span>
+                    </div>
+                    <p class="text-sm text-slate-600">Acetyl-CoA enters the Krebs Cycle. Electrons are passed down the Electron Transport Chain to Oxygen, producing massive ATP.</p>
+                </div>
+            </div>
 
-<div class="card" style="margin-top:20px;background:#faf8fc">
-<h3>Exercise example</h3>
-<p>A student performs repeated high-intensity intervals. ATP demand rises sharply. Glycolytic flux increases, producing pyruvate rapidly. Some pyruvate is converted to lactate. At the same time, oxidative metabolism continues.</p>
-<button class="primary" onclick="reveal('glyCase')">What should we monitor?</button>
-<div id="glyCase" class="reveal">HR, RPE, workload/power, VO₂, VCO₂ and—when appropriate—blood lactate can help describe the exercise response. No single variable gives the entire metabolic picture.</div>
-</div>
-</div>
-</section>
+            <!-- Calculation Activity -->
+            <div class="bg-slate-900 text-white rounded-xl p-6 shadow-lg mb-8">
+                <h3 class="font-bold text-xl mb-4 text-emerald-400"><i class="fa-solid fa-calculator mr-2"></i>Calculation Activity: ATP Yield</h3>
+                <p class="mb-4">Let's compare the energy density of a single glucose molecule (6 carbons) to a typical Palmitic acid molecule (16-carbon fatty acid).</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="bg-white/10 p-4 rounded">
+                        <h4 class="font-bold border-b border-slate-500 pb-2 mb-2">Glucose (CHO)</h4>
+                        <p>Net Glycolysis: 2 ATP</p>
+                        <p>Krebs Cycle: 2 ATP</p>
+                        <p>ETC (from NADH/FADH2): ~28-32 ATP</p>
+                        <p class="font-bold mt-2 text-emerald-300">Total: ~32-36 ATP</p>
+                    </div>
+                    <div class="bg-white/10 p-4 rounded">
+                        <h4 class="font-bold border-b border-slate-500 pb-2 mb-2">Palmitic Acid (Fat)</h4>
+                        <div id="calc-step-1" class="mb-2">
+                            <button onclick="document.getElementById('calc-reveal').classList.remove('hidden'); this.style.display='none'" class="bg-emerald-600 hover:bg-emerald-500 px-3 py-1 rounded text-xs transition">Click to calculate</button>
+                        </div>
+                        <div id="calc-reveal" class="hidden">
+                            <p>Activation: -2 ATP (Cost)</p>
+                            <p>7 rounds Beta-Oxidation: 28 ATP</p>
+                            <p>8 Acetyl-CoA in Krebs: 80 ATP</p>
+                            <p class="font-bold mt-2 text-emerald-300">Total: 106 ATP</p>
+                            <p class="mt-2 text-xs italic opacity-80">Fat is highly dense but metabolically slow.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lecturer-note">
+                <strong>LECTURER NOTE:</strong> Emphasize that while fat yields ~106 ATP, it requires significantly more Oxygen per ATP generated compared to carbohydrates. This is why we shift to carbs as intensity (and oxygen demand) increases.
+            </div>
+        </section>
+        
+        <!-- SECTION 8: Protein Metabolism -->
+        <section id="sec-8" class="section-container">
+            <h2 class="text-3xl font-bold mb-4">4. Protein Metabolism & The Alanine Cycle</h2>
+            <p class="text-lg mb-6">Under normal exercise conditions, protein contributes less than 5% to energy turnover. However, during starvation, ultra-endurance events, or severe glycogen depletion, amino acids become critical.</p>
 
-<section id="lactate">
-<div class="container">
-<div class="section-head"><span class="tag">05 • PYRUVATE & LACTATE</span><h2>Lactate: not simply “waste”</h2>
-<p>Students often learn “lack of oxygen → lactic acid.” That explanation is too simplistic for exercise physiology.</p></div>
-<div class="grid2">
-<div class="card">
-<h3>What actually matters?</h3>
-<p>During high glycolytic flux, pyruvate can be reduced to lactate while NAD⁺ is regenerated, allowing glycolysis to continue. Lactate can then be transported and used by other tissues or converted back through metabolic pathways.</p>
-<div class="story"><span>Pyruvate</span><b>↔</b><span>Lactate</span></div>
-</div>
-<div class="card">
-<h3>Why does blood lactate rise?</h3>
-<p>Blood lactate concentration reflects the balance between <b>production, transport and clearance/utilisation</b>. It is therefore influenced by exercise intensity, duration, muscle recruitment and recovery.</p>
-<button class="secondary" onclick="reveal('lactateRecovery')">Connect to recovery</button>
-<div id="lactateRecovery" class="reveal">When exercise stops, lactate concentration can fall as lactate is oxidised or otherwise metabolised. Active recovery may alter the rate of decline compared with complete rest, depending on conditions.</div>
-</div>
-</div>
-</div>
-</section>
+            <div class="bg-white rounded-xl shadow p-6 mb-8 border-l-4 border-purple-500">
+                <h3 class="font-bold text-xl mb-4">The Glucose-Alanine Cycle</h3>
+                <p class="text-sm text-slate-700 mb-4">When muscle glycogen is low, muscle proteins breakdown into amino acids. The amino group is transferred to pyruvate (from glycolysis) to form <strong>Alanine</strong>.</p>
+                
+                <div class="flex flex-col md:flex-row items-center justify-between bg-slate-50 p-4 rounded border border-slate-200">
+                    <div class="text-center p-3">
+                        <div class="font-bold text-red-600 mb-1">Muscle</div>
+                        <div class="bg-white border p-2 rounded text-sm shadow-sm">Pyruvate + NH2 → Alanine</div>
+                    </div>
+                    <div class="text-slate-400 py-2"><i class="fa-solid fa-arrow-right-arrow-left text-2xl"></i> Bloodstream</div>
+                    <div class="text-center p-3">
+                        <div class="font-bold text-red-900 mb-1">Liver</div>
+                        <div class="bg-white border p-2 rounded text-sm shadow-sm">Alanine → Pyruvate → Glucose<br><span class="text-xs text-slate-500">(Gluconeogenesis)</span></div>
+                    </div>
+                </div>
+                <p class="text-xs mt-4 text-center text-slate-500">The newly formed glucose is sent back through the blood to the muscle to fuel exercise.</p>
+            </div>
+        </section>
 
-<section id="cori">
-<div class="container">
-<div class="section-head"><span class="tag">06 • CORI CYCLE</span><h2>How can lactate from muscle become useful to the whole body?</h2></div>
-<div class="card">
-<div class="hero-flow">
-<div class="flow-node">🏃<br><b>MUSCLE</b><small>glucose → lactate</small></div><div class="arrow">→</div>
-<div class="flow-node">🩸<br><b>BLOOD</b><small>lactate transport</small></div><div class="arrow">→</div>
-<div class="flow-node">🧫<br><b>LIVER</b><small>lactate → glucose</small></div><div class="arrow">→</div>
-<div class="flow-node">🩸<br><b>BLOOD</b><small>glucose transport</small></div><div class="arrow">→</div>
-<div class="flow-node">🏃<br><b>MUSCLE</b><small>fuel availability</small></div>
-</div>
-<p><b>Exercise physiology meaning:</b> the Cori cycle demonstrates that metabolism is a whole-body network rather than a process occurring only inside one muscle cell.</p>
-</div>
-</div>
-</section>
+        <!-- SECTION 9: Integration & Crossover Concept -->
+        <section id="sec-9" class="section-container">
+            <h2 class="text-3xl font-bold mb-4">5. System Integration: The Crossover Concept</h2>
+            <p class="text-lg mb-6">The body never uses just one energy system. There is a continuous dynamic shift based on <strong>Intensity</strong> and <strong>Duration</strong>.</p>
+            
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 mb-8">
+                <h3 class="font-bold mb-4 text-center">Interactive Crossover Model</h3>
+                <p class="text-sm text-slate-600 text-center mb-6">Adjust the slider to simulate changing exercise intensity from rest to a maximal sprint.</p>
+                
+                <div class="mb-8 px-4">
+                    <input type="range" id="intensity-slider" min="0" max="100" value="0" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer" oninput="updateCrossover()">
+                    <div class="flex justify-between text-xs font-bold text-slate-500 mt-2">
+                        <span>Rest (0%)</span>
+                        <span>Moderate Jog (50%)</span>
+                        <span>Max Sprint (100%)</span>
+                    </div>
+                </div>
 
-<section id="tca">
-<div class="container">
-<div class="section-head"><span class="tag">07 • KREBS / TCA CYCLE</span><h2>What is the Krebs cycle?</h2>
-<p>The <b>citric acid cycle (TCA cycle or Krebs cycle)</b> is a series of mitochondrial reactions that oxidise acetyl-CoA and generate reducing equivalents that can support ATP production through the electron transport chain.</p></div>
-<div class="card">
-<h3>Where does it fit?</h3>
-<div class="story"><span>Glucose</span><b>→</b><span>Pyruvate</span><b>→</b><span>Acetyl-CoA</span><b>→</b><span>TCA</span><b>→</b><span>NADH/FADH₂</span><b>→</b><span>ETC</span><b>→</b><span>ATP</span></div>
-</div>
-<div class="grid2" style="margin-top:20px">
-<div class="card">
-<h3>The cycle idea</h3>
-<p>Acetyl-CoA enters a cyclic series of reactions. Carbon atoms are progressively oxidised, and the cycle captures energy mainly in the form of <b>NADH and FADH₂</b>, plus a small amount of GTP/ATP depending on the accounting system.</p>
-<p>The key exercise concept is not memorising every intermediate. It is understanding that the TCA cycle is a central hub connecting carbohydrate, fat and some amino acid metabolism to oxidative ATP production.</p>
-</div>
-<div class="card">
-<h3>Why is it important in exercise?</h3>
-<ul>
-<li>Supports sustained aerobic ATP production.</li>
-<li>Receives acetyl-CoA derived from carbohydrate and fatty acid metabolism.</li>
-<li>Produces NADH/FADH₂ that deliver high-energy electrons to the ETC.</li>
-<li>Its capacity and regulation are relevant to endurance training adaptation.</li>
-</ul>
-</div>
-</div>
-<div class="card" style="margin-top:20px">
-<h3>Animated conceptual cycle</h3>
-<div class="map">
-<svg viewBox="0 0 700 330" role="img" aria-label="Simplified TCA cycle">
-<ellipse cx="350" cy="165" rx="190" ry="105" fill="none" stroke="#53257f" stroke-width="8" stroke-dasharray="14 12" style="animation:dash 2s linear infinite"/>
-<circle cx="350" cy="55" r="42" fill="#f0e9f7" stroke="#53257f" stroke-width="3"/><text x="350" y="60" text-anchor="middle">Acetyl-CoA</text>
-<circle cx="510" cy="125" r="42" fill="#f8fafc" stroke="#64748b" stroke-width="3"/><text x="510" y="130" text-anchor="middle">TCA</text>
-<circle cx="455" cy="250" r="42" fill="#fff7d6" stroke="#ffb703" stroke-width="3"/><text x="455" y="255" text-anchor="middle">NADH</text>
-<circle cx="245" cy="250" r="42" fill="#fff7d6" stroke="#ffb703" stroke-width="3"/><text x="245" y="255" text-anchor="middle">FADH₂</text>
-<circle cx="190" cy="125" r="42" fill="#f8fafc" stroke="#64748b" stroke-width="3"/><text x="190" y="130" text-anchor="middle">CO₂</text>
-<text x="350" y="165" text-anchor="middle" font-size="22" font-weight="800" fill="#53257f">MITOCHONDRIA</text>
-<text x="350" y="190" text-anchor="middle" font-size="14" fill="#64748b">central oxidative hub</text>
-</svg>
-</div>
-</div>
-</div>
-</section>
+                <!-- Crossover Graph Visual -->
+                <div class="graph-container relative rounded">
+                    <!-- Y Axis Label -->
+                    <div class="absolute -left-6 top-1/2 transform -translate-y-1/2 -rotate-90 text-xs font-bold text-slate-500">% Energy</div>
+                    
+                    <div class="flex w-full justify-around h-full items-end pb-1 gap-2">
+                        <div class="flex flex-col items-center w-1/3">
+                            <div id="bar-fat" class="bar-fat w-full" style="height: 100%;">100%</div>
+                            <span class="text-xs font-bold mt-2 text-slate-600">FAT</span>
+                        </div>
+                        <div class="flex flex-col items-center w-1/3">
+                            <div id="bar-cho" class="bar-cho w-full" style="height: 0%;">0%</div>
+                            <span class="text-xs font-bold mt-2 text-slate-600">CARBS (CHO)</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Dynamic Label -->
+                    <div id="crossover-status" class="absolute top-4 right-4 bg-slate-800 text-white text-xs px-3 py-1 rounded shadow">State: Resting</div>
+                </div>
 
-<section id="etc">
-<div class="container">
-<div class="section-head"><span class="tag">08 • ELECTRON TRANSPORT CHAIN</span><h2>Where is most oxidative ATP production supported?</h2>
-<p>The electron transport chain is located in the inner mitochondrial membrane. Electrons from NADH and FADH₂ support proton movement, creating a gradient that powers ATP synthase.</p></div>
-<div class="card">
-<div class="story"><span>NADH / FADH₂</span><b>→</b><span>Electron transport</span><b>→</b><span>H⁺ gradient</span><b>→</b><span>ATP synthase</span><b>→</b><span>ATP</span></div>
-<div class="grid3" style="margin-top:22px">
-<div><h3>1. Electron flow</h3><p>Electrons move through protein complexes in the inner mitochondrial membrane.</p></div>
-<div><h3>2. Proton gradient</h3><p>Energy from electron transfer supports proton pumping, creating an electrochemical gradient.</p></div>
-<div><h3>3. ATP synthase</h3><p>Proton movement through ATP synthase drives phosphorylation of ADP to ATP.</p></div>
-</div>
-<div class="card" style="margin-top:18px;background:#f8fafc">
-<b>Oxygen's role:</b> Oxygen acts as the terminal electron acceptor in the electron transport chain, ultimately allowing oxidative phosphorylation to continue.
-</div>
-</div>
-</div>
-</section>
+                <div class="mt-6 p-4 bg-blue-50 text-blue-900 rounded text-sm">
+                    <strong>Observation:</strong> As exercise intensity increases, the recruitment of fast-twitch muscle fibers (which are highly glycolytic) increases, and sympathetic hormones (epinephrine) rise. This forces the body to "cross over" from burning fat to burning carbohydrates to meet the rapid rate of ATP turnover required.
+                </div>
+            </div>
+            
+            <div class="lecturer-note">
+                <strong>LECTURER NOTE:</strong> Move the slider to ~65%. Point out this is where the lines cross. Mention that endurance training shifts this crossover point to the RIGHT, allowing trained athletes to burn fat at higher intensities (glycogen sparing).
+            </div>
+        </section>
 
-<section id="fat">
-<div class="container">
-<div class="section-head"><span class="tag">09 • FAT OXIDATION</span><h2>How does fat become ATP?</h2>
-<p>Fat provides a very large energy store, but accessing and oxidising fatty acids involves more steps than using stored ATP or rapidly mobilised carbohydrate.</p></div>
-<div class="card">
-<div class="story"><span>Triglyceride</span><b>→</b><span>Fatty acid</span><b>→</b><span>β-oxidation</span><b>→</b><span>Acetyl-CoA</span><b>→</b><span>TCA</span><b>→</b><span>ETC</span><b>→</b><span>ATP</span></div>
-</div>
-<div class="grid2" style="margin-top:20px">
-<div class="card"><h3>Why is fat useful?</h3><p>It stores a large amount of chemical energy and becomes an important oxidative substrate during rest and many prolonged, lower-to-moderate intensity exercise conditions.</p></div>
-<div class="card"><h3>Why can't fat simply replace carbohydrate at every intensity?</h3><p>Fat oxidation involves mobilisation, transport and mitochondrial processing. Carbohydrate can support higher rates of ATP production and is therefore increasingly important as exercise intensity rises.</p></div>
-</div>
-</div>
-</section>
+        <!-- SECTION 10: Case Studies -->
+        <section id="sec-10" class="section-container">
+            <h2 class="text-3xl font-bold mb-4">6. Clinical Application: Case Studies</h2>
+            <p class="text-lg mb-6">Apply your knowledge of metabolic pathways to real-world athlete scenarios.</p>
 
-<section id="protein">
-<div class="container">
-<div class="section-head"><span class="tag">10 • PROTEIN & NITROGEN</span><h2>What happens to amino acids?</h2>
-<p>Protein metabolism requires students to distinguish the <b>nitrogen component</b> from the <b>carbon skeleton</b>.</p></div>
-<div class="card">
-<div class="story"><span>Protein</span><b>→</b><span>Amino acid</span><b>→</b><span>Carbon skeleton</span><b>+</b><span>Nitrogen</span></div>
-<div class="grid3" style="margin-top:20px">
-<div><h3>Carbon skeleton</h3><p>Can enter metabolic pathways at different points and contribute to energy metabolism.</p></div>
-<div><h3>Nitrogen</h3><p>Requires handling because nitrogen-containing compounds must be metabolised and excreted appropriately.</p></div>
-<div><h3>Urea / alanine relationship</h3><p>Exercise physiology can use the glucose-alanine cycle to illustrate transport of carbon and nitrogen between muscle and liver.</p></div>
-</div>
-</div>
-</div>
-</section>
+            <!-- Case 1 -->
+            <div class="bg-white rounded-xl shadow-lg border border-slate-200 mb-6 overflow-hidden">
+                <div class="bg-slate-800 text-white px-6 py-3 flex items-center">
+                    <i class="fa-solid fa-user-injured mr-3 text-xl"></i>
+                    <h3 class="font-bold text-lg">Case 1: "The Heavy Legs"</h3>
+                </div>
+                <div class="p-6">
+                    <p class="text-sm font-semibold text-slate-500 mb-2">PROFILE: 22yo Male, 400m sprinter.</p>
+                    <p class="mb-4 text-slate-700">At the 300m mark of his race (approx 38 seconds in), the athlete feels an intense burning sensation in his legs. His stride length shortens, and he rapidly decelerates.</p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <p class="font-bold text-sm">1. Which metabolic system is primarily involved at this exact moment?</p>
+                            <button onclick="toggleVisibility('case1-a1')" class="text-blue-600 text-sm hover:underline">Reveal Answer</button>
+                            <p id="case1-a1" class="hidden text-sm mt-1 bg-slate-100 p-2 rounded">Anaerobic Glycolysis.</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm">2. Physiologically, why is he decelerating?</p>
+                            <button onclick="toggleVisibility('case1-a2')" class="text-blue-600 text-sm hover:underline">Reveal Answer</button>
+                            <p id="case1-a2" class="hidden text-sm mt-1 bg-slate-100 p-2 rounded">The rate of ATP demand exceeds aerobic capacity. Pyruvate is converted to lactate, generating H+ ions. The drop in muscle pH (acidity) inhibits glycolytic enzymes (like PFK) and interferes with calcium binding, impairing muscle contraction.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<section id="systems">
-<div class="container">
-<div class="section-head"><span class="tag">11 • ENERGY SYSTEM INTEGRATION</span><h2>All three systems work together</h2><p>The classic mistake is to say “10 seconds = ATP-PCr, 30 seconds = glycolysis, 2 minutes = aerobic.” Real exercise is more integrated.</p></div>
-<div class="energy">
-<div class="card"><span class="tag">ATP-PCr</span><h3>Very rapid</h3><p>Stored ATP and phosphocreatine provide rapid ATP regeneration. Particularly important when ATP demand rises suddenly.</p><b>Example:</b> maximal sprint, jump, heavy lift.</div>
-<div class="card"><span class="tag">GLYCOLYTIC</span><h3>Rapid carbohydrate breakdown</h3><p>Glycolysis can increase ATP production rapidly. It becomes particularly important during high-intensity exercise when carbohydrate demand is high.</p><b>Example:</b> hard interval, repeated sprint.</div>
-<div class="card"><span class="tag">OXIDATIVE</span><h3>Sustained ATP production</h3><p>Mitochondrial oxidative metabolism supports prolonged ATP production and contributes during shorter exercise too.</p><b>Example:</b> distance running, cycling, recovery.</div>
-</div>
-<div class="card" style="margin-top:20px">
-<h3>Exercise intensity changes the mix</h3>
-<div class="exercise-strip">
-<div class="exercise"><div class="icon">⚡</div><b>10 s sprint</b><small>Very high ATP turnover</small></div>
-<div class="exercise"><div class="icon">🏃</div><b>400 m</b><small>Multiple systems contribute</small></div>
-<div class="exercise"><div class="icon">🔥</div><b>HIIT</b><small>Rapid + oxidative contribution</small></div>
-<div class="exercise"><div class="icon">🚴</div><b>30 min</b><small>Oxidative contribution substantial</small></div>
-<div class="exercise"><div class="icon">🏃</div><b>2 hours</b><small>Sustained oxidative demand</small></div>
-</div>
-</div>
-</div>
-</section>
+            <!-- Case 2 -->
+            <div class="bg-white rounded-xl shadow-lg border border-slate-200 mb-6 overflow-hidden">
+                <div class="bg-slate-800 text-white px-6 py-3 flex items-center">
+                    <i class="fa-solid fa-person-running mr-3 text-xl"></i>
+                    <h3 class="font-bold text-lg">Case 2: "Hitting the Wall"</h3>
+                </div>
+                <div class="p-6">
+                    <p class="text-sm font-semibold text-slate-500 mb-2">PROFILE: 30yo Female, Marathon runner.</p>
+                    <p class="mb-4 text-slate-700">At mile 20 (approx 2 hours, 45 minutes), she suddenly experiences profound fatigue, dizziness, and is forced to drop her pace to a slow walk, despite her breathing and heart rate being manageable.</p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <p class="font-bold text-sm">1. What has likely depleted in her body?</p>
+                            <button onclick="toggleVisibility('case2-a1')" class="text-blue-600 text-sm hover:underline">Reveal Answer</button>
+                            <p id="case2-a1" class="hidden text-sm mt-1 bg-slate-100 p-2 rounded">Muscle and Liver Glycogen.</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm">2. Why can't she just use her abundant fat stores to maintain her running pace?</p>
+                            <button onclick="toggleVisibility('case2-a2')" class="text-blue-600 text-sm hover:underline">Reveal Answer</button>
+                            <p id="case2-a2" class="hidden text-sm mt-1 bg-slate-100 p-2 rounded">While fat is abundant, Beta-oxidation is a slow process. It cannot synthesize ATP rapidly enough to match the high energy turnover required for a marathon pace. "Fats burn in a carbohydrate flame" - intermediate substrates from glucose are needed to keep the Krebs cycle running efficiently.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<!-- MAIN ANIMATED ATHLETE JOURNEY -->
-<section id="journey">
-<div class="container">
-<div class="section-head"><span class="tag">12 • ANIMATED ATHLETE JOURNEY</span><h2>Follow one athlete from rest to 2-hour recovery</h2>
-<p>Use this as the central teaching animation. Ask students to predict what will happen before moving to the next stage.</p></div>
-<div class="journey">
-<div class="stagebar">
-<button class="stagebtn active" onclick="stage(0)">🛌 REST</button>
-<button class="stagebtn" onclick="stage(1)">🏃 EXERCISE</button>
-<button class="stagebtn" onclick="stage(2)">🧘 0–5 MIN</button>
-<button class="stagebtn" onclick="stage(3)">⏱️ 30–60 MIN</button>
-<button class="stagebtn" onclick="stage(4)">🌙 2 HOURS</button>
-</div>
-<div class="stage-panel active rest">
-<div class="grid2"><div><h3>Stage 1 — Rest</h3><p>Energy demand is relatively low, but ATP production never stops. The body is maintaining cellular processes, posture, ion gradients and other functions.</p><div class="pills"><span class="pill">❤️ RHR = baseline</span><span class="pill">⚡ ATP demand = low</span><span class="pill">🥑 Fat oxidation = important</span><span class="pill">🫁 VO₂ = baseline</span></div></div><div class="stage-visual"><div class="orbit"></div><div class="athlete">🧘</div></div></div>
-</div>
-<div class="stage-panel"><div class="grid2"><div><h3>Stage 2 — Exercise begins</h3><p>The sudden rise in ATP demand requires rapid activation of ATP-PCr, glycolytic and oxidative pathways. Cardiovascular and respiratory responses also increase.</p><div class="pills"><span class="pill">❤️ HR ↑</span><span class="pill">🫁 VO₂ ↑</span><span class="pill">💨 VE ↑</span><span class="pill">⚡ ATP demand ↑↑↑</span><span class="pill">🩸 Lactate may ↑</span></div></div><div class="stage-visual"><div class="orbit"></div><div class="athlete">🏃</div></div></div></div>
-<div class="stage-panel"><div class="grid2"><div><h3>Stage 3 — Immediate recovery</h3><p>The athlete stops, but recovery requires energy. HR and ventilation decline, VO₂ may remain above baseline, phosphocreatine is resynthesised and metabolites are being handled.</p><div class="pills"><span class="pill">❤️ HR ↓</span><span class="pill">🫁 VO₂ still ↑</span><span class="pill">⚡ PCr resynthesis</span><span class="pill">🩸 Lactate clearance/utilisation</span></div></div><div class="stage-visual"><div class="orbit"></div><div class="athlete">🚶</div></div></div></div>
-<div class="stage-panel"><div class="grid2"><div><h3>Stage 4 — 30–60 minutes</h3><p>Many acute responses are moving toward baseline. Recovery of substrate stores and fluid balance depends on exercise dose, nutrition, hydration and individual factors.</p><div class="pills"><span class="pill">❤️ HR ↓ toward baseline</span><span class="pill">⚡ PCr largely restored</span><span class="pill">🍚 Glycogen restoration begins</span><span class="pill">💧 Rehydration</span></div></div><div class="stage-visual"><div class="orbit"></div><div class="athlete">🥤</div></div></div></div>
-<div class="stage-panel"><div class="grid2"><div><h3>Stage 5 — 2 hours</h3><p>The athlete may feel recovered, but physiological recovery can continue. Glycogen restoration, hydration, tissue recovery and other processes depend on what happened during and after exercise.</p><div class="pills"><span class="pill">⚡ PCr = restored</span><span class="pill">🍚 Glycogen = restoring</span><span class="pill">💧 Fluid = restoring</span><span class="pill">🧬 Recovery = continuing</span></div></div><div class="stage-visual"><div class="orbit"></div><div class="athlete">🛌</div></div></div></div>
-<div class="metric-cards" style="margin-top:20px"><div class="metric"><span>HR</span><strong id="journeyHR">Baseline</strong><small>cardiovascular response</small></div><div class="metric"><span>VO₂</span><strong id="journeyVO">Baseline</strong><small>oxygen consumption</small></div><div class="metric"><span>ATP</span><strong id="journeyATP">Low</strong><small>energy demand</small></div><div class="metric"><span>Fuel</span><strong id="journeyFuel">Fat + CHO</strong><small>relative substrate use</small></div></div>
-</div>
-</div>
-</section>
+        <!-- SECTION 11: Summary & Concept Map -->
+        <section id="sec-11" class="section-container">
+            <h2 class="text-3xl font-bold mb-4">7. Summary & Final Synthesis</h2>
+            
+            <div class="bg-indigo-50 border border-indigo-200 p-6 rounded-xl mb-8">
+                <h3 class="font-bold text-indigo-900 text-xl mb-4">Key Takeaways</h3>
+                <ul class="list-disc list-inside space-y-2 text-indigo-800">
+                    <li><strong>Energy Turnover</strong> dictates substrate use. High demand = CHO. Low demand = Fat.</li>
+                    <li>All three energy systems operate continuously; their <em>relative contribution</em> changes based on intensity and duration.</li>
+                    <li><strong>Lactate</strong> is a rescue mechanism to regenerate NAD+ and allow anaerobic glycolysis to continue, not a metabolic waste product.</li>
+                    <li>Training adaptations (more mitochondria, capillarization) shift the crossover point, allowing athletes to spare glycogen and burn fat at higher intensities.</li>
+                </ul>
+            </div>
 
-<section id="monitor" style="background:#fff">
-<div class="container">
-<div class="section-head"><span class="tag">13 • MONITORING DURING EXERCISE</span><h2>What do we monitor — and why?</h2><p>Students now have the metabolic background to understand why these variables matter.</p></div>
-<div class="grid2">
-<div class="card"><h3>External load</h3><p><b>What the person does.</b></p><div class="pills"><span class="tag">Speed</span><span class="tag">Power</span><span class="tag">Resistance</span><span class="tag">Distance</span><span class="tag">Duration</span><span class="tag">Workload</span></div></div>
-<div class="card"><h3>Internal load</h3><p><b>How the body responds.</b></p><div class="pills"><span class="tag">HR</span><span class="tag">RPE</span><span class="tag">VO₂</span><span class="tag">VCO₂</span><span class="tag">RER</span><span class="tag">VE</span><span class="tag">Lactate</span><span class="tag">BP</span></div></div>
-</div>
-<div style="overflow:auto;margin-top:20px"><table class="monitor-table"><thead><tr><th>Variable</th><th>Indicator / calculation</th><th>Why monitor?</th></tr></thead><tbody>
-<tr><td><b>Resting HR</b></td><td>bpm</td><td>Baseline cardiovascular reference and comparison point for exercise and recovery.</td></tr>
-<tr><td><b>Exercise HR</b></td><td>bpm</td><td>Indicates cardiovascular response and helps monitor exercise intensity.</td></tr>
-<tr><td><b>%HRmax</b></td><td>HR exercise ÷ HRmax × 100</td><td>Expresses exercise HR relative to predicted maximum.</td></tr>
-<tr><td><b>HRR</b></td><td>HRmax − HRrest</td><td>Defines the heart-rate range above resting HR.</td></tr>
-<tr><td><b>Target HR</b></td><td>HRrest + (% intensity × HRR)</td><td>Practical target using the heart-rate-reserve method.</td></tr>
-<tr><td><b>Borg RPE</b></td><td>6–20 scale</td><td>Measures perceived internal effort and complements physiological measures.</td></tr>
-<tr><td><b>VO₂</b></td><td>L/min or mL/kg/min</td><td>Indicates oxygen consumption and aerobic metabolic demand.</td></tr>
-<tr><td><b>VCO₂</b></td><td>L/min</td><td>Indicates carbon dioxide production during gas-exchange testing.</td></tr>
-<tr><td><b>RER</b></td><td>VCO₂ ÷ VO₂</td><td>Helps interpret relative substrate contribution under appropriate conditions.</td></tr>
-<tr><td><b>VE</b></td><td>VT × breathing frequency</td><td>Shows ventilatory response to exercise demand.</td></tr>
-<tr><td><b>Lactate</b></td><td>mmol/L</td><td>Provides information about lactate response and metabolic stress.</td></tr>
-<tr><td><b>BP</b></td><td>SBP / DBP</td><td>Assesses haemodynamic response and supports safety monitoring.</td></tr>
-</tbody></table></div>
-</div>
-</section>
+            <h3 class="font-bold text-xl mb-4">Interactive Concept Map</h3>
+            <p class="text-sm text-slate-600 mb-4">Click the nodes to review how the physiological cascade connects.</p>
+            
+            <!-- Simple CSS Concept Map -->
+            <div class="flex flex-col items-center space-y-4 bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                <div class="concept-map-node bg-emerald-100 text-emerald-800 px-6 py-3 rounded-full font-bold border-2 border-emerald-300" onclick="alert('Food/Substrates: Carbohydrates (Glycogen), Fats (Triglycerides), and Proteins (Amino Acids) provide the carbon skeletons for energy.')">Food / Substrates</div>
+                <i class="fa-solid fa-arrow-down text-slate-400"></i>
+                <div class="concept-map-node bg-blue-100 text-blue-800 px-6 py-3 rounded-full font-bold border-2 border-blue-300" onclick="alert('Energy Systems: ATP-PCr (instant), Glycolysis (fast/anaerobic), Oxidative Phosphorylation (slow/aerobic).')">Energy Systems</div>
+                <i class="fa-solid fa-arrow-down text-slate-400"></i>
+                <div class="concept-map-node bg-purple-100 text-purple-800 px-6 py-3 rounded-full font-bold border-2 border-purple-300" onclick="alert('Exercise Demand: The rate of ATP turnover required by muscle contraction dictates which system is dominant.')">Exercise Demand</div>
+                <i class="fa-solid fa-arrow-down text-slate-400"></i>
+                <div class="concept-map-node bg-red-100 text-red-800 px-6 py-3 rounded-full font-bold border-2 border-red-300" onclick="alert('Physiological Response & Performance: Lactate accumulation, glycogen depletion, fatigue, and eventual training adaptations (more mitochondria).')">Performance & Adaptation</div>
+            </div>
+        </section>
 
-<section id="calculators">
-<div class="container">
-<div class="section-head"><span class="tag">14 • CALCULATORS</span><h2>Calculate → Interpret → Apply</h2></div>
-<div class="grid2">
-<div class="card calc"><h3>❤️ Heart Rate & Target HR</h3><div class="calc-grid">
-<div><label>Age</label><input id="age" type="number" value="30"></div><div><label>Resting HR</label><input id="rhr" type="number" value="60"></div><div><label>Current HR</label><input id="ehr" type="number" value="150"></div><div><label>Target intensity (%)</label><input id="intensity" type="number" value="70"></div>
-</div><button class="primary" style="margin-top:15px" onclick="calcHR()">Calculate</button><div id="hrResult" class="result">Enter values and calculate.</div></div>
+        <!-- SECTION 12: Post-Test -->
+        <section id="sec-12" class="section-container">
+            <h2 class="text-3xl font-bold mb-4">8. Final Post-Test</h2>
+            <p class="text-lg text-slate-600 mb-8">Let's see how your understanding has evolved. Answer the following questions.</p>
+            
+            <div id="posttest-container" class="space-y-6">
+                <!-- JS injected post-test -->
+            </div>
 
-<div class="card calc"><h3>🫁 RER</h3><div class="calc-grid"><div><label>VO₂ (L/min)</label><input id="vo2" type="number" value="2.00" step=".01"></div><div><label>VCO₂ (L/min)</label><input id="vco2" type="number" value="1.70" step=".01"></div></div><button class="primary" style="margin-top:15px" onclick="calcRER()">Calculate RER</button><div id="rerResult" class="result">RER = VCO₂ ÷ VO₂</div></div>
+            <div id="posttest-results" class="hidden mt-8 bg-white border-2 border-blue-500 p-8 rounded-xl text-center shadow-lg">
+                <h3 class="text-3xl font-bold text-slate-800 mb-4">YOUR RESULTS</h3>
+                <div class="flex justify-center space-x-12 mb-6">
+                    <div>
+                        <p class="text-sm text-slate-500 uppercase tracking-wide">Pre-Test</p>
+                        <p id="final-pre-score" class="text-3xl font-bold text-slate-400">--</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-slate-500 uppercase tracking-wide">Post-Test</p>
+                        <p id="final-post-score" class="text-3xl font-bold text-blue-600">--</p>
+                    </div>
+                </div>
+                <div id="improvement-msg" class="text-lg font-semibold text-emerald-600 bg-emerald-50 py-2 rounded"></div>
+                
+                <div id="review-areas" class="mt-6 text-left hidden">
+                    <h4 class="font-bold mb-2">Recommended Review Areas:</h4>
+                    <ul id="review-list" class="list-disc list-inside text-sm text-red-600 space-y-1"></ul>
+                </div>
+            </div>
 
-<div class="card"><h3>🧠 Borg 6–20</h3><p>Select the perceived exertion.</p><div class="rpe" id="rpeButtons"></div><div id="rpeResult" class="result">Select an RPE.</div></div>
+            <button id="submit-posttest-btn" onclick="submitPosttest()" class="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded transition">Submit Post-Test</button>
+        </section>
 
-<div class="card calc"><h3>⚡ METs</h3><label>VO₂ (mL/kg/min)</label><input id="metvo2" type="number" value="21" step=".1"><button class="primary" style="margin-top:15px" onclick="calcMET()">Calculate</button><div id="metResult" class="result">1 MET ≈ 3.5 mL/kg/min.</div></div>
-</div>
-<div class="card" style="margin-top:20px;background:#fffdf3;border-color:#f5d77b"><b>Teaching note:</b> Predicted HRmax equations are estimates. Use HR, RPE, workload and other variables together rather than assuming one number describes the entire physiological response.</div>
-</div>
-</section>
+        <!-- SECTION 13: Reflection -->
+        <section id="sec-13" class="section-container">
+            <h2 class="text-3xl font-bold mb-4">9. One-Minute Reflection</h2>
+            <p class="text-slate-600 mb-6">Take a moment to consolidate your learning. Your answers are saved locally to your browser.</p>
+            
+            <div class="space-y-6 bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-2">1. What is the most important concept you learned today regarding exercise metabolism?</label>
+                    <textarea id="ref-1" class="w-full border border-slate-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Type here..."></textarea>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-2">2. What concept (if any) is still unclear?</label>
+                    <textarea id="ref-2" class="w-full border border-slate-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="2" placeholder="Type here..."></textarea>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-2">3. How would you explain the 'Crossover Concept' to an athlete you are coaching?</label>
+                    <textarea id="ref-3" class="w-full border border-slate-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Type here..."></textarea>
+                </div>
+                
+                <button onclick="saveReflection()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded transition">Save Reflection</button>
+                <span id="save-msg" class="ml-4 text-green-600 font-bold hidden"><i class="fa-solid fa-check"></i> Saved successfully!</span>
+            </div>
+        </section>
 
-<section id="acute">
-<div class="container">
-<div class="section-head"><span class="tag">15 • ACUTE RESPONSE → RECOVERY → ADAPTATION</span><h2>What changes immediately, and what changes after training?</h2></div>
-<div class="grid3">
-<div class="card"><span class="tag">ACUTE</span><h3>During one exercise bout</h3><p>HR, ventilation, VO₂, energy demand and substrate use change rapidly in response to the exercise stimulus.</p></div>
-<div class="card"><span class="tag">RECOVERY</span><h3>Minutes to hours</h3><p>ATP-PCr resynthesis, lactate handling, restoration of fluid and substrate stores and other recovery processes occur.</p></div>
-<div class="card"><span class="tag">CHRONIC</span><h3>Repeated training</h3><p>Repeated exercise can produce adaptations such as improved oxidative capacity, metabolic efficiency and ability to sustain a given workload.</p></div>
-</div>
-</div>
-</section>
+    </main>
 
-<section id="cases">
-<div class="container">
-<div class="section-head"><span class="tag">16 • CASE-BASED LEARNING</span><h2>Now apply the whole story</h2><p>Use: <b>food → substrate → pathway → ATP → exercise demand → monitoring → recovery.</b></p></div>
-<div class="grid2">
-<div class="case"><span class="tag">CASE 1</span><h3>10-second maximal sprint</h3><p>Which ATP-regenerating pathway is particularly important?</p><button class="option" onclick="caseAnswer(this,false)">A. Oxidative metabolism only</button><button class="option" onclick="caseAnswer(this,true)">B. Stored ATP and phosphocreatine</button><button class="option" onclick="caseAnswer(this,false)">C. Fat oxidation only</button><div class="reveal casefeedback">Correct. ATP-PCr provides very rapid ATP regeneration, while other pathways also contribute.</div></div>
-<div class="case"><span class="tag">CASE 2</span><h3>Hard interval</h3><p>HR, RPE and lactate rise. What is the best interpretation?</p><button class="option" onclick="caseAnswer(this,false)">A. Oxidative metabolism has completely stopped</button><button class="option" onclick="caseAnswer(this,true)">B. ATP demand and glycolytic contribution have increased</button><button class="option" onclick="caseAnswer(this,false)">C. Only protein is being used</button><div class="reveal casefeedback">Correct. High-intensity exercise increases ATP demand and glycolytic contribution; oxidative metabolism still contributes.</div></div>
-<div class="case"><span class="tag">CASE 3</span><h3>30-minute cycling</h3><p>Which system becomes particularly important for sustained ATP supply?</p><button class="option" onclick="caseAnswer(this,false)">A. Stored ATP only</button><button class="option" onclick="caseAnswer(this,true)">B. Oxidative metabolism</button><button class="option" onclick="caseAnswer(this,false)">C. Urea cycle only</button><div class="reveal casefeedback">Correct. Sustained exercise depends substantially on oxidative metabolism using carbohydrate and fat according to conditions.</div></div>
-<div class="case"><span class="tag">CASE 4</span><h3>2-hour recovery</h3><p>The athlete has stopped exercising. Which statement is most appropriate?</p><button class="option" onclick="caseAnswer(this,true)">A. Recovery processes can continue after exercise ends</button><button class="option" onclick="caseAnswer(this,false)">B. All metabolism immediately returns to resting state</button><button class="option" onclick="caseAnswer(this,false)">C. ATP production stops completely</button><div class="reveal casefeedback">Correct. Recovery is metabolically active. Substrate restoration, fluid balance and tissue recovery can continue.</div></div>
-</div>
-</div>
-</section>
+    <!-- Navigation Footer -->
+    <footer class="bg-white border-t border-slate-200 fixed bottom-0 w-full z-40">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+            <button id="btn-prev" onclick="prevSection()" class="text-slate-600 hover:text-blue-600 font-semibold px-4 py-2 disabled:opacity-50"><i class="fa-solid fa-chevron-left mr-2"></i> Previous</button>
+            <div class="text-sm font-semibold text-slate-500">
+                Section <span id="current-section-display">0</span> of 9
+            </div>
+            <button id="btn-next" onclick="nextSection()" class="text-white bg-blue-600 hover:bg-blue-700 rounded-full font-semibold px-6 py-2 shadow transition disabled:opacity-50">Next <i class="fa-solid fa-chevron-right ml-2"></i></button>
+        </div>
+    </footer>
 
-<section id="posttest" style="background:#fff">
-<div class="container">
-<div class="section-head"><span class="tag">17 • POST-TEST</span><h2>Now show what you learned</h2><p>Compare your understanding with the pre-test. Focus on whether you can <b>explain the “why,” not only select the answer.</b></p></div>
-<div class="card"><div id="postQuiz"></div><button class="primary" onclick="gradePost()">Submit Post-Test</button><div id="postScore" class="result">Not submitted.</div></div>
-</div>
-</section>
+    <script>
+        /* --- STATE MANAGEMENT --- */
+        let currentSection = 0;
+        const totalSections = 9;
+        let isLecturerMode = false;
+        
+        let scores = {
+            pretest: 0,
+            posttest: 0
+        };
 
-<section id="reflection">
-<div class="container">
-<div class="card" style="background:linear-gradient(135deg,#53257f,#281238);color:white;padding:35px">
-<span class="tag" style="background:#fff;color:var(--purple)">18 • FINAL REFLECTION</span>
-<h2 style="color:white;margin-top:12px">Tell the complete exercise metabolism story</h2>
-<p style="font-size:19px">Imagine a student asks: <b>“I ate breakfast. How does that eventually help me run?”</b></p>
-<div class="story"><span>🍚 Food</span><b>→</b><span>🧬 Substrates</span><b>→</b><span>⚙️ Pathways</span><b>→</b><span>⚡ ATP</span><b>→</b><span>🏃 Exercise</span><b>→</b><span>📈 Monitoring</span><b>→</b><span>🧘 Recovery</span><b>→</b><span>🔁 Adaptation</span></div>
-<p style="margin-top:22px"><b>Exit question:</b> If two people perform the same external workload, can their internal physiological responses differ? Explain using at least three variables.</p>
-</div>
-</div>
-</section>
+        /* --- DATA: QUIZZES --- */
+        const preTestQuestions = [
+            { q: "Which energy system provides the most immediate ATP during a max sprint?", options: ["Aerobic Glycolysis", "Beta-Oxidation", "ATP-PCr System", "Gluconeogenesis"], answer: 2 },
+            { q: "True or False: Lactic acid is a metabolic waste product that causes muscle soreness days later.", options: ["True", "False"], answer: 1 },
+            { q: "As exercise intensity increases, substrate utilization shifts primarily towards:", options: ["Proteins", "Fats", "Carbohydrates", "Ketones"], answer: 2 },
+            { q: "Where does Beta-Oxidation occur?", options: ["Cytoplasm", "Mitochondria", "Bloodstream", "Liver only"], answer: 1 },
+            { q: "Which substrate yields the highest amount of ATP per molecule?", options: ["Glucose", "Muscle Glycogen", "Amino Acids", "Fatty Acids"], answer: 3 }
+        ];
 
-</main>
+        const postTestQuestions = [
+            { q: "The enzyme responsible for converting Pyruvate to Lactate is:", options: ["Creatine Kinase", "Lactate Dehydrogenase (LDH)", "Hexokinase", "Lipase"], answer: 1, topic: "Lactate Metabolism" },
+            { q: "During a marathon, 'hitting the wall' is primarily caused by:", options: ["Dehydration", "Lactic acid build-up", "Depletion of Glycogen", "Excessive fat oxidation"], answer: 2, topic: "Carbohydrate Metabolism" },
+            { q: "Endurance training shifts the Crossover point to the right. This means:", options: ["The athlete burns carbohydrates earlier", "The athlete relies on fat at higher exercise intensities", "The athlete produces less ATP", "Protein breakdown increases"], answer: 1, topic: "Crossover Concept" },
+            { q: "The Glucose-Alanine cycle represents the body utilizing which substrate for energy?", options: ["Fat", "Protein", "Carbohydrate", "Ketones"], answer: 1, topic: "Protein Metabolism" },
+            { q: "Why is Lactate produced during high-intensity exercise?", options: ["To lower blood pH", "Because oxygen is completely absent", "To regenerate NAD+ so glycolysis can continue", "To store excess glucose"], answer: 2, topic: "Lactate Metabolism" }
+        ];
 
+        /* --- INITIALIZATION --- */
+        window.onload = () => {
+            renderQuiz('pretest-container', preTestQuestions, 'pre');
+            renderQuiz('posttest-container', postTestQuestions, 'post');
+            loadProgress();
+            updateUI();
+        };
 
-<footer>
-<div class="container"><div class="footerbrand">TCE 504 • Applied Exercise Physiology</div><div>Exercise Metabolism • Self-Guided 3-Hour Interactive Class</div><div style="margin-top:8px;color:#aaa">Designed as an integrated teaching website: concept → calculation → monitoring → case → application.</div></div>
-</footer>
+        /* --- NAVIGATION --- */
+        function nextSection() {
+            if (currentSection < totalSections) {
+                document.getElementById(`sec-${currentSection === 0 ? 0 : currentSection}`).classList.remove('active');
+                
+                // Map array index to actual section ID logic
+                let targetId = currentSection + 1;
+                // Special jumps based on numbering in HTML (Sec 0 is intro, 1 pretest... 4 is big picture mapped to nav 3 etc)
+                // To keep simple, map sequential 0-13 arrays.
+                
+                const htmlSections = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+                // Wait, HTML has specific IDs. Let's use an array of section IDs in order.
+                const sectionIDs = ['sec-0', 'sec-1', 'sec-2', 'sec-3', 'sec-4', 'sec-5', 'sec-6', 'sec-7', 'sec-8', 'sec-9', 'sec-10', 'sec-11', 'sec-12', 'sec-13'];
+                
+                document.getElementById(sectionIDs[currentSection]).classList.remove('active');
+                currentSection++;
+                document.getElementById(sectionIDs[currentSection]).classList.add('active');
+                
+                updateUI();
+                window.scrollTo(0,0);
+            }
+        }
 
-<script>
-function reveal(id){const e=document.getElementById(id); if(e)e.classList.toggle('show')}
-function stage(n){
- document.querySelectorAll('.stagebtn').forEach((b,i)=>b.classList.toggle('active',i===n));
- document.querySelectorAll('.stage-panel').forEach((p,i)=>p.classList.toggle('active',i===n));
- const data=[
-  ['Baseline','Baseline','Low','Fat + CHO'],
-  ['↑↑','↑↑','High','CHO + fat'],
-  ['↓','Elevated','Falling','Recovery fuel demand'],
-  ['↓','↓','Lower','Glycogen restoration'],
-  ['Near baseline','Near baseline','Baseline','Restoration continues']
- ];
- ['journeyHR','journeyVO','journeyATP','journeyFuel'].forEach((id,i)=>document.getElementById(id).textContent=data[n][i]);
-}
-function calcHR(){
- const age=+document.getElementById('age').value,rhr=+document.getElementById('rhr').value,ehr=+document.getElementById('ehr').value,inten=+document.getElementById('intensity').value/100;
- if(!age||rhr<=0||ehr<=0||inten<=0){document.getElementById('hrResult').textContent='Please enter valid values.';return}
- const hrmax=220-age, hrr=hrmax-rhr, target=rhr+inten*hrr, pctmax=ehr/hrmax*100, pctrr=(ehr-rhr)/hrr*100;
- document.getElementById('hrResult').innerHTML=`<strong class="big">Target HR: ${target.toFixed(0)} bpm</strong><br>Predicted HRmax: <b>${hrmax} bpm</b><br>HRR: <b>${hrr} bpm</b><br>Current HR = <b>${pctmax.toFixed(1)}% HRmax</b> and <b>${pctrr.toFixed(1)}% HRR</b>.`;
-}
-function calcRER(){
- const vo=+document.getElementById('vo2').value,vc=+document.getElementById('vco2').value;
- if(!(vo>0)&&vo!==0){document.getElementById('rerResult').textContent='Enter a valid VO₂.';return}
- if(vo<=0||vc<0){document.getElementById('rerResult').textContent='Please enter valid values.';return}
- const r=vc/vo;
- let msg=r<.85?'Greater relative contribution from fat oxidation':r<1?'Mixed substrate use; carbohydrate contribution increases':'High carbohydrate contribution / high-intensity context';
- document.getElementById('rerResult').innerHTML=`<strong class="big">RER = ${r.toFixed(2)}</strong><br>${msg}.<br><small>Interpret in context; values above 1.00 during intense exercise can be influenced by CO₂ from buffering and non-steady-state conditions.</small>`;
-}
-function calcMET(){
- const vo=+document.getElementById('metvo2').value;
- if(vo<=0){document.getElementById('metResult').textContent='Enter a valid VO₂.';return}
- document.getElementById('metResult').innerHTML=`<strong class="big">${(vo/3.5).toFixed(1)} METs</strong><br>Calculation: ${vo} ÷ 3.5.`;
-}
-const rpeWrap=document.getElementById('rpeButtons');
-for(let i=6;i<=20;i++){const b=document.createElement('button');b.textContent=i;b.type='button';b.onclick=()=>{document.querySelectorAll('.rpe button').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');let desc=i<=8?'Extremely light':i<=10?'Very light':i<=12?'Light':i<=14?'Somewhat hard':i<=16?'Hard':i<=18?'Very hard':i===19?'Extremely hard':'Maximal';document.getElementById('rpeResult').innerHTML=`<strong class="big">RPE ${i}</strong><br>${desc}<br><small>Traditional teaching relationship: RPE × 10 ≈ HR, but individual responses vary.</small>`};rpeWrap.appendChild(b)}
-function caseAnswer(btn,correct){
- const box=btn.parentElement;box.querySelectorAll('.option').forEach(x=>x.disabled=true);btn.classList.add(correct?'correct':'wrong');const f=box.querySelector('.casefeedback');f.classList.add('show');
-}
-</script>
+        function prevSection() {
+            if (currentSection > 0) {
+                const sectionIDs = ['sec-0', 'sec-1', 'sec-2', 'sec-3', 'sec-4', 'sec-5', 'sec-6', 'sec-7', 'sec-8', 'sec-9', 'sec-10', 'sec-11', 'sec-12', 'sec-13'];
+                document.getElementById(sectionIDs[currentSection]).classList.remove('active');
+                currentSection--;
+                document.getElementById(sectionIDs[currentSection]).classList.add('active');
+                updateUI();
+                window.scrollTo(0,0);
+            }
+        }
 
-<script>
-/* Detailed TCE504 interactive logic */
-const preQuestions=[
-["What is the immediate energy currency used for muscle work?",["ATP","Glucose","Fatty acid"],0],
-["Where does glycolysis occur?",["Mitochondria only","Cytosol","Liver only"],1],
-["What is the main end product of glycolysis from one glucose molecule?",["Two pyruvate","Two acetyl-CoA","One lactate only"],0],
-["What does the Krebs/TCA cycle mainly generate for oxidative ATP production?",["NADH and FADH₂","Only glucose","Only lactate"],0],
-["Where is the electron transport chain located?",["Inner mitochondrial membrane","Nucleus","Blood plasma"],0],
-["Which pathway is particularly rapid for very short explosive exercise?",["ATP-PCr","β-oxidation only","Protein synthesis"],0],
-["What does RER represent?",["VCO₂ ÷ VO₂","HR ÷ age","VO₂ ÷ body mass"],0],
-["What does HRR mean?",["HRmax − HRrest","HRrest − age","HR exercise + HRrest"],0],
-["What does Borg RPE measure?",["Perceived exertion","Blood glucose","Muscle glycogen"],0],
-["Why can VO₂ remain elevated after exercise?",["Recovery processes continue","ATP production stops","The athlete is still exercising at the same workload"],0]
-];
-const postQuestions=[
-["Glycolysis converts glucose primarily into:",["Pyruvate","Acetyl-CoA directly","Fatty acids"],0],
-["A major role of the TCA cycle is to:",["Generate reducing equivalents that support oxidative phosphorylation","Store glycogen","Transport oxygen in blood"],0],
-["During high-intensity exercise, carbohydrate contribution generally becomes:",["More important","Zero","Always lower than fat"],0],
-["RER is calculated as:",["VCO₂ / VO₂","VO₂ / HR","HR / RPE"],0],
-["The Karvonen method uses:",["Heart-rate reserve","Only age","Only resting HR"],0],
-["RPE is useful because it:",["Provides a subjective measure of internal effort","Directly measures lactate","Measures oxygen saturation"],0],
-["Blood lactate concentration reflects:",["A balance of production, transport and clearance/utilisation","Only oxygen deficiency","Only dietary carbohydrate"],0],
-["After exercise, which statement is most accurate?",["Recovery remains metabolically active","All ATP demand becomes zero","All physiological variables instantly return to baseline"],0],
-["Fatty acids can enter oxidative metabolism through:",["β-oxidation → acetyl-CoA → TCA","Glycolysis directly","Urea formation only"],0],
-["The best way to understand an exercise bout is to:",["Integrate exercise demand, pathways, substrates and physiological responses","Choose one energy system only","Ignore exercise intensity"],0]
-];
+        function updateUI() {
+            const maxSections = 13; // 0 to 13
+            document.getElementById('current-section-display').innerText = currentSection;
+            document.getElementById('main-progress').style.width = `${(currentSection / maxSections) * 100}%`;
+            
+            document.getElementById('btn-prev').disabled = currentSection === 0;
+            document.getElementById('btn-next').disabled = currentSection === maxSections;
 
-function buildQuiz(target,qs,prefix){
- const el=document.getElementById(target); if(!el)return;
- el.innerHTML='';
- qs.forEach((q,i)=>{
-   const d=document.createElement('div');d.className='quiz-q';
-   d.innerHTML='<p>'+ (i+1)+'. '+q[0]+'</p>'+q[1].map((o,j)=>'<label style="display:block;margin:7px 0"><input type="radio" name="'+prefix+i+'" value="'+j+'"> '+o+'</label>').join('');
-   el.appendChild(d);
- });
-}
-function gradeGeneric(qs,prefix,resultId){
- let score=0;
- qs.forEach((q,i)=>{const x=document.querySelector('input[name="'+prefix+i+'"]:checked');if(x&&+x.value===q[2])score++;});
- const pct=Math.round(score/qs.length*100);
- document.getElementById(resultId).innerHTML='<strong class="big">'+score+'/'+qs.length+' ('+pct+'%)</strong><br>'+(
-   pct>=80?'Strong understanding. Now focus on explaining the physiological “why.”':
-   pct>=60?'Good progress. Revisit the pathway explanations and calculators, then try again.':
-   'Use the guided sections from Food → ATP → Energy Systems → Exercise → Recovery and retake the assessment.'
- );
- return score;
-}
-function gradePre(){gradeGeneric(preQuestions,'preq','preScore');document.getElementById('preProgress').style.width='100%';}
-function gradePost(){gradeGeneric(postQuestions,'postq','postScore');}
-buildQuiz('preQuiz',preQuestions,'preq');
-buildQuiz('postQuiz',postQuestions,'postq');
+            // Mark objectives as complete based on section
+            if(currentSection >= 4) document.querySelector('[data-obj="1"]').classList.replace('fa-square', 'fa-check-square');
+            if(currentSection >= 7) document.querySelector('[data-obj="2"]').classList.replace('fa-square', 'fa-check-square');
+            if(currentSection >= 8) document.querySelector('[data-obj="3"]').classList.replace('fa-square', 'fa-check-square');
+            if(currentSection >= 9) document.querySelector('[data-obj="4"]').classList.replace('fa-square', 'fa-check-square');
+            if(currentSection >= 10) document.querySelector('[data-obj="5"]').classList.replace('fa-square', 'fa-check-square');
+        }
 
-function reveal(id){const e=document.getElementById(id);if(e)e.classList.toggle('show')}
-function stage(n){
- document.querySelectorAll('.stagebtn').forEach((b,i)=>b.classList.toggle('active',i===n));
- document.querySelectorAll('.stage-panel').forEach((p,i)=>p.classList.toggle('active',i===n));
- const data=[
- ['Baseline','Baseline','Low','Fat + CHO'],
- ['↑↑','↑↑','High','CHO + fat'],
- ['↓','Elevated','Falling','Recovery demand'],
- ['↓','↓','Lower','Glycogen restoration'],
- ['Near baseline','Near baseline','Baseline','Restoration continues']
- ];
- ['journeyHR','journeyVO','journeyATP','journeyFuel'].forEach((id,i)=>document.getElementById(id).textContent=data[n][i]);
-}
-function calcHR(){
- const age=+document.getElementById('age').value,rhr=+document.getElementById('rhr').value,ehr=+document.getElementById('ehr').value,inten=+document.getElementById('intensity').value/100;
- if(age<=0||rhr<=0||ehr<=0||inten<=0){document.getElementById('hrResult').textContent='Please enter valid values.';return}
- const hrmax=220-age,hrr=hrmax-rhr,target=rhr+inten*hrr,pctmax=ehr/hrmax*100,pctrr=(ehr-rhr)/hrr*100;
- document.getElementById('hrResult').innerHTML='<strong class="big">Target HR: '+target.toFixed(0)+' bpm</strong><br>Predicted HRmax: <b>'+hrmax+' bpm</b><br>HRR: <b>'+hrr+' bpm</b><br>Current HR = <b>'+pctmax.toFixed(1)+'% HRmax</b> and <b>'+pctrr.toFixed(1)+'% HRR</b>.';
-}
-function calcRER(){
- const vo=+document.getElementById('vo2').value,vc=+document.getElementById('vco2').value;
- if(vo<=0||vc<0){document.getElementById('rerResult').textContent='Please enter valid values.';return}
- const r=vc/vo;let msg=r<.85?'Greater relative contribution from fat oxidation':r<1?'Mixed substrate use; carbohydrate contribution increases':'High carbohydrate contribution / high-intensity context';
- document.getElementById('rerResult').innerHTML='<strong class="big">RER = '+r.toFixed(2)+'</strong><br>'+msg+'.<br><small>Interpret in context; values above 1.00 during intense exercise can be influenced by CO₂ from buffering and non-steady-state conditions.</small>';
-}
-function calcMET(){
- const vo=+document.getElementById('metvo2').value;
- if(vo<=0){document.getElementById('metResult').textContent='Enter a valid VO₂.';return}
- document.getElementById('metResult').innerHTML='<strong class="big">'+(vo/3.5).toFixed(1)+' METs</strong><br>Calculation: '+vo+' ÷ 3.5.';
-}
-const rpeWrap=document.getElementById('rpeButtons');
-for(let i=6;i<=20;i++){
- const b=document.createElement('button');b.textContent=i;b.type='button';
- b.onclick=()=>{document.querySelectorAll('.rpe button').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');
- let desc=i<=8?'Extremely light':i<=10?'Very light':i<=12?'Light':i<=14?'Somewhat hard':i<=16?'Hard':i<=18?'Very hard':i===19?'Extremely hard':'Maximal';
- document.getElementById('rpeResult').innerHTML='<strong class="big">RPE '+i+'</strong><br>'+desc+'<br><small>Traditional teaching relationship: RPE × 10 ≈ HR, but individual responses vary.</small>'};
- rpeWrap.appendChild(b);
-}
-function caseAnswer(btn,correct){
- const box=btn.parentElement;box.querySelectorAll('.option').forEach(x=>x.disabled=true);btn.classList.add(correct?'correct':'wrong');const f=box.querySelector('.casefeedback');f.classList.add('show');
-}
-</script>
+        /* --- LECTURER MODE --- */
+        function toggleMode() {
+            isLecturerMode = !isLecturerMode;
+            if(isLecturerMode) {
+                document.body.classList.add('lecturer-mode');
+                document.getElementById('mode-indicator').innerText = "Lecturer Mode Active";
+                document.getElementById('toggle-mode-btn').innerText = "Switch to Student Mode";
+                document.getElementById('toggle-mode-btn').classList.replace('bg-slate-700', 'bg-yellow-600');
+            } else {
+                document.body.classList.remove('lecturer-mode');
+                document.getElementById('mode-indicator').innerText = "Student Mode";
+                document.getElementById('toggle-mode-btn').innerText = "Switch to Lecturer Mode";
+                document.getElementById('toggle-mode-btn').classList.replace('bg-yellow-600', 'bg-slate-700');
+            }
+        }
 
+        /* --- UTILS --- */
+        function toggleVisibility(id) {
+            const el = document.getElementById(id);
+            if(el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        /* --- INTERACTIONS --- */
+        
+        // Section 3: Hook
+        function handleHook(btn, isCorrect) {
+            const container = document.getElementById('hook-options');
+            const btns = container.getElementsByTagName('button');
+            for(let b of btns) { b.classList.add('opacity-50'); b.disabled = true; }
+            btn.classList.remove('opacity-50');
+            
+            const response = document.getElementById('hook-response');
+            response.classList.remove('hidden');
+            if(isCorrect) {
+                btn.classList.replace('bg-slate-800', 'bg-green-600');
+                response.classList.add('bg-green-100', 'text-green-800');
+                response.innerHTML = "<strong>Correct!</strong> For the first massive, instantaneous muscle contraction, you rely entirely on ATP already stored in the muscle, followed immediately by the ATP-PCr system.";
+            } else {
+                btn.classList.replace('bg-slate-800', 'bg-red-600');
+                response.classList.add('bg-red-100', 'text-red-800');
+                response.innerHTML = "<strong>Not quite.</strong> While those systems are vital, they take too long to start up. For an explosive start, muscles rely on <em>locally stored ATP</em> and the ATP-PCr system.";
+            }
+        }
+
+        // Section 4: Sequence
+        function showSeqDetail(step) {
+            const box = document.getElementById('seq-detail-box');
+            const title = document.getElementById('seq-title');
+            const text = document.getElementById('seq-text');
+            box.classList.remove('hidden');
+            
+            const data = {
+                'food': { t: 'Food Intake & Digestion', d: 'Macronutrients (Carbs, Fats, Proteins) are ingested and broken down in the GI tract into glucose, fatty acids, and amino acids.'},
+                'substrates': { t: 'Circulating Substrates & Storage', d: 'Nutrients enter the blood. Glucose is stored as Glycogen in muscles/liver. Fats are stored as Triglycerides in adipose tissue and intramuscularly (IMTGs).'},
+                'energy': { t: 'Energy Systems (ATP Production)', d: 'Substrates are metabolized in the cell (Cytosol or Mitochondria) through specific pathways to resynthesize ATP (Adenosine Triphosphate).'},
+                'demand': { t: 'Exercise Demand', d: 'The intensity and duration of the exercise dictate the rate of ATP turnover required. This determines WHICH energy system dominates.'},
+                'response': { t: 'Acute Response & Performance', d: 'Heart rate increases, blood flow shifts, fatigue builds (e.g., H+ accumulation), dictating athletic performance limits.'}
+            };
+            title.innerText = data[step].t;
+            text.innerText = data[step].d;
+        }
+
+        function checkMicroQuiz(btn, isCorrect, msg) {
+            const parent = btn.parentElement;
+            const btns = parent.getElementsByTagName('button');
+            for(let b of btns) { b.classList.add('opacity-50'); b.disabled = true; }
+            btn.classList.remove('opacity-50');
+            btn.classList.add(isCorrect ? 'bg-green-200' : 'bg-red-200');
+            
+            const feedback = parent.nextElementSibling;
+            feedback.classList.remove('hidden');
+            feedback.classList.add(isCorrect ? 'bg-green-100' : 'bg-red-100', isCorrect ? 'text-green-800' : 'text-red-800');
+            feedback.innerText = msg;
+        }
+
+        // Section 5: ATP Anim
+        function playATPAnim() {
+            document.getElementById('atp-animation-container').classList.add('anim-playing');
+            setTimeout(() => {
+                document.querySelector('.atom-adp').innerText = 'ATP';
+                document.querySelector('.atom-adp').style.background = '#22c55e'; // turn green
+            }, 1000);
+        }
+        function resetATPAnim() {
+            document.getElementById('atp-animation-container').classList.remove('anim-playing');
+            document.querySelector('.atom-adp').innerText = 'ADP';
+            document.querySelector('.atom-adp').style.background = '#3b82f6';
+        }
+
+        // Section 6: Prediction
+        function revealPrediction(id, msg) {
+            const el = document.getElementById(id);
+            el.classList.remove('hidden');
+            el.innerText = msg;
+        }
+
+        // Section 9: Crossover Slider
+        function updateCrossover() {
+            const val = document.getElementById('intensity-slider').value;
+            // Simplistic model: Fat drops from 100 to 0, CHO rises 0 to 100. Crossover at roughly 65%.
+            // Map 0-100 to percentages.
+            let fat = 100 - val;
+            let cho = val;
+            
+            // Artificial curve to make crossover happen around 60-65%
+            fat = 100 - Math.pow(val / 100, 2) * 100;
+            cho = 100 - fat;
+
+            document.getElementById('bar-fat').style.height = `${fat}%`;
+            document.getElementById('bar-fat').innerText = `${Math.round(fat)}%`;
+            
+            document.getElementById('bar-cho').style.height = `${cho}%`;
+            document.getElementById('bar-cho').innerText = `${Math.round(cho)}%`;
+
+            let stateTxt = "Resting";
+            if(val > 10 && val < 60) stateTxt = "Low/Moderate Aerobic (Fat dominant)";
+            if(val >= 60 && val <= 70) stateTxt = "Crossover Point";
+            if(val > 70 && val < 95) stateTxt = "High Intensity (CHO dominant)";
+            if(val >= 95) stateTxt = "Maximal Sprint (Anaerobic CHO)";
+            
+            document.getElementById('crossover-status').innerText = `State: ${stateTxt}`;
+        }
+
+        /* --- QUIZ LOGIC --- */
+        function renderQuiz(containerId, questions, prefix) {
+            const container = document.getElementById(containerId);
+            let html = '';
+            questions.forEach((q, i) => {
+                html += `<div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200" id="${prefix}-q-${i}">
+                    <p class="font-bold mb-4">${i+1}. ${q.q}</p>
+                    <div class="space-y-2">`;
+                q.options.forEach((opt, j) => {
+                    html += `<label class="flex items-center space-x-3 p-3 border border-slate-200 rounded cursor-pointer hover:bg-slate-50 transition">
+                        <input type="radio" name="${prefix}-q${i}" value="${j}" class="form-radio h-5 w-5 text-blue-600">
+                        <span>${opt}</span>
+                    </label>`;
+                });
+                html += `</div></div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function submitPretest() {
+            let score = 0;
+            preTestQuestions.forEach((q, i) => {
+                const selected = document.querySelector(`input[name="pre-q${i}"]:checked`);
+                if (selected && parseInt(selected.value) === q.answer) score++;
+            });
+            scores.pretest = Math.round((score / preTestQuestions.length) * 100);
+            
+            document.getElementById('pretest-score-display').innerText = `${scores.pretest}% (${score}/${preTestQuestions.length})`;
+            document.getElementById('pretest-results').classList.remove('hidden');
+            document.getElementById('submit-pretest-btn').classList.add('hidden');
+            localStorage.setItem('em_scores', JSON.stringify(scores));
+        }
+
+        function submitPosttest() {
+            let score = 0;
+            let incorrectTopics = [];
+            postTestQuestions.forEach((q, i) => {
+                const selected = document.querySelector(`input[name="post-q${i}"]:checked`);
+                const qDiv = document.getElementById(`post-q-${i}`);
+                if (selected) {
+                    if (parseInt(selected.value) === q.answer) {
+                        score++;
+                        qDiv.classList.add('border-green-500', 'bg-green-50');
+                    } else {
+                        qDiv.classList.add('border-red-500', 'bg-red-50');
+                        if(!incorrectTopics.includes(q.topic)) incorrectTopics.push(q.topic);
+                    }
+                } else {
+                    if(!incorrectTopics.includes(q.topic)) incorrectTopics.push(q.topic);
+                }
+            });
+            scores.posttest = Math.round((score / postTestQuestions.length) * 100);
+            
+            document.getElementById('final-pre-score').innerText = `${scores.pretest}%`;
+            document.getElementById('final-post-score').innerText = `${scores.posttest}%`;
+            
+            const impMsg = document.getElementById('improvement-msg');
+            const diff = scores.posttest - scores.pretest;
+            if(diff > 0) impMsg.innerText = `Great job! You improved by ${diff} points.`;
+            else if (diff === 0) impMsg.innerText = `You maintained your score.`;
+            else impMsg.innerText = `Keep reviewing! This is a complex topic.`;
+
+            if(incorrectTopics.length > 0) {
+                document.getElementById('review-areas').classList.remove('hidden');
+                document.getElementById('review-list').innerHTML = incorrectTopics.map(t => `<li>${t}</li>`).join('');
+            }
+            
+            document.getElementById('posttest-results').classList.remove('hidden');
+            document.getElementById('submit-posttest-btn').classList.add('hidden');
+            localStorage.setItem('em_scores', JSON.stringify(scores));
+        }
+
+        /* --- REFLECTION & STORAGE --- */
+        function saveReflection() {
+            const data = {
+                r1: document.getElementById('ref-1').value,
+                r2: document.getElementById('ref-2').value,
+                r3: document.getElementById('ref-3').value
+            };
+            localStorage.setItem('em_reflection', JSON.stringify(data));
+            document.getElementById('save-msg').classList.remove('hidden');
+            setTimeout(() => document.getElementById('save-msg').classList.add('hidden'), 3000);
+        }
+
+        function loadProgress() {
+            const s = localStorage.getItem('em_scores');
+            if(s) scores = JSON.parse(s);
+            
+            const r = localStorage.getItem('em_reflection');
+            if(r) {
+                const data = JSON.parse(r);
+                document.getElementById('ref-1').value = data.r1 || '';
+                document.getElementById('ref-2').value = data.r2 || '';
+                document.getElementById('ref-3').value = data.r3 || '';
+            }
+        }
+    </script>
 </body>
 </html>
+```eof
