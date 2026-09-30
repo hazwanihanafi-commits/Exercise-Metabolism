@@ -107,7 +107,7 @@ input[type=number],select{border:1px solid #cbd5e1;border-radius:8px;padding:9px
 .deep-grid p{margin:0;line-height:1.65;font-size:14px}
 .deep-dive-card details{padding:0 18px 16px}
 .deep-dive-card summary{cursor:pointer;font-weight:700;color:var(--purple);padding-top:8px}
-.study-resource-bar{position:sticky;top:0;z-index:25;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 16px;background:#fff7dc;border-bottom:1px solid #f1d47a;color:#5b4700}
+.study-resource-bar{display:none;position:sticky;top:0;z-index:25;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 16px;background:#fff7dc;border-bottom:1px solid #f1d47a;color:#5b4700}
 .study-resource-bar button{border:0;background:var(--purple);color:#fff;padding:8px 14px;border-radius:8px;font-weight:700}
 @media(max-width:900px){.deep-grid{grid-template-columns:1fr}.deep-grid>div{border-right:0;border-bottom:1px solid #eee}.deep-grid>div:last-child{border-bottom:0}}
 @media print{
@@ -146,6 +146,137 @@ input[type=number],select{border:1px solid #cbd5e1;border-radius:8px;padding:9px
  .infographic-block{break-inside:avoid;page-break-inside:avoid}
  .toolkit-grid,.reference-grid{grid-template-columns:1fr!important}
  .tool-card,.reference-card{break-inside:avoid}
+}
+</style>
+
+<style id="print-button-fix">
+.print-notes-fab{
+  position:fixed!important;
+  right:22px!important;
+  bottom:22px!important;
+  z-index:9999!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  border:0!important;
+  border-radius:999px!important;
+  padding:11px 16px!important;
+  background:#53257f!important;
+  color:#fff!important;
+  font:700 13px/1.2 system-ui,sans-serif!important;
+  box-shadow:0 6px 18px rgba(0,0,0,.18)!important;
+  cursor:pointer!important;
+}
+.print-notes-fab:hover{transform:translateY(-1px)}
+@media(max-width:700px){
+  .print-notes-fab{right:14px!important;bottom:14px!important;padding:10px 13px!important}
+  .print-notes-fab span{display:none!important}
+}
+@media print{
+  .print-notes-fab{display:none!important}
+}
+</style>
+
+<style id="textbook-v3">
+/* Textbook reading layer */
+section h2, section h3, .section-title, .card h3 {
+  letter-spacing: -0.2px;
+}
+.textbook-lead{
+  font-size:1.08rem;
+  line-height:1.8;
+  color:#202020;
+  max-width:900px;
+  margin:0 0 18px;
+}
+.fact-box{
+  margin:20px 0;
+  padding:18px 20px;
+  border-left:6px solid #53257f;
+  background:#f7f3fb;
+  border-radius:0 12px 12px 0;
+}
+.fact-box .fact-label{
+  font-weight:900;
+  color:#53257f;
+  font-size:.78rem;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  margin-bottom:7px;
+}
+.fact-box strong{color:#111}
+.key-point{
+  margin:18px 0;
+  padding:16px 18px;
+  background:#fff8df;
+  border:1px solid #efd98b;
+  border-radius:12px;
+}
+.key-point .kp-title{
+  font-weight:900;
+  color:#6a5200;
+  margin-bottom:6px;
+}
+.misconception-box{
+  margin:18px 0;
+  padding:16px 18px;
+  background:#f6f8fb;
+  border:1px solid #d9dee8;
+  border-radius:12px;
+}
+.misconception-box .mc-title{
+  font-weight:900;
+  color:#2f405a;
+  margin-bottom:6px;
+}
+.section-reference{
+  margin-top:20px;
+  font-size:.84rem;
+  color:#666;
+  border-top:1px solid #eee;
+  padding-top:10px;
+}
+.simulator{
+  margin:28px 0;
+  border:1px solid #d9d4df;
+  border-radius:18px;
+  background:#fff;
+  overflow:hidden;
+  box-shadow:0 6px 22px rgba(50,30,80,.08);
+}
+.simulator-head{
+  padding:18px 20px;
+  background:linear-gradient(90deg,#53257f,#68429a);
+  color:#fff;
+}
+.simulator-head h3{margin:0 0 5px;color:#fff}
+.simulator-head p{margin:0;opacity:.9;font-size:.92rem}
+.simulator-body{padding:18px}
+.tca-layout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:18px;align-items:start}
+.tca-svg{width:100%;height:auto;display:block;background:#faf9fc;border-radius:14px;border:1px solid #eee}
+.tca-controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.tca-controls button{
+  border:1px solid #cfc6dc;background:#fff;color:#3e2b50;
+  padding:9px 12px;border-radius:9px;font-weight:700;cursor:pointer
+}
+.tca-controls button.primary{background:#53257f;color:#fff;border-color:#53257f}
+.tca-info{padding:14px;border-radius:12px;background:#f7f3fb}
+.tca-info h4{margin:0 0 7px;color:#53257f}
+.tca-output{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.tca-output div{padding:10px;border:1px solid #ddd;border-radius:9px;background:#fff;text-align:center}
+.tca-output b{display:block;font-size:1.15rem}
+.tca-token{transition:transform .65s ease}
+.tca-node.active{stroke:#53257f;stroke-width:4}
+@media(max-width:850px){.tca-layout{grid-template-columns:1fr}.tca-output{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){
+ .tca-token{transition:none}
+}
+@media print{
+ .simulator{box-shadow:none;break-inside:avoid}
+ .tca-controls{display:none}
+ .simulator-head{background:#eee!important;color:#111!important}
+ .simulator-head h3{color:#111!important}
+ .tca-layout{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -194,10 +325,7 @@ input[type=number],select{border:1px solid #cbd5e1;border-radius:8px;padding:9px
 </aside>
 
 
-<div class="study-resource-bar">
-  <span>📚 <b>Student Notes Mode</b> — Use <b>Print / Save as PDF</b> to create a clean printable copy.</span>
-  <button onclick="window.print()">🖨️ Print / Save as PDF</button>
-</div>
+<button class="print-notes-fab" onclick="window.print()" title="Print or Save as PDF">🖨️ <span>Print / Save PDF</span></button>
 <main class="main">
 <header class="topbar">
   <div style="display:flex;align-items:center;gap:10px">
@@ -399,6 +527,19 @@ input[type=number],select{border:1px solid #cbd5e1;border-radius:8px;padding:9px
 
 <!-- ENERGY -->
 <section class="section" id="energy">
+<div class="textbook-lead">
+  <b>Exercise metabolism is the study of how the body supplies and resynthesises ATP to meet the energy demand of physical activity.</b>
+  The central idea is not that one pathway “turns on” while another turns off, but that several pathways contribute simultaneously in different proportions.
+</div>
+<div class="fact-box">
+  <div class="fact-label">Core fact</div>
+  <strong>ATP is the immediate energy donor for cellular work.</strong> Because intramuscular ATP stores are small relative to the rate at which ATP can be consumed during intense exercise, ATP must be continuously resynthesised.
+</div>
+<div class="key-point">
+  <div class="kp-title">Remember this relationship</div>
+  <b>Exercise demand → ATP demand → ATP resynthesis → physiological response.</b>
+</div>
+
 <span class="badge">Foundation 2</span><h2>ENERGY = ATP REQUIREMENT</h2>
 <div class="basic"><h3>What is ATP?</h3><p class="simple"><b>ATP (adenosine triphosphate)</b> is the immediate chemical energy currency used by cells. Muscle contraction consumes ATP. Because stored ATP is small, the body must continuously regenerate ATP from ADP + Pi.</p></div>
 <div class="svgbox">
@@ -549,6 +690,15 @@ input[type=number],select{border:1px solid #cbd5e1;border-radius:8px;padding:9px
 
 <!-- GLYCOLYSIS -->
 <section class="section" id="glycolysis">
+<div class="fact-box">
+  <div class="fact-label">High-yield facts</div>
+  <strong>Glycolysis occurs in the cytosol.</strong> It converts glucose or glycogen-derived carbohydrate to pyruvate, produces a net ATP yield, and generates NADH. Its flux can increase rapidly when ATP demand rises.
+</div>
+<div class="misconception-box">
+  <div class="mc-title">⚠️ Common misconception</div>
+  Glycolysis does <b>not</b> mean “no oxygen can ever be present.” It is a cytosolic pathway and can operate rapidly during exercise while oxidative metabolism is also occurring.
+</div>
+
 <span class="badge">Metabolic pathway 2</span><h2>GLYCOLYSIS</h2>
 <div class="basic"><h3>What is glycolysis?</h3><p class="simple"><b>Glycolysis</b> is a series of reactions in the cytosol that breaks one glucose molecule into <b>two pyruvate</b> molecules. It can supply ATP rapidly without requiring the mitochondria to perform the entire oxidative pathway.</p><div class="rule">GLUCOSE → 2 PYRUVATE + NET ATP + NADH</div></div>
 <div class="grid g2">
@@ -608,6 +758,15 @@ input[type=number],select{border:1px solid #cbd5e1;border-radius:8px;padding:9px
 
 <!-- PYRUVATE -->
 <section class="section" id="pyruvate">
+<div class="fact-box">
+  <div class="fact-label">High-yield facts</div>
+  <strong>Lactate is a metabolite, not simply a waste product.</strong> Conversion of pyruvate to lactate helps regenerate NAD⁺, supporting continued glycolytic flux. Lactate can subsequently be transported and oxidised.
+</div>
+<div class="misconception-box">
+  <div class="mc-title">Think carefully</div>
+  Avoid the shortcut “lactate causes fatigue.” Exercise fatigue is multifactorial, and lactate can itself serve as an oxidative substrate.
+</div>
+
 <span class="badge">Metabolic branch point</span><h2>PYRUVATE → LACTATE OR ACETYL-CoA</h2>
 <div class="basic"><h3>Pyruvate is a decision point</h3><p class="simple">After glycolysis, pyruvate can be handled differently depending on metabolic conditions. It can be reduced to <b>lactate</b> to regenerate NAD⁺ rapidly, or enter mitochondrial oxidative metabolism through conversion to <b>acetyl-CoA</b>.</p></div>
 <div class="two-col">
@@ -649,6 +808,74 @@ input[type=number],select{border:1px solid #cbd5e1;border-radius:8px;padding:9px
 
 <!-- TCA -->
 <section class="section" id="tca">
+<div class="textbook-lead"><b>Why animate this?</b> The Krebs/TCA cycle is difficult to understand as a static list. The simulator lets students follow the carbon skeleton and see when NADH, FADH₂, GTP/ATP and CO₂ are generated.</div>
+<div class="simulator" id="tca-simulator">
+  <div class="simulator-head">
+    <h3>🧬 Krebs / TCA Cycle Simulator</h3>
+    <p>Step through one turn of the cycle and follow carbon, NADH, FADH₂ and ATP/GTP production.</p>
+  </div>
+  <div class="simulator-body">
+    <div class="tca-layout">
+      <div>
+        <svg class="tca-svg" viewBox="0 0 720 470" role="img" aria-label="Interactive schematic of the Krebs cycle">
+          <defs>
+            <marker id="tcaArrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L7,3 z" fill="#80669c"></path>
+            </marker>
+          </defs>
+          <circle cx="350" cy="235" r="155" fill="#fff" stroke="#d8cfe1" stroke-width="4"></circle>
+          <path d="M350 80 A155 155 0 0 1 505 235" fill="none" stroke="#80669c" stroke-width="5" marker-end="url(#tcaArrow)"/>
+          <path d="M505 235 A155 155 0 0 1 350 390" fill="none" stroke="#80669c" stroke-width="5" marker-end="url(#tcaArrow)"/>
+          <path d="M350 390 A155 155 0 0 1 195 235" fill="none" stroke="#80669c" stroke-width="5" marker-end="url(#tcaArrow)"/>
+          <path d="M195 235 A155 155 0 0 1 350 80" fill="none" stroke="#80669c" stroke-width="5" marker-end="url(#tcaArrow)"/>
+
+          <g class="tca-node" data-step="0"><circle cx="350" cy="78" r="35" fill="#f2eaf8" stroke="#bca9cb" stroke-width="2"/><text x="350" y="74" text-anchor="middle" font-size="14" font-weight="700">Citrate</text><text x="350" y="91" text-anchor="middle" font-size="11">6C</text></g>
+          <g class="tca-node" data-step="1"><circle cx="505" cy="235" r="35" fill="#f2eaf8" stroke="#bca9cb" stroke-width="2"/><text x="505" y="231" text-anchor="middle" font-size="13" font-weight="700">Isocitrate</text><text x="505" y="248" text-anchor="middle" font-size="11">6C</text></g>
+          <g class="tca-node" data-step="2"><circle cx="445" cy="365" r="35" fill="#f2eaf8" stroke="#bca9cb" stroke-width="2"/><text x="445" y="361" text-anchor="middle" font-size="12" font-weight="700">α-KG</text><text x="445" y="378" text-anchor="middle" font-size="11">5C</text></g>
+          <g class="tca-node" data-step="3"><circle cx="255" cy="365" r="35" fill="#f2eaf8" stroke="#bca9cb" stroke-width="2"/><text x="255" y="361" text-anchor="middle" font-size="12" font-weight="700">Succinyl-CoA</text><text x="255" y="378" text-anchor="middle" font-size="10">4C</text></g>
+          <g class="tca-node" data-step="4"><circle cx="195" cy="235" r="35" fill="#f2eaf8" stroke="#bca9cb" stroke-width="2"/><text x="195" y="231" text-anchor="middle" font-size="13" font-weight="700">Succinate</text><text x="195" y="248" text-anchor="middle" font-size="11">4C</text></g>
+          <g class="tca-node" data-step="5"><circle cx="255" cy="105" r="35" fill="#f2eaf8" stroke="#bca9cb" stroke-width="2"/><text x="255" y="101" text-anchor="middle" font-size="13" font-weight="700">Fumarate</text><text x="255" y="118" text-anchor="middle" font-size="11">4C</text></g>
+          <g class="tca-node" data-step="6"><circle cx="350" cy="150" r="35" fill="#eaf5ee" stroke="#9dc5aa" stroke-width="2"/><text x="350" y="146" text-anchor="middle" font-size="13" font-weight="700">Malate</text><text x="350" y="163" text-anchor="middle" font-size="11">4C</text></g>
+          <g class="tca-node" data-step="7"><circle cx="350" cy="235" r="35" fill="#eaf5ee" stroke="#9dc5aa" stroke-width="2"/><text x="350" y="231" text-anchor="middle" font-size="13" font-weight="700">Oxaloacetate</text><text x="350" y="248" text-anchor="middle" font-size="10">4C</text></g>
+
+          <circle class="tca-token" cx="350" cy="78" r="9" fill="#ffb703"></circle>
+          <text x="350" y="225" text-anchor="middle" font-size="18" font-weight="800" fill="#53257f">TCA CYCLE</text>
+          <text x="350" y="247" text-anchor="middle" font-size="12" fill="#555">Mitochondrial matrix</text>
+
+          <g font-size="12" fill="#333">
+            <text x="565" y="145">CO₂ released</text>
+            <text x="565" y="165">NADH produced</text>
+            <text x="565" y="185">FADH₂ produced</text>
+            <text x="565" y="205">GTP/ATP produced</text>
+          </g>
+          <g font-size="12" font-weight="700">
+            <text x="625" y="145" id="tca-co2">0</text>
+            <text x="625" y="165" id="tca-nadh">0</text>
+            <text x="625" y="185" id="tca-fadh2">0</text>
+            <text x="625" y="205" id="tca-atp">0</text>
+          </g>
+        </svg>
+        <div class="tca-controls">
+          <button type="button" class="primary" id="tca-prev">← Previous</button>
+          <button type="button" class="primary" id="tca-next">Next step →</button>
+          <button type="button" id="tca-play">▶ Play cycle</button>
+          <button type="button" id="tca-reset">↺ Reset</button>
+        </div>
+      </div>
+      <div class="tca-info" aria-live="polite">
+        <h4 id="tca-title">Step 1 — Citrate</h4>
+        <p id="tca-text">Acetyl-CoA combines with oxaloacetate to form citrate. This begins one turn of the cycle.</p>
+        <div class="tca-output">
+          <div><b id="tca-nadh-small">0</b>NADH</div>
+          <div><b id="tca-fadh2-small">0</b>FADH₂</div>
+          <div><b id="tca-atp-small">0</b>GTP/ATP</div>
+        </div>
+        <p style="font-size:.82rem;color:#666;margin-top:12px"><b>Teaching point:</b> the TCA cycle is a source of reducing equivalents for oxidative phosphorylation. Most ATP associated with aerobic metabolism is generated through the respiratory chain and ATP synthase.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <span class="badge">Metabolic pathway 3</span><h2>KREBS / TCA CYCLE</h2>
 <div class="basic"><h3>Simple explanation</h3><p class="simple">The TCA cycle is a mitochondrial pathway that processes <b>acetyl-CoA</b>. Its major value for exercise physiology is not a large direct ATP output. It produces <b>NADH and FADH₂</b>, which carry high-energy electrons to the electron transport chain.</p><div class="rule">Acetyl-CoA → TCA cycle → NADH + FADH₂ → ETC → ATP</div></div>
 <div class="svgbox">
@@ -707,6 +934,15 @@ input[type=number],select{border:1px solid #cbd5e1;border-radius:8px;padding:9px
 
 <!-- ETC -->
 <section class="section" id="etc">
+<div class="fact-box">
+  <div class="fact-label">Key mitochondrial fact</div>
+  <strong>Oxygen is the terminal electron acceptor of the respiratory chain.</strong> Electron transfer supports proton pumping across the inner mitochondrial membrane; ATP synthase uses the resulting electrochemical gradient to synthesise ATP.
+</div>
+<div class="key-point">
+  <div class="kp-title">Important distinction</div>
+  The TCA cycle itself does not directly consume molecular oxygen. However, continued oxidative metabolism depends on the respiratory chain being able to reoxidise NADH and FADH₂.
+</div>
+
 <span class="badge">Metabolic pathway 4</span><h2>ELECTRON TRANSPORT CHAIN → OXIDATIVE PHOSPHORYLATION</h2>
 <div class="basic"><h3>The big idea</h3><p class="simple">NADH and FADH₂ deliver electrons to the respiratory chain. Electron flow powers proton pumping across the inner mitochondrial membrane. The resulting proton gradient drives <b>ATP synthase</b> to make ATP. Oxygen serves as the final electron acceptor and water is formed.</p></div>
 <div class="svgbox">
@@ -1938,6 +2174,77 @@ document.addEventListener("DOMContentLoaded",()=>{
 });
 
 
+</script>
+
+<script id="tca-simulator-js">
+(function(){
+  const root=document.getElementById('tca-simulator');
+  if(!root) return;
+  const nodes=[...root.querySelectorAll('.tca-node')];
+  const token=root.querySelector('.tca-token');
+  const titles=[
+    "Step 1 — Citrate",
+    "Step 2 — Isocitrate",
+    "Step 3 — α-Ketoglutarate",
+    "Step 4 — Succinyl-CoA",
+    "Step 5 — Succinate",
+    "Step 6 — Fumarate",
+    "Step 7 — Malate",
+    "Step 8 — Oxaloacetate"
+  ];
+  const texts=[
+    "Acetyl-CoA combines with oxaloacetate to form citrate. The cycle begins with a 2-carbon acetyl group entering a 4-carbon acceptor.",
+    "Citrate is rearranged to isocitrate. This prepares the molecule for oxidative decarboxylation.",
+    "Isocitrate is oxidised and decarboxylated, producing NADH and releasing CO₂. The carbon skeleton becomes α-ketoglutarate.",
+    "α-Ketoglutarate is oxidised and decarboxylated, producing NADH and CO₂ and forming succinyl-CoA.",
+    "Succinyl-CoA is converted to succinate with substrate-level phosphorylation, producing GTP/ATP.",
+    "Succinate is oxidised to fumarate, producing FADH₂.",
+    "Fumarate is hydrated to form malate.",
+    "Malate is oxidised to regenerate oxaloacetate, producing NADH. Oxaloacetate is now ready to combine with another acetyl-CoA."
+  ];
+  const coords=[
+    [350,78],[505,235],[445,365],[255,365],[195,235],[255,105],[350,150],[350,235]
+  ];
+  let step=0, timer=null;
+  function outputs(n){
+    // Cumulative products associated with a single turn up to each displayed step.
+    let nadh=0, fadh2=0, atp=0, co2=0;
+    if(n>=2)nadh++;
+    if(n>=3){nadh++;co2++;}
+    if(n>=4){atp++;} // succinyl-CoA -> succinate
+    if(n>=5){fadh2++;}
+    if(n>=7){nadh++;}
+    if(n>=3){} // second CO2 is produced in step 4, represented below
+    if(n>=3)co2=1;
+    if(n>=4)co2=2;
+    return {nadh,fadh2,atp,co2};
+  }
+  function render(){
+    nodes.forEach((el,i)=>el.classList.toggle('active',i===step));
+    const [x,y]=coords[step];
+    token.setAttribute('cx',x); token.setAttribute('cy',y);
+    root.querySelector('#tca-title').textContent=titles[step];
+    root.querySelector('#tca-text').textContent=texts[step];
+    const o=outputs(step);
+    root.querySelector('#tca-nadh').textContent=o.nadh;
+    root.querySelector('#tca-fadh2').textContent=o.fadh2;
+    root.querySelector('#tca-atp').textContent=o.atp;
+    root.querySelector('#tca-co2').textContent=o.co2;
+    root.querySelector('#tca-nadh-small').textContent=o.nadh;
+    root.querySelector('#tca-fadh2-small').textContent=o.fadh2;
+    root.querySelector('#tca-atp-small').textContent=o.atp;
+  }
+  function stop(){if(timer){clearInterval(timer);timer=null;} root.querySelector('#tca-play').textContent="▶ Play cycle";}
+  root.querySelector('#tca-next').addEventListener('click',()=>{stop();step=(step+1)%8;render();});
+  root.querySelector('#tca-prev').addEventListener('click',()=>{stop();step=(step+7)%8;render();});
+  root.querySelector('#tca-reset').addEventListener('click',()=>{stop();step=0;render();});
+  root.querySelector('#tca-play').addEventListener('click',()=>{
+    if(timer){stop();return;}
+    root.querySelector('#tca-play').textContent="⏸ Pause";
+    timer=setInterval(()=>{step=(step+1)%8;render();},1100);
+  });
+  render();
+})();
 </script>
 </body>
 </html>
