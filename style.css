@@ -468,3 +468,485 @@ th,td{padding:12px 14px}
   .content{padding:10mm}
   .main{margin-left:0;width:100%}
 }
+
+
+/* =========================================================
+   FINAL CLEAN DESKTOP UI — TCE504 DIGITAL TEXTBOOK
+   Laptop-first: wide, aligned, calm, interactive, not cramped
+   ========================================================= */
+
+html, body {
+  width: 100%;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden;
+}
+
+body {
+  background: #f4f5f9;
+  color: #243044;
+  font-size: 15px;
+}
+
+.app {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ---------- LEFT NAV ---------- */
+.sidebar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: 268px !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  z-index: 100 !important;
+  background: linear-gradient(180deg, #32134f 0%, #53257f 52%, #442064 100%) !important;
+  box-shadow: 4px 0 18px rgba(34, 18, 55, .10);
+}
+
+.brand {
+  padding: 22px 18px 20px !important;
+}
+
+.brand .badge {
+  max-width: 100%;
+  white-space: normal;
+  line-height: 1.35;
+}
+
+.brand h1 {
+  font-size: 21px !important;
+  line-height: 1.2 !important;
+  margin: 10px 0 6px !important;
+}
+
+.brand p {
+  line-height: 1.5 !important;
+}
+
+.nav {
+  padding: 10px 9px 18px !important;
+}
+
+.nav small {
+  padding: 14px 9px 6px !important;
+  font-size: 11px !important;
+}
+
+.nav button {
+  min-height: 36px;
+  padding: 9px 10px !important;
+  margin: 2px 0 !important;
+  border-radius: 9px !important;
+  font-size: 12.5px !important;
+  line-height: 1.3 !important;
+}
+
+.nav button.active {
+  background: rgba(255,255,255,.17) !important;
+  box-shadow: inset 3px 0 0 #ffb703;
+}
+
+.sidebar-foot {
+  padding: 14px 16px 22px !important;
+  line-height: 1.5 !important;
+}
+
+/* ---------- MAIN CANVAS ---------- */
+.main {
+  position: relative !important;
+  width: calc(100% - 268px) !important;
+  min-width: 0 !important;
+  min-height: 100vh !important;
+  margin: 0 0 0 268px !important;
+  padding: 0 !important;
+  background: #f4f5f9;
+}
+
+/* The exam toggle was taking its own row and creating the awkward gap.
+   Keep it floating neatly inside the top-right of the header area. */
+.exam-toggle-wrap {
+  position: absolute !important;
+  top: 9px !important;
+  right: 24px !important;
+  z-index: 80 !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.exam-toggle {
+  min-height: 38px;
+  padding: 7px 12px !important;
+  background: rgba(255,255,255,.98) !important;
+  border: 1px solid #d9cde5 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 14px rgba(50,30,80,.10) !important;
+  font-size: 12px !important;
+  white-space: nowrap;
+}
+
+.topbar {
+  position: sticky !important;
+  top: 0 !important;
+  min-height: 58px;
+  padding: 9px 24px !important;
+  padding-right: 250px !important;
+  background: rgba(255,255,255,.97) !important;
+  border-bottom: 1px solid #e4e7ee !important;
+  box-shadow: 0 2px 12px rgba(15,23,42,.04);
+}
+
+.topbar .title {
+  font-size: 14px;
+  letter-spacing: .01em;
+}
+
+.top-actions {
+  gap: 6px !important;
+  align-items: center;
+}
+
+.top-actions .btn {
+  min-height: 36px;
+  padding: 8px 10px !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+}
+
+.progress-wrap {
+  height: 4px !important;
+  background: #e9eaf0 !important;
+}
+
+/* ---------- CONTENT: NO NARROW CENTER COLUMN ---------- */
+.content {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 28px 34px 80px !important;
+}
+
+.section {
+  display: none;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  min-width: 0 !important;
+}
+
+.section.active {
+  display: block;
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 0 22px !important;
+  padding: 30px 34px !important;
+  border-radius: 18px !important;
+  border: 1px solid #e5dcef !important;
+  background: linear-gradient(120deg,#fff 0%,#fbf9fe 65%,#f3ecfa 100%) !important;
+  box-shadow: 0 8px 24px rgba(83,37,127,.06) !important;
+}
+
+.hero h1 {
+  max-width: 1000px;
+  margin: 8px 0 10px !important;
+  font-size: clamp(34px, 3.8vw, 58px) !important;
+  line-height: 1.04 !important;
+}
+
+.hero .lead {
+  max-width: 1050px !important;
+  font-size: 17px !important;
+  line-height: 1.7 !important;
+}
+
+/* ---------- SECTION HEADINGS ---------- */
+.section > h2 {
+  margin: 4px 0 18px !important;
+  font-size: clamp(28px, 3vw, 40px) !important;
+  line-height: 1.12 !important;
+}
+
+.badge {
+  line-height: 1.3;
+}
+
+/* ---------- TEACHING CARDS ---------- */
+.card {
+  min-width: 0 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 16px rgba(15,23,42,.045) !important;
+}
+
+.grid {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.g2 {
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+}
+
+.g3 {
+  grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+}
+
+.g4 {
+  grid-template-columns: repeat(4,minmax(0,1fr)) !important;
+}
+
+.two-col {
+  grid-template-columns: minmax(0,1.2fr) minmax(300px,.8fr) !important;
+  gap: 22px !important;
+}
+
+.two-col.wide-left {
+  grid-template-columns: minmax(0,1.4fr) minmax(300px,.6fr) !important;
+}
+
+.two-col.wide-right {
+  grid-template-columns: minmax(300px,.6fr) minmax(0,1.4fr) !important;
+}
+
+/* ---------- VISUALS ---------- */
+.svgbox,
+.visual-map.v6-visual,
+.v6-data-lab,
+.data-graph,
+.simulator,
+.exercise-state,
+.glycolysis-animation {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.svgbox {
+  min-height: 240px;
+  padding: 18px !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+}
+
+.svgbox svg {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.visual-map.v6-visual {
+  margin: 22px 0 !important;
+  border-radius: 17px !important;
+  box-shadow: 0 6px 20px rgba(83,37,127,.055) !important;
+}
+
+.v6-canvas {
+  padding: 18px !important;
+  overflow-x: auto !important;
+}
+
+.v6-svg {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+/* ---------- INTERACTION AREAS ---------- */
+.framework,
+.learning-checkpoint,
+.deep-dive-card,
+.detective-grid,
+.bridge-box,
+.v6-data-lab {
+  margin-top: 20px !important;
+}
+
+.learning-checkpoint {
+  grid-template-columns: minmax(260px,.8fr) minmax(0,1.2fr) !important;
+  gap: 18px !important;
+}
+
+.framework {
+  border-radius: 16px !important;
+}
+
+.framework-tabs {
+  grid-template-columns: repeat(4,minmax(0,1fr)) !important;
+}
+
+.framework-tab {
+  min-height: 48px;
+}
+
+.quick-check,
+.key-fact {
+  min-width: 0;
+}
+
+/* Make interactive controls feel intentional rather than like plain links. */
+.reveal-btn,
+.v6-reveal,
+.state-buttons button,
+.speed-controls button,
+.v6-control button,
+.btn,
+.quiz-option,
+.qc-option {
+  transition: transform .16s ease, border-color .16s ease, background .16s ease, box-shadow .16s ease;
+}
+
+.reveal-btn:hover,
+.v6-reveal:hover,
+.state-buttons button:hover,
+.speed-controls button:hover,
+.v6-control button:hover,
+.btn:hover,
+.quiz-option:hover,
+.qc-option:hover {
+  transform: translateY(-1px);
+}
+
+/* ---------- DATA / TABLES ---------- */
+.data-graph,
+.v6-data-lab {
+  overflow: hidden;
+}
+
+.data-graph svg,
+.v6-chart svg {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+table {
+  min-width: 0;
+  font-size: 14px;
+}
+
+th,
+td {
+  padding: 11px 13px !important;
+}
+
+/* ---------- LARGE LAPTOP ---------- */
+@media (min-width: 1500px) {
+  .sidebar { width: 282px !important; }
+  .main { width: calc(100% - 282px) !important; margin-left: 282px !important; }
+  .content { padding-left: 44px !important; padding-right: 44px !important; }
+  .hero { padding: 34px 40px !important; }
+}
+
+/* ---------- NORMAL LAPTOP 1200–1499 ---------- */
+@media (min-width: 1101px) and (max-width: 1499px) {
+  .content { padding-left: 30px !important; padding-right: 30px !important; }
+  .topbar { padding-left: 18px !important; }
+  .two-col { grid-template-columns: minmax(0,1.15fr) minmax(280px,.85fr) !important; }
+}
+
+/* ---------- TABLET / SMALL LAPTOP ---------- */
+@media (max-width: 1100px) {
+  .sidebar {
+    transform: translateX(-100%) !important;
+    transition: transform .22s ease !important;
+  }
+  .sidebar.open { transform: translateX(0) !important; }
+  .main {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+  .exam-toggle-wrap {
+    right: 14px !important;
+  }
+  .topbar {
+    padding-right: 210px !important;
+  }
+  .two-col,
+  .two-col.wide-left,
+  .two-col.wide-right {
+    grid-template-columns: 1fr !important;
+  }
+  .g3 { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+  .g4 { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+}
+
+/* ---------- PHONE ---------- */
+@media (max-width: 700px) {
+  .content { padding: 18px 14px 65px !important; }
+  .topbar {
+    min-height: 60px;
+    padding: 8px 10px !important;
+    padding-right: 10px !important;
+  }
+  .topbar .title { display:none; }
+  .top-actions { justify-content:flex-end; }
+  .top-actions .btn { font-size:11px !important; padding:7px 8px !important; }
+  .exam-toggle-wrap {
+    position: static !important;
+    display:flex !important;
+    justify-content:flex-end;
+    padding:8px 12px !important;
+    background:#fff;
+    border-bottom:1px solid #e5e7eb;
+  }
+  .exam-toggle { width:auto; }
+  .hero { padding:24px 20px !important; }
+  .hero h1 { font-size:34px !important; }
+  .g2,.g3,.g4 { grid-template-columns:1fr !important; }
+  .learning-checkpoint { grid-template-columns:1fr !important; }
+  .framework-tabs { grid-template-columns:1fr 1fr !important; }
+  .svgbox { overflow-x:auto !important; }
+  .svgbox svg { min-width:620px !important; }
+}
+
+/* ---------- ACCESSIBILITY / MOTION ---------- */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid rgba(255,183,3,.55);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ---------- PRINT ---------- */
+@media print {
+  .sidebar,
+  .topbar,
+  .exam-toggle-wrap,
+  .print-notes-fab,
+  .progress-wrap {
+    display:none !important;
+  }
+  .main {
+    width:100% !important;
+    margin:0 !important;
+  }
+  .content {
+    padding:0 !important;
+  }
+  .section {
+    width:100% !important;
+  }
+}
