@@ -59,6 +59,21 @@ footer{background:#171225;color:#ddd;padding:35px 0}.footerbrand{color:#fff;font
 @media(max-width:850px){.grid3,.grid4,.energy,.metric-cards{grid-template-columns:repeat(2,1fr)}.timeline{grid-template-columns:repeat(2,1fr)}.exercise-strip{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){.grid2,.calc-grid,.grid3,.grid4,.energy,.metric-cards{grid-template-columns:1fr}.rpe{grid-template-columns:repeat(4,1fr)}h1{font-size:42px}.hero{padding-top:45px}}
 </style>
+
+<style id="tce-basic-layer">
+.basic-start{background:linear-gradient(135deg,#f8f5fb,#fffaf0);border:2px solid #F2A900;border-radius:18px;padding:22px;margin:0 0 24px 0;box-shadow:0 8px 24px rgba(75,29,82,.08)}
+.basic-start h3{color:#4B1D52;margin:0 0 10px;font-size:1.35rem}
+.basic-start .big-idea{font-size:1.08rem;line-height:1.75}
+.basic-start .teach-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:16px}
+.basic-start .teach-card{background:white;border-radius:12px;padding:13px;border:1px solid #eadff0}
+.basic-start .teach-card b{color:#4B1D52;display:block;margin-bottom:5px}
+.basic-start .simple-rule{margin-top:16px;background:#4B1D52;color:white;border-radius:12px;padding:14px 16px;font-weight:600}
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.glossary-item{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:14px}
+.glossary-item b{color:#4B1D52}
+@media(max-width:640px){.basic-start{padding:16px}.basic-start .big-idea{font-size:1rem}}
+</style>
+
 </head>
 <body>
 
@@ -529,19 +544,6 @@ for(let i=6;i<=20;i++){const b=document.createElement('button');b.textContent=i;
 function caseAnswer(btn,correct){
  const box=btn.parentElement;box.querySelectorAll('.option').forEach(x=>x.disabled=true);btn.classList.add(correct?'correct':'wrong');const f=box.querySelector('.casefeedback');f.classList.add('show');
 }
-const questions=[
- ['What is the immediate purpose of ATP in exercise?',['To provide usable cellular energy for work','To store oxygen in the blood','To produce fat directly'],0],
- ['Which system can regenerate ATP very rapidly for short explosive effort?',['Oxidative system only','ATP-PCr / phosphagen system','Protein metabolism only'],1],
- ['What does RER calculate?',['HR ÷ age','VCO₂ ÷ VO₂','VO₂ ÷ body mass'],1],
- ['What is HRR?',['HRmax − HRrest','HRrest ÷ HRmax','HR exercise + HRrest'],0],
- ['What does Borg RPE primarily capture?',['Perceived exertion','Blood pressure','Blood glucose'],0],
- ['During sustained exercise, which pathway becomes particularly important for ongoing ATP supply?',['Oxidative metabolism','Stored ATP only','Urea formation'],0],
- ['Why can VO₂ remain elevated after exercise?',['Recovery processes continue','ATP production stops','The person is still at the same workload'],0],
- ['What is one reason to monitor external workload?',['To know what exercise dose was actually performed','To replace all physiological measures','To measure nitrogen directly'],0]
-];
-const quiz=document.getElementById('quiz');
-questions.forEach((q,i)=>{const d=document.createElement('div');d.className='quiz-q';d.innerHTML=`<p>${i+1}. ${q[0]}</p>`+q[1].map((o,j)=>`<label style="display:block;margin:6px 0"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('');quiz.appendChild(d)});
-function gradeQuiz(){let score=0;questions.forEach((q,i)=>{const x=document.querySelector(`input[name=q${i}]:checked`);if(x&&+x.value===q[2])score++});document.getElementById('quizScore').innerHTML=`<span class="score">${score}/${questions.length}</span><br>${score>=7?'Strong understanding — now explain the concepts using the cases.':score>=5?'Good start — review the energy systems and monitoring section.':'Revisit the Food → ATP → Exercise → Recovery story, then try again.'}`;}
 </script>
 
 <script>
