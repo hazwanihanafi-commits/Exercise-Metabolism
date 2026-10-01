@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCE504 • Section 24 — Complete Physiology Map</title>
+<style>
+:root{
+--purple:#53257f;--purple2:#6d3ca2;--gold:#ffb703;--ink:#182230;--muted:#667085;
+--line:#e5e7ee;--blue:#2563eb;--green:#2e7d32;--red:#b91c1c;--soft:#f7f7fb
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#f4f5f9;line-height:1.55}
+.wrap{max-width:1200px;margin:auto;padding:24px}
+.hero{background:linear-gradient(135deg,#53257f,#6d3ca2,#8561ad);color:#fff;border-radius:24px;padding:34px;box-shadow:0 15px 38px rgba(43,23,62,.14)}
+.badge{display:inline-block;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.15);font-size:12px;font-weight:700;letter-spacing:.06em}
+.hero h1{font-size:40px;line-height:1.08;margin:10px 0 12px}.hero p{max-width:1000px;color:#f4eff9}
+.rule{margin-top:18px;padding:14px 16px;border-left:5px solid var(--gold);border-radius:10px;background:rgba(255,255,255,.12);font-weight:700}
+.section{margin-top:24px}.section h2{font-size:28px;margin:0 0 8px}.lead{font-size:17px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card,.visual,.check{background:#fff;border:1px solid var(--line);border-radius:18px;padding:21px;box-shadow:0 8px 24px rgba(35,42,65,.05)}
+.visual{padding:13px;overflow:hidden}.visual svg{width:100%;height:auto;display:block}
+.purple{border-top:5px solid var(--purple)}.gold{border-top:5px solid var(--gold)}.blue{border-top:5px solid var(--blue)}.green{border-top:5px solid var(--green)}.red{border-top:5px solid var(--red)}
+.callout,.note,.misconception{padding:16px 18px;border-radius:14px;margin-top:15px}.callout{background:#f0ebf8;border-left:5px solid var(--purple)}.note{background:#fffdf4;border-left:5px solid var(--gold)}.misconception{background:#fff5f5;border-left:5px solid var(--red)}
+.flow{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;align-items:center;margin-top:18px}
+.node{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 6px;text-align:center;font-size:11px;font-weight:700;min-height:65px;display:flex;align-items:center;justify-content:center}
+.arrow{font-size:18px;color:var(--purple);text-align:center}
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:18px}
+.t{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px;text-align:center;cursor:pointer}.t.active{border:2px solid var(--purple);box-shadow:0 7px 18px rgba(83,37,127,.1)}
+.icon{font-size:30px}.t b{display:block;margin-top:4px}
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+.metric{background:#fafafe;border:1px solid var(--line);border-radius:13px;padding:14px}.metric span{display:block;color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase}.metric strong{display:block;font-size:19px;margin-top:4px}
+.answer{display:none;margin-top:10px;padding:13px;border-radius:10px;background:#eef7f1;border-left:4px solid var(--green)}.answer.show{display:block}
+.controls{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}.btn-primary{background:var(--purple);color:#fff}.btn-light{background:#eef0f5;color:#273041}.btn-gold{background:var(--gold);color:#171717}
+.option{display:block;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin:7px 0;cursor:pointer}.option:hover{background:#fafafe}
+.feedback{margin-top:10px;font-weight:700}
+textarea{width:100%;min-height:130px;padding:12px;border:1px solid #d5d9e3;border-radius:12px;font:inherit;resize:vertical}
+.step-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+.step{padding:16px;border:1px solid var(--line);border-radius:14px;background:#fff}.step .num{font-size:12px;font-weight:800;color:#fff;background:var(--purple);display:inline-block;border-radius:999px;padding:4px 7px}
+.kf{background:var(--purple);color:#fff;border-radius:16px;padding:18px}.kf b{color:#ffd85d}
+.exam{position:fixed;right:14px;top:14px;background:#fff;border:1px solid var(--line);padding:8px 12px;border-radius:13px;box-shadow:0 7px 20px rgba(0,0,0,.08);z-index:10;font-size:13px;font-weight:700}.exam input{accent-color:var(--purple)}
+.exam-on .interactive-only{display:none!important}.exam-on .answer{display:block}
+.footer{text-align:center;color:var(--muted);font-size:12px;margin:32px 0 8px}
+@media(max-width:950px){.grid2,.grid3{grid-template-columns:1fr}.flow{grid-template-columns:repeat(5,1fr)}.timeline{grid-template-columns:repeat(3,1fr)}.metric-grid{grid-template-columns:1fr 1fr}.step-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.wrap{padding:14px}.hero{padding:25px}.hero h1{font-size:29px}.flow,.timeline,.metric-grid,.step-grid{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}.card{padding:17px}}
+</style>
+</head>
+<body>
+<div class="exam"><label><input id="exam" type="checkbox" onchange="toggleExam()"> Exam Prep Mode</label></div>
+<div class="wrap">
+
+<header class="hero">
+<span class="badge">TCE 504 • Exercise Metabolism • Section 24</span>
+<h1>THE COMPLETE PHYSIOLOGY MAP</h1>
+<p>This is the synthesis section. Put the whole learning journey together — from <b>food</b> to <b>substrates</b>, ATP production, exercise demand, acute response, recovery, adaptation, performance and practical application.</p>
+<div class="rule">THE WHOLE STORY → FOOD → SUBSTRATES → ENERGY → ENERGY SYSTEMS → EXERCISE DEMAND → ACUTE RESPONSE → IMMEDIATE RESPONSE → CHRONIC ADAPTATION → PERFORMANCE → PRACTICAL APPLICATION</div>
+</header>
+
+<section class="section">
+<h2>01 • THE COMPLETE CHAIN</h2>
+<div class="flow">
+<div class="node">FOOD</div><div class="arrow">→</div>
+<div class="node">SUBSTRATES</div><div class="arrow">→</div>
+<div class="node">ENERGY / ATP</div><div class="arrow">→</div>
+<div class="node">ENERGY SYSTEMS</div><div class="arrow">→</div>
+<div class="node">EXERCISE DEMAND</div><div class="arrow">→</div>
+<div class="node">ACUTE RESPONSE</div><div class="arrow">→</div>
+<div class="node">RECOVERY</div><div class="arrow">→</div>
+<div class="node">ADAPTATION</div><div class="arrow">→</div>
+<div class="node">PERFORMANCE</div>
+</div>
+<div class="callout"><b>Practical application</b> sits at the end of the chain: use what you understand to assess, prescribe, monitor, recover and adjust exercise.</div>
+</section>
+
+<section class="section">
+<h2>02 • VISUAL: FROM FOOD TO MOVEMENT</h2>
+<div class="visual">
+<svg viewBox="0 0 1200 640" role="img" aria-label="Complete exercise metabolism concept map">
+<defs>
+  <marker id="mapArrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+    <path d="M0,0 L10,3 L0,6z" fill="#53257f"/>
+  </marker>
+</defs>
+
+<!-- ROW 1 -->
+<rect x="45" y="90" width="150" height="92" rx="20" fill="#53257f"/>
+<text x="120" y="128" text-anchor="middle" fill="#fff" font-size="22" font-weight="700">FOOD</text>
+<text x="120" y="156" text-anchor="middle" fill="#ffd85d" font-size="14">CHO • FAT • PRO</text>
+
+<path d="M205 136 H285" stroke="#53257f" stroke-width="6" marker-end="url(#mapArrow)"/>
+
+<rect x="290" y="78" width="190" height="116" rx="20" fill="#fff8df" stroke="#ffb703" stroke-width="3"/>
+<text x="385" y="118" text-anchor="middle" fill="#53257f" font-size="21" font-weight="700">SUBSTRATES</text>
+<text x="385" y="148" text-anchor="middle" fill="#667085" font-size="14">glucose</text>
+<text x="385" y="173" text-anchor="middle" fill="#667085" font-size="14">fatty acids • amino acids</text>
+
+<path d="M490 136 H570" stroke="#53257f" stroke-width="6" marker-end="url(#mapArrow)"/>
+
+<circle cx="655" cy="136" r="72" fill="#53257f"/>
+<text x="655" y="130" text-anchor="middle" fill="#fff" font-size="27" font-weight="700">ATP</text>
+<text x="655" y="159" text-anchor="middle" fill="#ffd85d" font-size="14">resynthesis</text>
+
+<path d="M730 136 H810" stroke="#53257f" stroke-width="6" marker-end="url(#mapArrow)"/>
+
+<rect x="815" y="65" width="260" height="142" rx="20" fill="#eef2ff" stroke="#2563eb" stroke-width="3"/>
+<text x="945" y="104" text-anchor="middle" fill="#1e3a8a" font-size="21" font-weight="700">ENERGY SYSTEMS</text>
+<text x="945" y="136" text-anchor="middle" fill="#667085" font-size="14">ATP-PCr</text>
+<text x="945" y="162" text-anchor="middle" fill="#667085" font-size="14">Glycolysis</text>
+<text x="945" y="188" text-anchor="middle" fill="#667085" font-size="14">Oxidative</text>
+
+<!-- DOWN TO DEMAND -->
+<path d="M945 212 V275" stroke="#53257f" stroke-width="6" marker-end="url(#mapArrow)"/>
+
+<rect x="795" y="280" width="300" height="112" rx="20" fill="#53257f"/>
+<text x="945" y="323" text-anchor="middle" fill="#fff" font-size="21" font-weight="700">EXERCISE DEMAND</text>
+<text x="945" y="353" text-anchor="middle" fill="#ffd85d" font-size="14">intensity • duration • workload</text>
+
+<!-- RESPONSE ROW -->
+<path d="M790 336 H695" stroke="#53257f" stroke-width="6" marker-end="url(#mapArrow)"/>
+
+<rect x="400" y="270" width="285" height="145" rx="20" fill="#f8fafc" stroke="#53257f" stroke-width="3"/>
+<text x="542" y="310" text-anchor="middle" fill="#53257f" font-size="21" font-weight="700">ACUTE RESPONSE</text>
+<text x="542" y="340" text-anchor="middle" fill="#667085" font-size="14">HR • VO₂ • ventilation</text>
+<text x="542" y="367" text-anchor="middle" fill="#667085" font-size="14">metabolic • muscle • temperature</text>
+<text x="542" y="394" text-anchor="middle" fill="#667085" font-size="14">blood chemistry</text>
+
+<path d="M395 342 H300" stroke="#53257f" stroke-width="6" marker-end="url(#mapArrow)"/>
+
+<rect x="45" y="280" width="250" height="125" rx="20" fill="#eef7f1" stroke="#2e7d32" stroke-width="3"/>
+<text x="170" y="321" text-anchor="middle" fill="#1f5f27" font-size="21" font-weight="700">IMMEDIATE RECOVERY</text>
+<text x="170" y="350" text-anchor="middle" fill="#667085" font-size="14">PCr • lactate handling</text>
+<text x="170" y="376" text-anchor="middle" fill="#667085" font-size="14">HR/VO₂ recovery • restoration</text>
+
+<!-- BOTTOM SYNTHESIS -->
+<path d="M170 415 V500 H395" fill="none" stroke="#ffb703" stroke-width="6" marker-end="url(#mapArrow)"/>
+<path d="M542 420 V500" fill="none" stroke="#ffb703" stroke-width="6" marker-end="url(#mapArrow)"/>
+<path d="M945 398 V500 H695" fill="none" stroke="#ffb703" stroke-width="6" marker-end="url(#mapArrow)"/>
+
+<rect x="400" y="505" width="285" height="90" rx="20" fill="#f0ebf8" stroke="#53257f" stroke-width="3"/>
+<text x="542" y="541" text-anchor="middle" fill="#53257f" font-size="21" font-weight="700">CHRONIC ADAPTATION</text>
+<text x="542" y="568" text-anchor="middle" fill="#667085" font-size="14">repeated training → changed capacity</text>
+
+<rect x="715" y="505" width="250" height="90" rx="20" fill="#fff8df" stroke="#ffb703" stroke-width="3"/>
+<text x="840" y="541" text-anchor="middle" fill="#53257f" font-size="21" font-weight="700">PERFORMANCE</text>
+<text x="840" y="568" text-anchor="middle" fill="#667085" font-size="14">task outcome / capacity</text>
+
+<text x="600" y="625" text-anchor="middle" fill="#53257f" font-size="18" font-weight="700">
+PRACTICAL APPLICATION → ASSESS → PRESCRIBE → MONITOR → ADJUST
+</text>
+</svg>
+</div>
+</section>
+
+<section class="section">
+<h2>03 • FIVE CHECKPOINTS — CAN YOU CONNECT THEM?</h2>
+<div class="timeline">
+<div class="t active" onclick="showCP(0,this)"><div class="icon">🍎</div><b>Food</b><small>What enters?</small></div>
+<div class="t" onclick="showCP(1,this)"><div class="icon">⚡</div><b>ATP</b><small>What is needed?</small></div>
+<div class="t" onclick="showCP(2,this)"><div class="icon">🏃</div><b>Demand</b><small>How hard?</small></div>
+<div class="t" onclick="showCP(3,this)"><div class="icon">❤️</div><b>Response</b><small>What changes?</small></div>
+<div class="t" onclick="showCP(4,this)"><div class="icon">🔄</div><b>Adaptation</b><small>What changes long-term?</small></div>
+</div>
+<div id="cpBox" class="card" style="margin-top:15px"></div>
+</section>
+
+<section class="section">
+<h2>04 • THE “WHY?” TEST</h2>
+<div class="grid3">
+<div class="card purple"><h3>WHY FOOD?</h3><p>Food provides substrates that can be transformed into usable cellular fuel.</p></div>
+<div class="card gold"><h3>WHY ATP?</h3><p>ATP turnover must keep pace with the energy requirements of muscle work.</p></div>
+<div class="card blue"><h3>WHY RESPONSES?</h3><p>Cardiovascular, respiratory, metabolic, muscle, thermoregulatory and blood-chemistry systems respond to the exercise demand.</p></div>
+<div class="card green"><h3>WHY RECOVERY?</h3><p>The body restores homeostasis and energy-related resources after the exercise demand falls.</p></div>
+<div class="card red"><h3>WHY ADAPTATION?</h3><p>Repeated training exposure can produce chronic adaptations.</p></div>
+<div class="card"><h3>WHY PRACTICAL APPLICATION?</h3><p>The physiology informs assessment, exercise prescription, monitoring, recovery and performance decisions.</p></div>
+</div>
+</section>
+
+<section class="section">
+<h2>05 • DON'T JUST MEMORISE — BUILD THE FULL ANSWER</h2>
+<div class="check interactive-only">
+<p><b>Exam / viva challenge:</b> “Explain what happens when a person starts exercise and how repeated training can change their response.”</p>
+<p>Use the structure below:</p>
+<div class="step-grid">
+<div class="step"><span class="num">1</span><br><b>Demand</b><br>ATP demand rises with muscle work.</div>
+<div class="step"><span class="num">2</span><br><b>ATP supply</b><br>Multiple pathways resynthesise ATP.</div>
+<div class="step"><span class="num">3</span><br><b>Acute response</b><br>HR, ventilation, metabolism, muscle and other systems respond.</div>
+<div class="step"><span class="num">4</span><br><b>Recovery + adaptation</b><br>Restoration follows; repeated exposure can produce chronic adaptation.</div>
+</div>
+<textarea id="fullAns" style="margin-top:16px;min-height:180px" placeholder="Write your complete answer here..."></textarea>
+<button class="btn btn-primary" style="margin-top:10px" onclick="reveal('model')">Reveal model answer</button>
+<div id="model" class="answer"><b>Model answer:</b> When exercise begins, muscle contraction increases ATP use and therefore ATP demand. Because stored ATP is limited, ATP must be continuously resynthesised through overlapping ATP-PCr, glycolytic and oxidative pathways, with their relative contributions changing according to intensity and duration. Cardiovascular, respiratory, metabolic, muscle, thermoregulatory and blood-chemistry responses help support the new demand. When exercise stops, recovery begins, including PCr resynthesis, lactate handling, restoration of physiological balance and longer-term restoration of energy stores. With repeated training exposure, chronic adaptations can develop and change physiological capacity and response to a given workload, supporting performance and practical exercise decisions.</div>
+</div>
+</section>
+
+<section class="section">
+<h2>06 • COMMON MISCONCEPTIONS — FINAL CHECK</h2>
+<div class="grid2">
+<div class="misconception"><b>❌ “Food becomes ATP in one step.”</b><p>Food-derived substrates pass through metabolic pathways before supporting ATP resynthesis.</p></div>
+<div class="misconception"><b>❌ “One energy system is responsible for each exercise.”</b><p>The course model is overlapping pathways with changing relative contribution.</p></div>
+<div class="misconception"><b>❌ “Recovery means everything instantly returns to baseline.”</b><p>Recovery processes occur on different time scales.</p></div>
+<div class="misconception"><b>❌ “Training adaptation is just a bigger acute response.”</b><p>Chronic adaptation develops over repeated training exposure and represents longer-term change.</p></div>
+</div>
+</section>
+
+<section class="section">
+<h2>07 • MASTER QUICK CHECK</h2>
+<div class="check">
+<div style="font-weight:700;margin-bottom:10px">Which sequence best captures the whole learning model?</div>
+<label class="option"><input type="radio" name="q" value="1"> Food → substrates → energy systems → exercise demand → response → adaptation → performance → practical application</label>
+<label class="option"><input type="radio" name="q" value="0"> Exercise → ATP → food → digestion only</label>
+<label class="option"><input type="radio" name="q" value="0"> Lactate → food → performance only</label>
+<label class="option"><input type="radio" name="q" value="0"> ATP-PCr → marathon → digestion → protein</label>
+<button class="btn btn-primary interactive-only" onclick="checkQ()">Check answer</button>
+<div id="feedback" class="feedback"></div>
+</div>
+</section>
+
+<section class="section">
+<h2>08 • FINAL TAKE-HOME</h2>
+<div class="kf">
+<b>YOU SHOULD NOW BE ABLE TO MOVE BOTH WAYS THROUGH THE CHAIN.</b><br><br>
+Forward → Food → substrate → pathway → ATP → exercise demand → physiological response.<br><br>
+Backward → Given a physiological response or performance problem, ask: What was the demand? What fuel was available? Which pathways contributed? What measurements support the interpretation? What happened during recovery? Has repeated training changed the response?
+</div>
+<div class="callout"><b>YOU ARE READY FOR THE POST-TEST →</b> The next section checks whether you can use the complete physiology model independently.</div>
+</section>
+
+<div class="footer">TCE 504 Applied Exercise Physiology • Exercise Metabolism • Interactive Digital Learning Experience</div>
+</div>
+
+<script>
+function toggleExam(){document.body.classList.toggle('exam-on',document.getElementById('exam').checked)}
+function reveal(id){document.getElementById(id)?.classList.toggle('show')}
+const cp=[
+['FOOD','Food provides carbohydrate, fat and protein that can ultimately supply substrates for energy metabolism.','Ask: What substrate is available and how might it enter metabolism?'],
+['ATP','ATP is the immediate cellular energy currency used by muscle work, so ATP must be continually resynthesised during exercise.','Ask: How fast does ATP need to be regenerated?'],
+['EXERCISE DEMAND','Intensity and duration determine the size and speed of the ATP requirement.','Ask: Is the demand rapid, sustained, or repeated?'],
+['ACUTE RESPONSE','A single exercise bout produces coordinated cardiovascular, respiratory, metabolic, muscle, thermoregulatory and blood-chemistry responses.','Ask: Which measurements show the internal response?'],
+['CHRONIC ADAPTATION','Repeated exercise stimuli can produce chronic adaptations that change physiological capacity and response to a given workload.','Ask: What repeated training stimulus could have produced the adaptation?']
+];
+function showCP(i,el){
+document.querySelectorAll('.t').forEach((x,j)=>x.classList.toggle('active',j===i));
+const x=cp[i];document.getElementById('cpBox').innerHTML=`<h3>${x[0]}</h3><p>${x[1]}</p><div class="callout"><b>Reasoning prompt:</b> ${x[2]}</div>`;
+}
+showCP(0,document.querySelector('.t.active'));
+function checkQ(){
+const c=document.querySelector('input[name="q"]:checked'),f=document.getElementById('feedback');
+if(!c){f.textContent='Choose an answer first.';return}
+if(c.value==='1'){f.textContent='✓ Correct. That sequence captures the full course learning model.';f.style.color='#2e7d32'}
+else{f.textContent='Not quite. Revisit the complete chain from food to practical application.';f.style.color='#b91c1c'}
+}
+</script>
+</body>
+</html>
