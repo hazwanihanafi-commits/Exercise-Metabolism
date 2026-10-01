@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TCE504 • Section 10 • Krebs / TCA Cycle</title>
+<style>
+*{box-sizing:border-box}
+:root{--p:#53257f;--p2:#7042a0;--g:#ffb703;--ink:#182133;--muted:#667085;--line:#e3e7ee;--bg:#f4f6fa;--blue:#3298df;--green:#2e8b70;--pink:#ec4f7a;--orange:#f2a11b}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+button,input,textarea{font:inherit}
+.top{height:64px;position:sticky;top:0;z-index:25;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.brand{font-weight:900;color:var(--p)}.tag{font-size:12px;font-weight:800;color:var(--muted)}
+.wrap{max-width:1120px;margin:auto;padding:28px 20px 70px}
+.hero{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;border-radius:28px;padding:32px;box-shadow:0 10px 28px rgba(35,20,60,.10)}
+.eyebrow{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;font-weight:900;color:var(--p);margin-bottom:8px}.hero .eyebrow{color:#fff;opacity:.9}
+h1{font-size:clamp(40px,6vw,64px);line-height:.96;letter-spacing:-2px;margin:0 0 14px}
+h2{font-size:30px;margin:0 0 10px}h3{margin:0 0 7px}
+.lead{font-size:17px;line-height:1.6;color:#536074;max-width:930px}.hero .lead{color:#eee8f6}
+.section{background:#fff;border:1px solid var(--line);border-radius:26px;padding:28px;margin-top:22px;box-shadow:0 7px 25px rgba(35,20,60,.045)}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}.num{background:var(--p);color:#fff;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:900;white-space:nowrap}
+.visual{margin-top:18px;background:#faf9fc;border:1px solid var(--line);border-radius:20px;padding:10px;overflow:hidden}.visual svg{width:100%;height:auto;display:block}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px}.box h3{color:var(--p)}.box p{margin:0;color:#596579;font-size:14px;line-height:1.5}
+.check{margin-top:17px;background:#faf9fc;border:1px solid var(--line);border-radius:17px;padding:18px}.qlabel{font-size:11px;letter-spacing:1px;color:var(--p);font-weight:900}.q{font-size:19px;font-weight:900;line-height:1.42;margin-top:6px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.opt{border:1px solid #d7dbe5;background:#fff;border-radius:12px;padding:12px;text-align:left;font-weight:700;cursor:pointer}.opt.correct{background:#edf8f1;border-color:#86c99a;color:#14532d}.opt.wrong{background:#fff3f3;border-color:#e2a0a0;color:#8a1c1c}
+.feedback{display:none;margin-top:10px;padding:12px;border-radius:12px;line-height:1.5}.feedback.show{display:block;background:#edf8f1;border:1px solid #bfe6ca;color:#14532d}
+.anim{margin-top:18px;background:linear-gradient(180deg,#fbfbff,#f4eff9);border:1px solid #e0d8eb;border-radius:22px;padding:18px}
+.anim-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.anim-head b{color:var(--p)}.anim-head span{font-size:12px;color:var(--muted);font-weight:700}
+.step-buttons{display:flex;gap:8px;flex-wrap:wrap}.stepbtn{background:#fff;border:1px solid #d8dce5;border-radius:10px;padding:9px 11px;cursor:pointer;font-weight:800;font-size:12px}.stepbtn.active{background:#f0eafa;color:var(--p);border-color:var(--p)}
+.cycle-stage{position:relative;background:#fff;border:1px solid var(--line);border-radius:17px;padding:15px;overflow:hidden}.cycle-stage svg{width:100%;height:auto;display:block}
+.pulse{animation:pulse 1s ease-in-out infinite}.dash{stroke-dasharray:8 7;animation:dash 1.4s linear infinite}@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.09)}}@keyframes dash{to{stroke-dashoffset:-30}}
+.explain{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px}.explain b{color:var(--p)}.explain p{margin:5px 0 0;color:#596579;line-height:1.5;font-size:14px}
+.yield{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.metric{background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px;text-align:center}.metric .big{font-size:28px;font-weight:900;color:var(--p)}.metric .small{font-size:11px;color:var(--muted)}
+.route{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}.routecard{background:#fff;border:1px solid var(--line);border-radius:15px;padding:15px}.routecard b{display:block;color:var(--p);font-size:13px;margin-bottom:4px}.routecard p{margin:0;color:#596579;font-size:13px;line-height:1.45}
+.slider{margin-top:16px;border:1px solid var(--line);border-radius:16px;padding:17px;background:#fff}.slider input{width:100%}.readouts{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:10px}.read{background:#f7f4fa;border-radius:12px;padding:11px;text-align:center}.read b{display:block;color:var(--p);font-size:18px}.read span{font-size:10px;color:var(--muted)}
+.case{margin-top:18px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;border-radius:20px;padding:21px}.case h2{color:#fff}.case p{color:#eee8f6;line-height:1.52}.casegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.casebox{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.09);border-radius:14px;padding:13px}.casebox b{display:block;color:#ffcf55;margin-bottom:5px}.casebox span{font-size:13px;line-height:1.42}
+textarea{width:100%;min-height:105px;border:1px solid #d7dbe5;border-radius:12px;padding:12px;resize:vertical}.ctrl{border:1px solid #d7dbe5;background:#fff;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer}.ctrl.primary{background:var(--p);color:#fff;border-color:var(--p)}.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.model{display:none;margin-top:10px;background:#edf8f1;border:1px solid #bfe6ca;color:#14532d;border-radius:12px;padding:12px;line-height:1.55}
+.takehome{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.take{border:1px solid var(--line);border-radius:15px;padding:15px;background:#fff}.take b{display:block;color:var(--p);margin-bottom:5px}.take p{margin:0;color:#596579;font-size:13px;line-height:1.45}
+.next{margin-top:22px;background:#eef7f3;border-left:5px solid var(--green);border-radius:15px;padding:18px 20px;line-height:1.5}.next b{color:#176b55}
+@media(max-width:850px){.g3,.g4,.yield,.route,.casegrid,.takehome,.readouts{grid-template-columns:1fr 1fr}.g2,.options{grid-template-columns:1fr}}
+@media(max-width:580px){.top{padding:0 13px}.wrap{padding:18px 13px 50px}.hero,.section{padding:20px}.g3,.g4,.yield,.route,.casegrid,.takehome,.readouts{grid-template-columns:1fr}.step-buttons{display:grid;grid-template-columns:1fr 1fr}h1{font-size:42px}}
+
+.carrier-visual{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:10px;overflow:hidden}
+.carrier-visual svg{width:100%;height:auto;display:block}
+.carrier-note{margin-top:14px;background:#f7f4fa;border:1px solid #ddd2e9;border-radius:15px;padding:14px 16px;color:#596579;line-height:1.55;font-size:14px}
+.carrier-note-title{font-size:11px;letter-spacing:1px;font-weight:900;color:var(--p);margin-bottom:4px}
+@media(max-width:700px){.carrier-visual{padding:6px}.carrier-note{font-size:13px}}
+
+</style>
+</head>
+<body>
+<header class="top"><div class="brand">TCE 504 • Applied Exercise Physiology</div><div class="tag">10 / KREBS • TCA</div></header>
+<main class="wrap">
+
+<section class="hero">
+<div class="eyebrow">SECTION 10 • METABOLIC PATHWAY 3</div>
+<h1>Krebs / TCA Cycle</h1>
+<p class="lead">Now follow <b>acetyl-CoA</b> into the mitochondrial matrix. The key exercise-physiology idea is not a large direct ATP output; the cycle produces <b>NADH and FADH₂</b> that carry high-energy electrons to the electron transport chain.</p>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 1 • THE BIG IDEA</div><h2>Why is the TCA cycle essential?</h2><p class="lead">The TCA cycle is a mitochondrial pathway that processes acetyl-CoA and generates reduced electron carriers that feed the ETC.</p></div><div class="num">01</div></div>
+<div class="visual">
+<svg viewBox="0 0 1000 340" role="img" aria-label="Acetyl-CoA enters TCA cycle and produces electron carriers for ETC">
+<defs><marker id="bigA" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6Z" fill="#53257f"/></marker></defs>
+<rect x="20" y="20" width="960" height="300" rx="24" fill="#f7f4fb"/>
+<rect x="55" y="88" width="190" height="150" rx="22" fill="#fff7df" stroke="#f0dca1" stroke-width="2"/>
+<text x="150" y="125" text-anchor="middle" fill="#8a6400" font-size="20" font-weight="900">ACETYL-CoA</text><text x="150" y="157" text-anchor="middle" fill="#596579" font-size="14">input</text><text x="150" y="188" text-anchor="middle" fill="#596579" font-size="13">from carbohydrate, fat</text><text x="150" y="208" text-anchor="middle" fill="#596579" font-size="13">and other pathways</text>
+<path d="M245 163 H340" stroke="#53257f" stroke-width="5" marker-end="url(#bigA)"/>
+<circle cx="490" cy="163" r="105" fill="#fff" stroke="#53257f" stroke-width="4"/>
+<text x="490" y="157" text-anchor="middle" fill="#53257f" font-size="22" font-weight="900">TCA / KREBS</text><text x="490" y="183" text-anchor="middle" fill="#596579" font-size="14">mitochondrial matrix</text>
+<path d="M590 127 H725" stroke="#53257f" stroke-width="5" marker-end="url(#bigA)"/>
+<rect x="730" y="68" width="205" height="190" rx="22" fill="#eef6ff" stroke="#cfe0f2" stroke-width="2"/>
+<text x="833" y="103" text-anchor="middle" fill="#1e67a0" font-size="19" font-weight="900">ELECTRON CARRIERS</text>
+<text x="833" y="145" text-anchor="middle" fill="#53257f" font-size="20" font-weight="900">NADH</text><text x="833" y="172" text-anchor="middle" fill="#53257f" font-size="20" font-weight="900">FADH₂</text>
+<text x="833" y="211" text-anchor="middle" fill="#596579" font-size="13">carry high-energy electrons</text><text x="833" y="231" text-anchor="middle" fill="#596579" font-size="13">→ ETC → ATP production</text>
+<text x="500" y="297" text-anchor="middle" fill="#53257f" font-size="16" font-weight="900">Acetyl-CoA → TCA cycle → NADH + FADH₂ → ETC → ATP</text>
+</svg>
+</div>
+<div class="check"><div class="qlabel">STOP & THINK</div><div class="q">If the TCA cycle does not make most ATP directly, why is it still essential?</div>
+<div class="options"><button class="opt" onclick="check(this,true,'q1')">It generates electron carriers that supply electrons to the ETC for oxidative ATP production.</button><button class="opt" onclick="check(this,false,'q1')">It replaces ATP-PCr during a maximal sprint.</button><button class="opt" onclick="check(this,false,'q1')">It stores all muscle glycogen.</button><button class="opt" onclick="check(this,false,'q1')">It directly transports oxygen into the muscle.</button></div><div id="q1" class="feedback"></div></div>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 2 • ENTERING THE CYCLE</div><h2>Acetyl-CoA enters the mitochondrial matrix.</h2><p class="lead">The pathway begins when acetyl-CoA enters the TCA cycle. The cycle then repeatedly processes acetyl-derived carbon while generating electron carriers.</p></div><div class="num">02</div></div>
+<div class="visual">
+<svg viewBox="0 0 1000 340" role="img" aria-label="Acetyl-CoA entering the TCA cycle in the mitochondrial matrix">
+<defs><marker id="inA" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6Z" fill="#53257f"/></marker></defs>
+<rect x="18" y="18" width="964" height="304" rx="24" fill="#eef6ff"/>
+<path d="M92 90 C150 50 245 55 285 90 C315 120 315 235 275 270 C235 300 130 294 92 253 C55 214 55 129 92 90Z" fill="#dcecf8" stroke="#9ec5e3" stroke-width="3"/>
+<text x="190" y="73" text-anchor="middle" fill="#1e67a0" font-size="19" font-weight="900">MITOCHONDRIAL MATRIX</text>
+<rect x="110" y="124" width="155" height="86" rx="18" fill="#fff7df" stroke="#ffb703" stroke-width="3"/><text x="187" y="160" text-anchor="middle" fill="#8a6400" font-size="18" font-weight="900">ACETYL-CoA</text><text x="187" y="184" text-anchor="middle" fill="#596579" font-size="12">2-carbon acetyl group</text>
+<path d="M265 167 H380" stroke="#53257f" stroke-width="5" marker-end="url(#inA)"/>
+<circle cx="570" cy="170" r="105" fill="#fff" stroke="#53257f" stroke-width="4"/>
+<text x="570" y="165" text-anchor="middle" fill="#53257f" font-size="21" font-weight="900">TCA CYCLE</text><text x="570" y="192" text-anchor="middle" fill="#596579" font-size="13">cyclic processing</text>
+<path d="M675 170 H790" stroke="#53257f" stroke-width="5" marker-end="url(#inA)"/>
+<rect x="795" y="95" width="145" height="150" rx="20" fill="#eef7f3" stroke="#cfe9df" stroke-width="2"/>
+<text x="868" y="130" text-anchor="middle" fill="#176b55" font-size="17" font-weight="900">OUTPUT</text><text x="868" y="160" text-anchor="middle" fill="#53257f" font-size="18" font-weight="900">NADH</text><text x="868" y="186" text-anchor="middle" fill="#53257f" font-size="18" font-weight="900">FADH₂</text><text x="868" y="216" text-anchor="middle" fill="#596579" font-size="11">→ ETC</text>
+<text x="500" y="287" text-anchor="middle" fill="#53257f" font-size="15" font-weight="900">Location matters: glycolysis is cytosolic; TCA is mitochondrial.</text>
+</svg>
+</div>
+<div class="grid g3" style="margin-top:15px">
+<div class="box"><h3>Input</h3><p>Acetyl-CoA.</p></div><div class="box"><h3>Location</h3><p>Mitochondrial matrix.</p></div><div class="box"><h3>Output for the ETC</h3><p>NADH and FADH₂ carry high-energy electrons onward.</p></div>
+</div>
+<div class="check"><div class="qlabel">CHECK THE LOCATION</div><div class="q">Where does the TCA cycle occur?</div><div class="options"><button class="opt" onclick="check(this,true,'q2')">Mitochondrial matrix.</button><button class="opt" onclick="check(this,false,'q2')">Cytosol.</button><button class="opt" onclick="check(this,false,'q2')">Nucleus.</button><button class="opt" onclick="check(this,false,'q2')">Blood plasma.</button></div><div id="q2" class="feedback"></div></div>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 3 • INTERACTIVE TCA JOURNEY</div><h2>Follow the cycle. Watch the outputs accumulate.</h2><p class="lead">Click each stage to see what changes. The cycle is shown as a simplified teaching map; the key exercise-physiology focus is <b>electron-carrier generation</b>.</p></div><div class="num">03</div></div>
+
+<div class="anim">
+<div class="anim-head"><b>INTERACTIVE TCA CYCLE</b><span id="cycleStatus">Stage 1 of 6</span></div>
+<div class="step-buttons">
+<button class="stepbtn active" onclick="setCycle(0)">01 • Citrate</button>
+<button class="stepbtn" onclick="setCycle(1)">02 • Isocitrate</button>
+<button class="stepbtn" onclick="setCycle(2)">03 • α-KG</button>
+<button class="stepbtn" onclick="setCycle(3)">04 • Succinyl-CoA</button>
+<button class="stepbtn" onclick="setCycle(4)">05 • Succinate</button>
+<button class="stepbtn" onclick="setCycle(5)">06 • Malate → reset</button>
+</div>
+
+<div class="cycle-stage">
+<svg viewBox="0 0 1000 500" role="img" aria-label="Interactive simplified TCA cycle">
+<defs>
+<marker id="cyA" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6Z" fill="#53257f"/></marker>
+</defs>
+<circle cx="500" cy="250" r="170" fill="#fbf9fd" stroke="#d9cce5" stroke-width="3"/>
+<text x="500" y="245" text-anchor="middle" fill="#53257f" font-size="22" font-weight="900">TCA / KREBS</text>
+<text x="500" y="270" text-anchor="middle" fill="#667085" font-size="13">mitochondrial matrix</text>
+<text x="500" y="292" text-anchor="middle" fill="#667085" font-size="12">simplified teaching map</text>
+
+<g id="cnode0"><circle cx="500" cy="72" r="43" fill="#ffb703"/><text x="500" y="78" text-anchor="middle" fill="#4e3800" font-size="13" font-weight="900">CITRATE</text></g>
+<g id="cnode1"><circle cx="680" cy="170" r="43" fill="#e9d5ff"/><text x="680" y="176" text-anchor="middle" fill="#53257f" font-size="12" font-weight="900">ISOCITRATE</text></g>
+<g id="cnode2"><circle cx="640" cy="365" r="43" fill="#e9d5ff"/><text x="640" y="360" text-anchor="middle" fill="#53257f" font-size="12" font-weight="900">α-KG</text></g>
+<g id="cnode3"><circle cx="500" cy="430" r="43" fill="#e9d5ff"/><text x="500" y="425" text-anchor="middle" fill="#53257f" font-size="11" font-weight="900">SUCCINYL-</text><text x="500" y="441" text-anchor="middle" fill="#53257f" font-size="11" font-weight="900">CoA</text></g>
+<g id="cnode4"><circle cx="360" cy="365" r="43" fill="#e9d5ff"/><text x="360" y="371" text-anchor="middle" fill="#53257f" font-size="12" font-weight="900">SUCCINATE</text></g>
+<g id="cnode5"><circle cx="320" cy="170" r="43" fill="#e9d5ff"/><text x="320" y="176" text-anchor="middle" fill="#53257f" font-size="12" font-weight="900">MALATE</text></g>
+
+<path d="M535 88 Q600 105 650 145" fill="none" stroke="#53257f" stroke-width="4" marker-end="url(#cyA)"/>
+<path d="M690 215 Q700 285 665 335" fill="none" stroke="#53257f" stroke-width="4" marker-end="url(#cyA)"/>
+<path d="M600 395 Q550 445 520 448" fill="none" stroke="#53257f" stroke-width="4" marker-end="url(#cyA)"/>
+<path d="M460 448 Q395 440 375 402" fill="none" stroke="#53257f" stroke-width="4" marker-end="url(#cyA)"/>
+<path d="M325 330 Q285 255 300 215" fill="none" stroke="#53257f" stroke-width="4" marker-end="url(#cyA)"/>
+<path d="M355 135 Q410 75 465 75" fill="none" stroke="#53257f" stroke-width="4" marker-end="url(#cyA)"/>
+
+<rect x="65" y="105" width="170" height="74" rx="15" fill="#eef6ff" stroke="#cfe0f2"/><text x="150" y="135" text-anchor="middle" fill="#1e67a0" font-size="14" font-weight="900">ELECTRON CARRIERS</text><text x="150" y="158" text-anchor="middle" fill="#53257f" font-size="15" font-weight="900" id="carriers">0 NADH • 0 FADH₂</text>
+<rect x="65" y="210" width="170" height="74" rx="15" fill="#eef7f3" stroke="#cfe9df"/><text x="150" y="240" text-anchor="middle" fill="#176b55" font-size="14" font-weight="900">CO₂</text><text x="150" y="263" text-anchor="middle" fill="#596579" font-size="12" id="co2">0 released</text>
+<rect x="760" y="105" width="175" height="180" rx="18" fill="#f8f5fb" stroke="#ded3e9"/><text x="847" y="138" text-anchor="middle" fill="#53257f" font-size="15" font-weight="900">STAGE MESSAGE</text><text x="847" y="172" text-anchor="middle" fill="#596579" font-size="12" id="stageMsg">Acetyl-derived carbon enters the cycle.</text>
+<text x="847" y="242" text-anchor="middle" fill="#53257f" font-size="13" font-weight="900" id="outputMsg">Focus: cycle processing</text>
+</svg>
+</div>
+
+<div class="explain"><b id="cycleTitle">Stage 1 — Citrate</b><p id="cycleText">Acetyl-CoA has entered the cycle and the first teaching checkpoint is citrate formation.</p></div>
+<div class="controls"><button class="ctrl" onclick="prevCycle()">← Previous</button><button class="ctrl primary" onclick="nextCycle()">Next stage →</button><button class="ctrl" onclick="playCycle()">▶ Play cycle</button><button class="ctrl" onclick="resetCycle()">Reset</button></div>
+</div>
+
+<div class="check"><div class="qlabel">THINK ABOUT THE OUTPUTS</div><div class="q">What is the most important exercise-metabolism output to follow from the TCA cycle?</div><div class="options"><button class="opt" onclick="check(this,true,'q3')">NADH and FADH₂, which carry electrons to the ETC.</button><button class="opt" onclick="check(this,false,'q3')">Large direct ATP production as the main purpose.</button><button class="opt" onclick="check(this,false,'q3')">Only lactate.</button><button class="opt" onclick="check(this,false,'q3')">Only phosphocreatine.</button></div><div id="q3" class="feedback"></div></div>
+</section>
+
+<section class="section">
+<div class="head">
+  <div>
+    <div class="eyebrow">PART 4 • ELECTRON CARRIERS</div>
+    <h2>What do NADH, FADH₂ and H⁺ actually do?</h2>
+    <p class="lead">The TCA cycle generates <b>NADH and FADH₂</b>. These molecules carry high-energy electrons to the electron transport chain (ETC). The ETC uses electron flow to build an <b>H⁺ (proton) gradient</b> that helps drive ATP synthase.</p>
+  </div>
+  <div class="num">04</div>
+</div>
+
+<div class="carrier-visual">
+<svg viewBox="0 0 1100 430" role="img" aria-label="NADH and FADH2 deliver high-energy electrons to ETC, which builds an H plus gradient used by ATP synthase">
+<defs>
+  <marker id="cvA" markerWidth="11" markerHeight="11" refX="10" refY="3.5" orient="auto">
+    <path d="M0,0 L11,3.5 L0,7Z" fill="#53257f"/>
+  </marker>
+  <marker id="cvB" markerWidth="11" markerHeight="11" refX="10" refY="3.5" orient="auto">
+    <path d="M0,0 L11,3.5 L0,7Z" fill="#3298df"/>
+  </marker>
+</defs>
+
+<rect x="18" y="18" width="1064" height="394" rx="26" fill="#fbf9fd" stroke="#e3e7ee"/>
+
+<!-- source -->
+<rect x="58" y="80" width="235" height="230" rx="22" fill="#f3eef9" stroke="#ddd2e9" stroke-width="2"/>
+<text x="175" y="116" text-anchor="middle" fill="#53257f" font-size="20" font-weight="900">ELECTRON CARRIERS</text>
+
+<circle cx="175" cy="175" r="42" fill="#53257f"/>
+<text x="175" y="182" text-anchor="middle" fill="#fff" font-size="19" font-weight="900">NADH</text>
+<text x="175" y="225" text-anchor="middle" fill="#596579" font-size="13">carries high-energy electrons</text>
+
+<circle cx="175" cy="265" r="42" fill="#7e66b6"/>
+<text x="175" y="272" text-anchor="middle" fill="#fff" font-size="17" font-weight="900">FADH₂</text>
+<text x="175" y="307" text-anchor="middle" fill="#596579" font-size="11">carries high-energy electrons</text>
+
+<!-- etc -->
+<rect x="408" y="70" width="285" height="250" rx="22" fill="#eef6ff" stroke="#cfe0f2" stroke-width="2"/>
+<text x="550" y="110" text-anchor="middle" fill="#1e67a0" font-size="22" font-weight="900">ELECTRON TRANSPORT CHAIN</text>
+<text x="550" y="142" text-anchor="middle" fill="#596579" font-size="13">electron flow drives proton pumping</text>
+
+<line x1="450" y1="190" x2="650" y2="190" stroke="#3298df" stroke-width="7"/>
+<circle cx="472" cy="190" r="10" fill="#3298df"/><circle cx="520" cy="190" r="10" fill="#3298df"/><circle cx="568" cy="190" r="10" fill="#3298df"/><circle cx="616" cy="190" r="10" fill="#3298df"/>
+<text x="550" y="226" text-anchor="middle" fill="#1e67a0" font-size="16" font-weight="900">Electron flow</text>
+
+<rect x="456" y="245" width="190" height="48" rx="24" fill="#3298df"/>
+<text x="551" y="276" text-anchor="middle" fill="#fff" font-size="18" font-weight="900">H⁺ pumping ↑</text>
+
+<!-- gradient -->
+<rect x="800" y="72" width="225" height="248" rx="22" fill="#eef7f3" stroke="#cfe9df" stroke-width="2"/>
+<text x="912" y="108" text-anchor="middle" fill="#176b55" font-size="20" font-weight="900">H⁺ GRADIENT</text>
+<text x="912" y="137" text-anchor="middle" fill="#596579" font-size="13">H⁺ = protons</text>
+<circle cx="845" cy="183" r="15" fill="#3298df"/><text x="845" y="189" text-anchor="middle" fill="#fff" font-size="12" font-weight="900">H⁺</text>
+<circle cx="882" cy="210" r="15" fill="#3298df"/><text x="882" y="216" text-anchor="middle" fill="#fff" font-size="12" font-weight="900">H⁺</text>
+<circle cx="924" cy="178" r="15" fill="#3298df"/><text x="924" y="184" text-anchor="middle" fill="#fff" font-size="12" font-weight="900">H⁺</text>
+<circle cx="965" cy="220" r="15" fill="#3298df"/><text x="965" y="226" text-anchor="middle" fill="#fff" font-size="12" font-weight="900">H⁺</text>
+<text x="912" y="267" text-anchor="middle" fill="#596579" font-size="12">The gradient stores</text>
+<text x="912" y="285" text-anchor="middle" fill="#596579" font-size="12">electrochemical energy.</text>
+
+<!-- arrows -->
+<path d="M294 175 H398" stroke="#53257f" stroke-width="6" marker-end="url(#cvA)"/>
+<path d="M294 265 H398" stroke="#53257f" stroke-width="6" marker-end="url(#cvA)"/>
+<path d="M694 195 H788" stroke="#3298df" stroke-width="6" marker-end="url(#cvB)"/>
+<text x="350" y="157" text-anchor="middle" fill="#53257f" font-size="12" font-weight="900">electrons</text>
+<text x="350" y="293" text-anchor="middle" fill="#53257f" font-size="12" font-weight="900">electrons</text>
+
+<path d="M915 320 V365 H620 V320" fill="none" stroke="#ffb703" stroke-width="5" marker-end="url(#cvA)"/>
+<text x="770" y="390" text-anchor="middle" fill="#53257f" font-size="15" font-weight="900">H⁺ flow through ATP synthase → ATP</text>
+</svg>
+</div>
+
+<div class="carrier-note">
+  <div class="carrier-note-title">IMPORTANT LANGUAGE</div>
+  <div><b>NADH</b> is the standard abbreviation used here. <b>FADH₂</b> is the reduced form of FAD. Both carry high-energy electrons to the respiratory chain. <b>H⁺</b> means a proton; its gradient across the inner mitochondrial membrane provides the driving force for ATP synthase.</div>
+</div>
+
+<div class="yield">
+<div class="metric"><div class="big">NADH</div><div class="small">Reduced electron carrier • delivers electrons to the ETC</div></div>
+<div class="metric"><div class="big">FADH₂</div><div class="small">Reduced electron carrier • delivers electrons to the ETC</div></div>
+<div class="metric"><div class="big">H⁺</div><div class="small">Protons • gradient drives ATP synthase</div></div>
+</div>
+
+<div class="check">
+<div class="qlabel">CHECK THE CONNECTION</div>
+<div class="q">Which sequence best explains how TCA-derived electron carriers support ATP production?</div>
+<div class="options">
+<button class="opt" onclick="check(this,true,'q4')">NADH/FADH₂ → ETC → H⁺ gradient → ATP synthase → ATP.</button>
+<button class="opt" onclick="check(this,false,'q4')">NADH/FADH₂ → lactate → ATP synthase.</button>
+<button class="opt" onclick="check(this,false,'q4')">NADH/FADH₂ → PCr → ATP.</button>
+<button class="opt" onclick="check(this,false,'q4')">NADH/FADH₂ → oxygen storage → ATP.</button>
+</div>
+<div id="q4" class="feedback"></div>
+</div>
+</section>
+
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 5 • EXERCISE CONTEXT</div><h2>Why does TCA activity matter during endurance exercise?</h2><p class="lead">Sustained exercise places a large demand on oxidative ATP production. The TCA cycle supplies electron carriers that support that downstream process.</p></div><div class="num">05</div></div>
+<div class="slider">
+<div class="qlabel">INTERACTIVE • CHANGE EXERCISE DEMAND</div>
+<div class="q">How long is the effort?</div>
+<input id="dur" type="range" min="5" max="180" value="60" oninput="updateDur()">
+<div class="readouts"><div class="read"><b id="durText">60 s</b><span>example duration</span></div><div class="read"><b id="tcaText">Increasing relevance</b><span>TCA / oxidative emphasis</span></div><div class="read"><b id="ctxText">Sustained effort</b><span>exercise context</span></div></div>
+</div>
+
+<div class="case">
+<h2>Think about the athlete.</h2>
+<p>A runner moves from a short explosive effort into sustained running. ATP demand remains elevated, and the need for ongoing oxidative ATP production becomes increasingly important.</p>
+<div class="casegrid">
+<div class="casebox"><b>DEMAND</b><span>ATP must be continuously resynthesised.</span></div>
+<div class="casebox"><b>TCA ROLE</b><span>Generate NADH and FADH₂ for electron transfer.</span></div>
+<div class="casebox"><b>DOWNSTREAM</b><span>ETC + ATP synthase support oxidative ATP production.</span></div>
+</div>
+</div>
+
+<div class="check"><div class="qlabel">APPLY THE IDEA</div><div class="q">Why does the TCA cycle become especially important to the athlete as sustained exercise continues?</div>
+<div class="options"><button class="opt" onclick="check(this,true,'q5')">Because sustained oxidative ATP production depends on electron carriers generated by mitochondrial metabolism.</button><button class="opt" onclick="check(this,false,'q5')">Because TCA replaces all other energy pathways.</button><button class="opt" onclick="check(this,false,'q5')">Because TCA occurs in the cytosol.</button><button class="opt" onclick="check(this,false,'q5')">Because TCA directly produces all ATP used by muscle.</button></div><div id="q5" class="feedback"></div></div>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 6 • APPLY IT — ENDURANCE RUNNER</div><h2>Trace the whole story.</h2><p class="lead">Food-derived substrates → acetyl-CoA → TCA → NADH/FADH₂ → ETC → ATP. Now explain the role of the TCA cycle inside that connected chain.</p></div><div class="num">06</div></div>
+<div class="visual">
+<svg viewBox="0 0 1000 300" role="img" aria-label="Endurance runner connected metabolic pathway">
+<defs><marker id="rA" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6Z" fill="#53257f"/></marker></defs>
+<rect x="18" y="18" width="964" height="264" rx="24" fill="#fbf9fd"/>
+<circle cx="105" cy="146" r="55" fill="#53257f"/><text x="105" y="140" text-anchor="middle" fill="#fff" font-size="18" font-weight="900">FOOD</text><text x="105" y="161" text-anchor="middle" fill="#ffcf55" font-size="11" font-weight="900">SUBSTRATES</text>
+<path d="M160 146 H255" stroke="#53257f" stroke-width="5" marker-end="url(#rA)"/>
+<rect x="260" y="96" width="145" height="100" rx="18" fill="#fff7df" stroke="#f0dca1"/><text x="332" y="135" text-anchor="middle" fill="#8a6400" font-size="16" font-weight="900">ACETYL-CoA</text><text x="332" y="158" text-anchor="middle" fill="#596579" font-size="11">mitochondrial input</text>
+<path d="M405 146 H495" stroke="#53257f" stroke-width="5" marker-end="url(#rA)"/>
+<circle cx="555" cy="146" r="58" fill="#f2eef8" stroke="#53257f" stroke-width="3"/><text x="555" y="141" text-anchor="middle" fill="#53257f" font-size="17" font-weight="900">TCA</text><text x="555" y="162" text-anchor="middle" fill="#596579" font-size="11">NADH/FADH₂</text>
+<path d="M613 146 H704" stroke="#53257f" stroke-width="5" marker-end="url(#rA)"/>
+<rect x="709" y="96" width="105" height="100" rx="18" fill="#eef6ff" stroke="#cfe0f2"/><text x="761" y="132" text-anchor="middle" fill="#1e67a0" font-size="16" font-weight="900">ETC</text><text x="761" y="156" text-anchor="middle" fill="#596579" font-size="11">electron flow</text><text x="761" y="178" text-anchor="middle" fill="#596579" font-size="11">+ O₂</text>
+<path d="M814 146 H895" stroke="#53257f" stroke-width="5" marker-end="url(#rA)"/>
+<circle cx="920" cy="146" r="48" fill="#2e8b70"/><text x="920" y="153" text-anchor="middle" fill="#fff" font-size="19" font-weight="900">ATP</text>
+<text x="500" y="250" text-anchor="middle" fill="#53257f" font-size="15" font-weight="900">The TCA cycle is a critical middle link — it feeds the ETC rather than replacing the other energy systems.</text>
+</svg>
+</div>
+
+<div class="check"><div class="qlabel">FINAL APPLICATION</div><div class="q">Explain in your own words: What is the TCA cycle doing for a working athlete?</div><textarea id="finalAnswer" placeholder="Type your explanation here..."></textarea>
+<div class="controls"><button class="ctrl primary" onclick="showModel()">Show model answer</button></div>
+<div id="model" class="model"><b>Model answer:</b> The TCA cycle in the mitochondrial matrix processes acetyl-CoA and generates NADH and FADH₂. These electron carriers deliver high-energy electrons to the ETC, supporting the proton gradient and downstream oxidative ATP production needed during sustained exercise.</div></div>
+</section>
+
+<section class="section">
+<div class="eyebrow">KEY TAKE-HOME MESSAGES</div>
+<div class="takehome">
+<div class="take"><b>01 • Mitochondrial matrix</b><p>The TCA cycle is a mitochondrial pathway.</p></div>
+<div class="take"><b>02 • Acetyl-CoA</b><p>Acetyl-CoA is processed through the cycle.</p></div>
+<div class="take"><b>03 • Electron carriers</b><p>NADH and FADH₂ are the major outputs highlighted for exercise metabolism.</p></div>
+<div class="take"><b>04 • Downstream ATP</b><p>These carriers feed the ETC, supporting oxidative phosphorylation and high-capacity ATP production.</p></div>
+</div>
+</section>
+
+<section class="section">
+<div class="eyebrow">CHECK YOUR UNDERSTANDING</div>
+<div class="check" style="background:#fff"><div class="q">1. What is the main role of the TCA cycle in exercise metabolism?</div><div class="options"><button class="opt" onclick="check(this,true,'f1')">A. Generate NADH and FADH₂ for the ETC</button><button class="opt" onclick="check(this,false,'f1')">B. Provide all muscle ATP directly</button><button class="opt" onclick="check(this,false,'f1')">C. Replace ATP-PCr</button><button class="opt" onclick="check(this,false,'f1')">D. Produce only lactate</button></div><div id="f1" class="feedback"></div></div>
+<div class="check" style="background:#fff"><div class="q">2. Where does the TCA cycle occur?</div><div class="options"><button class="opt" onclick="check(this,true,'f2')">A. Mitochondrial matrix</button><button class="opt" onclick="check(this,false,'f2')">B. Cytosol</button><button class="opt" onclick="check(this,false,'f2')">C. Nucleus</button><button class="opt" onclick="check(this,false,'f2')">D. Blood</button></div><div id="f2" class="feedback"></div></div>
+<div class="check" style="background:#fff"><div class="q">3. Why are NADH and FADH₂ important?</div><textarea id="reflection" placeholder="Type your answer here..."></textarea><div class="controls"><button class="ctrl primary" onclick="showFinalModel()">Show model answer</button></div><div id="finalModel" class="model"><b>Model answer:</b> NADH and FADH₂ carry high-energy electrons to the ETC, where electron flow supports processes that drive oxidative ATP production.</div></div>
+</section>
+
+<div class="next"><b>NEXT → SECTION 11: ETC → OXIDATIVE PHOSPHORYLATION</b><br>Now that the TCA cycle has generated the electron carriers, follow those electrons through the respiratory chain and ATP synthase.</div>
+</main>
+
+<script>
+function check(btn,correct,id){
+ const g=btn.parentElement;g.querySelectorAll('.opt').forEach(b=>b.classList.remove('correct','wrong'));
+ btn.classList.add(correct?'correct':'wrong');
+ const f=document.getElementById(id);f.className='feedback show';
+ f.innerHTML=correct?'<b>Correct.</b> Keep that link in the pathway story.':'<b>Not quite.</b> Re-read the visual and focus on the role of the TCA cycle as a source of electron carriers for the ETC.';
+}
+
+const cycleData=[
+ {title:'Stage 1 — Citrate',text:'Acetyl-CoA has entered the cycle and the first teaching checkpoint is citrate formation.',n:0,f:0,co2:0,msg:'Acetyl-derived carbon enters the cycle.',out:'Start of the cycle'},
+ {title:'Stage 2 — Isocitrate',text:'The acetyl-derived carbon is processed through the next stage of the cycle.',n:0,f:0,co2:0,msg:'Carbon continues through the cycle.',out:'Cycle continues'},
+ {title:'Stage 3 — α-KG',text:'This stage is part of the sequence that generates reduced electron carriers.',n:1,f:0,co2:1,msg:'NADH output has begun.',out:'Electron carrier generated'},
+ {title:'Stage 4 — Succinyl-CoA',text:'The cycle continues processing acetyl-derived carbon while generating further reducing equivalents.',n:2,f:0,co2:2,msg:'More NADH has accumulated.',out:'NADH → ETC'},
+ {title:'Stage 5 — Succinate',text:'Further processing generates FADH₂ as an electron carrier.',n:2,f:1,co2:2,msg:'FADH₂ now joins the electron-carrier pool.',out:'NADH + FADH₂ → ETC'},
+ {title:'Stage 6 — Malate → reset',text:'The cycle returns toward its starting state so another acetyl-CoA can be processed.',n:3,f:1,co2:2,msg:'The cycle is ready to turn again.',out:'Repeat cycle'}
+];
+let cIdx=0,cTimer=null;
+function renderCycle(){
+ const s=cycleData[cIdx];
+ document.getElementById('cycleStatus').textContent=`Stage ${cIdx+1} of 6`;
+ document.querySelectorAll('.stepbtn').forEach((b,i)=>b.classList.toggle('active',i===cIdx));
+ for(let i=0;i<6;i++){const n=document.getElementById('cnode'+i);n.classList.toggle('pulse',i===cIdx)}
+ document.getElementById('carriers').textContent=`${s.n} NADH • ${s.f} FADH₂`;
+ document.getElementById('co2').textContent=`${s.co2} released`;
+ document.getElementById('stageMsg').textContent=s.msg;
+ document.getElementById('outputMsg').textContent=s.out;
+ document.getElementById('cycleTitle').textContent=s.title;
+ document.getElementById('cycleText').textContent=s.text;
+}
+function setCycle(i){clearInterval(cTimer);cIdx=i;renderCycle()}
+function nextCycle(){cIdx=cIdx===5?0:cIdx+1;renderCycle()}
+function prevCycle(){cIdx=cIdx===0?5:cIdx-1;renderCycle()}
+function playCycle(){clearInterval(cTimer);cIdx=0;renderCycle();cTimer=setInterval(()=>{if(cIdx<5){cIdx++;renderCycle()}else clearInterval(cTimer)},1100)}
+function resetCycle(){clearInterval(cTimer);cIdx=0;renderCycle()}
+
+function updateDur(){
+ const v=+document.getElementById('dur').value;
+ document.getElementById('durText').textContent=v+' s';
+ document.getElementById('tcaText').textContent=v<=15?'Lower relative emphasis':v<=45?'Increasing relevance':v<=90?'High oxidative relevance':'Sustained oxidative relevance';
+ document.getElementById('ctxText').textContent=v<=20?'Short effort':v<=60?'Sustained effort':v<=120?'Endurance-focused':'Prolonged exercise';
+}
+function showModel(){document.getElementById('model').style.display='block';localStorage.setItem('tce504_s10_final',document.getElementById('finalAnswer').value)}
+function showFinalModel(){document.getElementById('finalModel').style.display='block';localStorage.setItem('tce504_s10_reflection',document.getElementById('reflection').value)}
+const a=localStorage.getItem('tce504_s10_final');if(a)document.getElementById('finalAnswer').value=a;
+const b=localStorage.getItem('tce504_s10_reflection');if(b)document.getElementById('reflection').value=b;
+renderCycle();updateDur();
+</script>
+</body>
+</html>
