@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCE504 • Section 12 • Fat & Protein Metabolism</title>
+<style>
+*{box-sizing:border-box}
+:root{--p:#53257f;--p2:#7042a0;--g:#ffb703;--ink:#182133;--muted:#667085;--line:#e3e7ee;--bg:#f4f6fa;--blue:#3298df;--green:#2e8b70;--red:#b91c1c}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+button,input,textarea{font:inherit}
+.top{height:64px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.brand{font-weight:900;color:var(--p)}.tag{font-size:12px;color:var(--muted);font-weight:800}
+.wrap{max-width:1120px;margin:auto;padding:28px 20px 70px}
+.hero{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;border-radius:28px;padding:32px;box-shadow:0 10px 28px rgba(35,20,60,.09)}
+.eyebrow{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;font-weight:900;margin-bottom:8px;opacity:.92}
+h1{font-size:clamp(40px,6vw,64px);line-height:.96;letter-spacing:-2px;margin:0 0 14px}h2{font-size:30px;margin:0 0 10px}h3{margin:0 0 7px}.lead{font-size:17px;line-height:1.6;max-width:940px}.hero .lead{color:#eee8f6}
+.section{background:#fff;border:1px solid var(--line);border-radius:26px;padding:28px;margin-top:22px;box-shadow:0 7px 25px rgba(35,20,60,.045)}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}.num{background:var(--p);color:#fff;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:900;white-space:nowrap}
+.visual{margin-top:18px;background:#faf9fc;border:1px solid var(--line);border-radius:20px;padding:10px;overflow:hidden}.visual svg{width:100%;height:auto;display:block}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px}.box h3{color:var(--p)}.box p{margin:0;color:#596579;font-size:14px;line-height:1.5}
+.callout{margin-top:15px;background:#fff7df;border-left:5px solid var(--g);border-radius:14px;padding:15px 17px;color:#6a5200;line-height:1.5}
+.note{margin-top:15px;background:#eef7f3;border-left:5px solid var(--green);border-radius:14px;padding:15px 17px;color:#356155;line-height:1.5}
+.check{margin-top:17px;background:#faf9fc;border:1px solid var(--line);border-radius:17px;padding:18px}.qlabel{font-size:11px;letter-spacing:1px;color:var(--p);font-weight:900}.q{font-size:19px;font-weight:900;line-height:1.42;margin-top:6px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.opt{border:1px solid #d7dbe5;background:#fff;border-radius:12px;padding:12px;text-align:left;font-weight:700;cursor:pointer}.opt.correct{background:#edf8f1;border-color:#86c99a;color:#14532d}.opt.wrong{background:#fff3f3;border-color:#e2a0a0;color:#8a1c1c}
+.feedback{display:none;margin-top:10px;padding:12px;border-radius:12px;line-height:1.5}.feedback.show{display:block;background:#edf8f1;border:1px solid #bfe6ca;color:#14532d}
+.flow{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;overflow:hidden}.flow-row{display:grid;grid-template-columns:1fr 46px 1fr 46px 1fr 46px 1fr;gap:8px;align-items:center}.node{background:#fbf9fd;border:2px solid #e4deeb;border-radius:17px;padding:15px;text-align:center;min-height:120px;display:flex;flex-direction:column;justify-content:center;transition:.3s}.node.active{border-color:var(--p);background:#f7effc;transform:translateY(-3px);box-shadow:0 8px 20px rgba(83,37,127,.10)}.node b{font-size:17px;color:var(--p)}.node span{font-size:11px;color:var(--muted);line-height:1.4;margin-top:5px}.flow-arrow{font-size:28px;font-weight:900;color:var(--p);text-align:center}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.ctrl{border:1px solid #d7dbe5;background:#fff;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer}.ctrl.primary{background:var(--p);color:#fff;border-color:var(--p)}
+.journey-stage{margin-top:14px;background:#f8f5fb;border:1px solid #e1d7eb;border-radius:16px;padding:18px}.journey-title{font-size:22px;font-weight:900;color:var(--p)}.journey-copy{color:#596579;line-height:1.5;margin-top:6px}.readouts{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}.read{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}.read b{display:block;color:var(--p);font-size:20px}.read span{font-size:11px;color:var(--muted)}
+.bar-wrap{margin-top:15px}.bar-label{display:flex;justify-content:space-between;gap:10px;font-size:12px;font-weight:800;color:#596579}.bar{height:16px;background:#edf0f5;border-radius:999px;overflow:hidden;margin-top:7px}.fill{height:100%;border-radius:999px;transition:width .35s ease}.fatfill{background:#f2bd22}.chofill{background:#7042a0}.proteinfill{background:#b91c1c}
+.sliderbox{background:#fbfbff;border:1px solid var(--line);border-radius:17px;padding:17px;margin-top:17px}.sliderbox input{width:100%}.slider-title{display:flex;justify-content:space-between;align-items:center;gap:10px}.badge2{background:#eef2ff;color:#1e3a8a;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:900}
+.case{margin-top:18px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;border-radius:20px;padding:21px}.case h2{color:#fff}.case p{color:#eee8f6;line-height:1.5}.casegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.casebox{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.09);border-radius:14px;padding:13px}.casebox b{color:#ffcf55;display:block;margin-bottom:5px}.casebox span{font-size:13px;line-height:1.42}
+textarea{width:100%;min-height:120px;border:1px solid #d7dbe5;border-radius:12px;padding:12px;resize:vertical}.model{display:none;margin-top:10px;background:#edf8f1;border:1px solid #bfe6ca;color:#14532d;border-radius:12px;padding:12px;line-height:1.55}.model.show{display:block}
+.takehome{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.take{border:1px solid var(--line);border-radius:15px;padding:15px;background:#fff}.take b{display:block;color:var(--p);margin-bottom:5px}.take p{margin:0;color:#596579;font-size:13px;line-height:1.45}
+.high{background:#f7f4fa;border:1px solid #e3d9ec;border-radius:15px;padding:15px;margin-top:14px}.high b{color:var(--p)}
+.next{margin-top:22px;background:#eef7f3;border-left:5px solid var(--green);border-radius:15px;padding:18px 20px;line-height:1.5}.next b{color:#176b55}
+.top-actions{display:flex;gap:7px;align-items:center}.btn{border:1px solid #d7dbe5;background:#fff;border-radius:10px;padding:9px 11px;font-weight:800;cursor:pointer}.btn.primary{background:var(--p);border-color:var(--p);color:#fff}.btn.gold{background:var(--g);border-color:var(--g);color:#4a3500}.exam{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:900;color:var(--muted)}.exam input{width:18px;height:18px}.revision{display:none}.exam-on .revision{display:block}.exam-on .interactive-only{display:none}.exam-on .model{display:block}
+.footer{text-align:center;color:var(--muted);font-size:12px;margin-top:26px}
+@media(max-width:900px){.g3,.g4,.casegrid,.takehome,.readouts{grid-template-columns:1fr 1fr}.flow-row{grid-template-columns:1fr}.flow-arrow{transform:rotate(90deg)}.top-actions .hide-sm{display:none}}
+@media(max-width:580px){.top{padding:0 13px}.wrap{padding:19px 13px 50px}.hero,.section{padding:20px}.g2,.g3,.g4,.casegrid,.takehome,.readouts,.options{grid-template-columns:1fr}h1{font-size:42px}.top .tag{display:none}.top-actions{gap:5px}.btn{padding:8px 9px;font-size:12px}}
+</style>
+</head>
+<body id="body">
+<header class="top">
+  <div><div class="brand">TCE 504 • Applied Exercise Physiology</div><div class="tag">12 / FAT & PROTEIN METABOLISM</div></div>
+  <div class="top-actions">
+    <label class="exam"><input type="checkbox" id="examToggle" onchange="toggleExam()"> Exam Prep Mode</label>
+    <button class="btn hide-sm" onclick="window.print()">Print / PDF</button>
+  </div>
+</header>
+<main class="wrap">
+
+<section class="hero">
+  <div class="eyebrow">SECTION 12 • ALTERNATIVE SUBSTRATES</div>
+  <h1>Fat & Protein Metabolism</h1>
+  <p class="lead">Not all exercise fuel arrives through carbohydrate. Follow how <b>fatty acids</b> are oxidised through β-oxidation and how <b>amino acids</b> can contribute through their carbon skeletons while nitrogen is handled separately.</p>
+</section>
+
+<section class="section">
+  <div class="head"><div><div class="eyebrow">PART 01</div><h2>WHY DO WE NEED MORE THAN ONE FUEL?</h2></div><div class="num">Concept</div></div>
+  <p class="lead">Exercise metabolism is not “carbohydrate OR fat”. Multiple substrates can be available at the same time. Their relative contribution changes with <b>exercise intensity, duration, training status and substrate availability</b>.</p>
+  <div class="visual">
+    <svg viewBox="0 0 1000 300" role="img" aria-label="Carbohydrate, fat and protein feeding into shared energy pathways">
+      <defs><marker id="a1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6z" fill="#53257f"/></marker></defs>
+      <rect x="45" y="50" width="210" height="68" rx="18" fill="#53257f"/><text x="150" y="92" text-anchor="middle" fill="#fff" font-size="24" font-weight="900">CARBOHYDRATE</text>
+      <rect x="45" y="130" width="210" height="68" rx="18" fill="#fff7df" stroke="#ffb703" stroke-width="3"/><text x="150" y="172" text-anchor="middle" fill="#6a5200" font-size="24" font-weight="900">FAT</text>
+      <rect x="45" y="210" width="210" height="68" rx="18" fill="#fff1f1" stroke="#b91c1c" stroke-width="3"/><text x="150" y="252" text-anchor="middle" fill="#8b1e1e" font-size="24" font-weight="900">PROTEIN</text>
+      <path d="M255 84 H385" stroke="#53257f" stroke-width="5" marker-end="url(#a1)"/><path d="M255 164 H385" stroke="#53257f" stroke-width="5" marker-end="url(#a1)"/><path d="M255 244 H385" stroke="#53257f" stroke-width="5" marker-end="url(#a1)"/>
+      <rect x="390" y="95" width="230" height="110" rx="20" fill="#f5f0fa" stroke="#9d83b9" stroke-width="3"/><text x="505" y="132" text-anchor="middle" fill="#53257f" font-size="23" font-weight="900">SUBSTRATES</text><text x="505" y="161" text-anchor="middle" fill="#596579" font-size="15">available to tissues</text><text x="505" y="188" text-anchor="middle" fill="#596579" font-size="15">and metabolic pathways</text>
+      <path d="M620 150 H730" stroke="#53257f" stroke-width="5" marker-end="url(#a1)"/>
+      <rect x="735" y="95" width="220" height="110" rx="20" fill="#eef7f3" stroke="#79b59e" stroke-width="3"/><text x="845" y="132" text-anchor="middle" fill="#176b55" font-size="22" font-weight="900">ATP SUPPLY</text><text x="845" y="161" text-anchor="middle" fill="#596579" font-size="15">multiple pathways</text><text x="845" y="188" text-anchor="middle" fill="#596579" font-size="15">support muscle work</text>
+    </svg>
+  </div>
+  <div class="grid g3" style="margin-top:16px">
+    <div class="box"><h3>Carbohydrate</h3><p>Useful for rapid ATP provision and especially relevant as exercise intensity rises.</p></div>
+    <div class="box"><h3>Fat</h3><p>Large energy capacity, but a slower rate of ATP supply than carbohydrate.</p></div>
+    <div class="box"><h3>Protein</h3><p>Primary role is structural and functional; usually a smaller exercise-fuel contribution.</p></div>
+  </div>
+  <div class="callout"><b>Think before you learn:</b> A long-duration athlete can rely on fat for substantial energy without fat becoming the only fuel.</div>
+  <div class="check"><div class="qlabel">QUICK CHECK</div><div class="q">Which statement best represents exercise fuel selection?</div><div class="options"><button class="opt" onclick="answer(this,false,'c1')">Only one fuel can be oxidised at a time.</button><button class="opt" onclick="answer(this,true,'c1')">Multiple substrates can contribute, with relative contribution changing.</button><button class="opt" onclick="answer(this,false,'c1')">Protein is always the preferred fuel.</button><button class="opt" onclick="answer(this,false,'c1')">Fat cannot support exercise.</button></div><div id="c1" class="feedback"></div></div>
+</section>
+
+<section class="section">
+  <div class="head"><div><div class="eyebrow">PART 02</div><h2>FAT → β-OXIDATION → ACETYL-CoA</h2></div><div class="num">Mechanism</div></div>
+  <p class="lead">Fatty acids can enter mitochondria and undergo repeated cycles of <b>β-oxidation</b>. Each cycle shortens the fatty acid and produces <b>acetyl-CoA, NADH and FADH₂</b>.</p>
+  <div class="visual">
+    <svg viewBox="0 0 1000 320" role="img" aria-label="Fatty acid beta oxidation producing acetyl-CoA and electron carriers">
+      <defs><marker id="a2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6z" fill="#53257f"/></marker></defs>
+      <rect x="45" y="105" width="180" height="110" rx="20" fill="#fff7df" stroke="#ffb703" stroke-width="3"/><text x="135" y="145" text-anchor="middle" fill="#6a5200" font-size="22" font-weight="900">FATTY ACID</text><text x="135" y="174" text-anchor="middle" fill="#8a6400" font-size="15">long carbon chain</text><text x="135" y="198" text-anchor="middle" fill="#8a6400" font-size="15">stored energy</text>
+      <path d="M225 160 H335" stroke="#53257f" stroke-width="6" marker-end="url(#a2)"/><text x="280" y="142" text-anchor="middle" fill="#53257f" font-size="15" font-weight="900">β-oxidation</text>
+      <rect x="340" y="85" width="235" height="150" rx="20" fill="#f5f0fa" stroke="#9d83b9" stroke-width="3"/><text x="457" y="122" text-anchor="middle" fill="#53257f" font-size="20" font-weight="900">MITOCHONDRIA</text><text x="457" y="151" text-anchor="middle" fill="#596579" font-size="14">fatty acid is shortened</text><text x="457" y="180" text-anchor="middle" fill="#596579" font-size="14">repeated cycles</text><text x="457" y="209" text-anchor="middle" fill="#596579" font-size="14">produce reducing carriers</text>
+      <path d="M575 160 H680" stroke="#53257f" stroke-width="6" marker-end="url(#a2)"/>
+      <rect x="685" y="45" width="250" height="80" rx="18" fill="#53257f"/><text x="810" y="94" text-anchor="middle" fill="#fff" font-size="21" font-weight="900">ACETYL-CoA</text>
+      <rect x="685" y="135" width="250" height="80" rx="18" fill="#eef2ff" stroke="#2563eb" stroke-width="3"/><text x="810" y="165" text-anchor="middle" fill="#1e3a8a" font-size="19" font-weight="900">NADH + FADH₂</text><text x="810" y="190" text-anchor="middle" fill="#596579" font-size="13">electron carriers</text>
+      <rect x="685" y="225" width="250" height="55" rx="16" fill="#eef7f3" stroke="#79b59e" stroke-width="3"/><text x="810" y="259" text-anchor="middle" fill="#176b55" font-size="17" font-weight="900">→ TCA / ETC → ATP production</text>
+    </svg>
+  </div>
+  <div class="grid g3" style="margin-top:16px">
+    <div class="box"><h3>What enters?</h3><p>Fatty acids enter mitochondrial oxidative metabolism after reaching the mitochondria.</p></div>
+    <div class="box"><h3>What is produced?</h3><p>Repeated β-oxidation produces acetyl-CoA, NADH and FADH₂.</p></div>
+    <div class="box"><h3>Why does it matter?</h3><p>These products feed the oxidative machinery that supports ATP production.</p></div>
+  </div>
+  <div class="high"><b>High-yield fact:</b> Fat is an important high-capacity fuel, but its rate of ATP provision is slower than carbohydrate.</div>
+</section>
+
+<section class="section">
+  <div class="head"><div><div class="eyebrow">PART 03</div><h2>RATE ≠ CAPACITY</h2></div><div class="num">Compare</div></div>
+  <p class="lead">A pathway can contribute a large amount of energy over time without delivering ATP at the fastest possible rate. This is why fat can support prolonged exercise while carbohydrate remains important when ATP must be supplied rapidly.</p>
+  <div class="visual">
+    <svg viewBox="0 0 1000 300" role="img" aria-label="Rate versus capacity comparison for fat and carbohydrate">
+      <line x1="110" y1="250" x2="900" y2="250" stroke="#687385" stroke-width="3"/><line x1="110" y1="250" x2="110" y2="45" stroke="#687385" stroke-width="3"/>
+      <text x="505" y="285" text-anchor="middle" fill="#596579" font-size="15" font-weight="900">TOTAL ENERGY CAPACITY →</text>
+      <text x="45" y="150" transform="rotate(-90 45 150)" text-anchor="middle" fill="#596579" font-size="15" font-weight="900">RATE OF ATP PROVISION ↑</text>
+      <circle cx="760" cy="125" r="46" fill="#fff7df" stroke="#ffb703" stroke-width="5"/><text x="760" y="120" text-anchor="middle" fill="#6a5200" font-size="17" font-weight="900">FAT</text><text x="760" y="142" text-anchor="middle" fill="#8a6400" font-size="12">high capacity</text>
+      <circle cx="360" cy="90" r="42" fill="#53257f"/><text x="360" y="86" text-anchor="middle" fill="#fff" font-size="17" font-weight="900">CHO</text><text x="360" y="106" text-anchor="middle" fill="#fff" font-size="11">faster rate</text>
+      <text x="690" y="195" fill="#596579" font-size="13">Large energy reserve,</text><text x="690" y="213" fill="#596579" font-size="13">slower delivery.</text>
+      <text x="275" y="165" fill="#596579" font-size="13">Faster ATP provision</text><text x="275" y="183" fill="#596579" font-size="13">for higher demand.</text>
+    </svg>
+  </div>
+  <div class="sliderbox interactive-only">
+    <div class="slider-title"><b>Concept simulator: ATP demand</b><span class="badge2" id="demandBadge">Moderate</span></div>
+    <input id="demandSlider" type="range" min="0" max="100" value="50" oninput="updateDemand()">
+    <div class="bar-wrap"><div class="bar-label"><span>Relative fat contribution</span><span id="fatVal">50%</span></div><div class="bar"><div id="fatBar" class="fill fatfill" style="width:50%"></div></div></div>
+    <div class="bar-wrap"><div class="bar-label"><span>Relative carbohydrate contribution</span><span id="choVal">50%</span></div><div class="bar"><div id="choBar" class="fill chofill" style="width:50%"></div></div></div>
+    <p id="demandText" class="journey-copy"><b>Moderate demand:</b> both carbohydrate and fat can contribute substantially.</p>
+  </div>
+  <div class="note"><b>Important:</b> The simulator is conceptual. It is not a quantitative prediction of an individual's exact substrate oxidation.</div>
+</section>
+
+<section class="section">
+  <div class="head"><div><div class="eyebrow">PART 04</div><h2>PROTEIN → AMINO ACIDS → CARBON SKELETON + NITROGEN</h2></div><div class="num">Mechanism</div></div>
+  <p class="lead">Protein is broken down into amino acids. During energy metabolism, amino acids may be <b>deaminated</b>. The resulting <b>carbon skeleton</b> can enter pathways linked to energy production, while nitrogen must be handled separately.</p>
+  <div class="visual">
+    <svg viewBox="0 0 1000 320" role="img" aria-label="Protein to amino acids splitting into carbon skeleton and nitrogen">
+      <defs><marker id="a4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6z" fill="#53257f"/></marker></defs>
+      <rect x="55" y="105" width="190" height="110" rx="20" fill="#fff1f1" stroke="#b91c1c" stroke-width="3"/><text x="150" y="146" text-anchor="middle" fill="#8b1e1e" font-size="23" font-weight="900">PROTEIN</text><text x="150" y="176" text-anchor="middle" fill="#7d4b4b" font-size="15">digestion</text><text x="150" y="199" text-anchor="middle" fill="#7d4b4b" font-size="15">→ amino acids</text>
+      <path d="M245 160 H355" stroke="#53257f" stroke-width="6" marker-end="url(#a4)"/><text x="300" y="140" text-anchor="middle" fill="#53257f" font-size="14" font-weight="900">deamination</text>
+      <rect x="360" y="90" width="210" height="140" rx="20" fill="#f5f0fa" stroke="#9d83b9" stroke-width="3"/><text x="465" y="130" text-anchor="middle" fill="#53257f" font-size="21" font-weight="900">AMINO ACID</text><text x="465" y="160" text-anchor="middle" fill="#596579" font-size="15">two parts are</text><text x="465" y="184" text-anchor="middle" fill="#596579" font-size="15">handled differently</text>
+      <path d="M570 135 H675" stroke="#53257f" stroke-width="5" marker-end="url(#a4)"/><path d="M570 190 H675" stroke="#53257f" stroke-width="5" marker-end="url(#a4)"/>
+      <rect x="680" y="55" width="250" height="90" rx="18" fill="#eef7f3" stroke="#79b59e" stroke-width="3"/><text x="805" y="91" text-anchor="middle" fill="#176b55" font-size="21" font-weight="900">CARBON SKELETON</text><text x="805" y="118" text-anchor="middle" fill="#596579" font-size="14">→ energy pathways / TCA</text>
+      <rect x="680" y="175" width="250" height="90" rx="18" fill="#eef2ff" stroke="#2563eb" stroke-width="3"/><text x="805" y="211" text-anchor="middle" fill="#1e3a8a" font-size="21" font-weight="900">NITROGEN</text><text x="805" y="238" text-anchor="middle" fill="#596579" font-size="14">→ separate nitrogen disposal</text>
+    </svg>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="box"><h3>Carbon skeleton</h3><p>Can enter metabolic pathways linked to TCA intermediates or other energy-related routes.</p></div>
+    <div class="box"><h3>Nitrogen</h3><p>Must be handled separately and ultimately excreted through nitrogen-disposal pathways.</p></div>
+  </div>
+  <div class="callout"><b>Exercise context:</b> Protein usually contributes less to exercise energy than carbohydrate and fat, but its contribution may rise during prolonged exercise or when glycogen availability is low.</div>
+  <div class="check"><div class="qlabel">QUICK CHECK</div><div class="q">When amino acids contribute to energy metabolism, what happens to their carbon skeletons?</div><div class="options"><button class="opt" onclick="answer(this,true,'c2')">They can enter pathways linked to energy metabolism.</button><button class="opt" onclick="answer(this,false,'c2')">They are converted directly into ATP in the blood.</button><button class="opt" onclick="answer(this,false,'c2')">They must always become lactate first.</button><button class="opt" onclick="answer(this,false,'c2')">They enter the nucleus as ATP.</button></div><div id="c2" class="feedback"></div></div>
+</section>
+
+<section class="section">
+  <div class="head"><div><div class="eyebrow">PART 05</div><h2>HOW EXERCISE CHANGES SUBSTRATE USE</h2></div><div class="num">Apply</div></div>
+  <p class="lead">As exercise intensity and duration change, the relative contribution of different fuels changes too. Endurance training can also affect the body's ability to use fat during exercise.</p>
+  <div class="visual">
+    <svg viewBox="0 0 1000 300" role="img" aria-label="Conceptual exercise intensity continuum from easy to hard">
+      <defs><linearGradient id="grad" x1="0" x2="1"><stop offset="0%" stop-color="#ffdd74"/><stop offset="55%" stop-color="#d9c5ee"/><stop offset="100%" stop-color="#53257f"/></linearGradient></defs>
+      <rect x="80" y="105" width="840" height="46" rx="23" fill="url(#grad)"/>
+      <circle cx="170" cy="128" r="17" fill="#fff" stroke="#6a5200" stroke-width="3"/><circle cx="500" cy="128" r="17" fill="#fff" stroke="#7042a0" stroke-width="3"/><circle cx="830" cy="128" r="17" fill="#fff" stroke="#53257f" stroke-width="3"/>
+      <text x="170" y="87" text-anchor="middle" fill="#6a5200" font-size="22" font-weight="900">EASY</text><text x="500" y="87" text-anchor="middle" fill="#7042a0" font-size="22" font-weight="900">MODERATE</text><text x="830" y="87" text-anchor="middle" fill="#53257f" font-size="22" font-weight="900">HARD</text>
+      <text x="170" y="191" text-anchor="middle" fill="#596579" font-size="14">fat oxidation tends to have</text><text x="170" y="210" text-anchor="middle" fill="#596579" font-size="14">a larger relative role</text>
+      <text x="500" y="191" text-anchor="middle" fill="#596579" font-size="14">mixed substrate use</text><text x="500" y="210" text-anchor="middle" fill="#596579" font-size="14">is common</text>
+      <text x="830" y="191" text-anchor="middle" fill="#596579" font-size="14">rapid ATP supply becomes</text><text x="830" y="210" text-anchor="middle" fill="#596579" font-size="14">more important</text>
+      <text x="500" y="260" text-anchor="middle" fill="#53257f" font-size="16" font-weight="900">Training status + duration + substrate availability also matter.</text>
+    </svg>
+  </div>
+  <div class="sliderbox interactive-only">
+    <div class="slider-title"><b>Choose the exercise context</b><span class="badge2" id="contextBadge">Moderate continuous</span></div>
+    <input id="contextSlider" type="range" min="0" max="100" value="50" oninput="updateContext()">
+    <div class="grid g3" style="margin-top:14px">
+      <div class="box"><h3 id="contextType">Moderate continuous</h3><p id="contextLine">Mixed fuel use can be substantial; fat oxidation may make an important contribution.</p></div>
+      <div class="box"><h3>What to ask?</h3><p>What is the intensity? How long is the exercise? What substrates are available?</p></div>
+      <div class="box"><h3>Training effect</h3><p>Endurance training can increase the relative capacity to oxidise fat during exercise.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="head"><div><div class="eyebrow">PART 06</div><h2>APPLY IT — THE ENDURANCE ATHLETE</h2></div><div class="num">Case reasoning</div></div>
+  <div class="case">
+    <h2>A runner is preparing for a long endurance event.</h2>
+    <p>Use the chain: <b>DEMAND → SUBSTRATE → PATHWAY → PRODUCTS → ATP SUPPLY</b>. Explain why fat can make a substantial contribution during prolonged exercise, while carbohydrate remains important.</p>
+    <div class="casegrid">
+      <div class="casebox"><b>1 • DEMAND</b><span>Long duration means ATP must be supplied continuously.</span></div>
+      <div class="casebox"><b>2 • SUBSTRATE</b><span>Fatty acids and carbohydrate-derived substrates are available.</span></div>
+      <div class="casebox"><b>3 • PATHWAY</b><span>Fatty acids can undergo β-oxidation; products feed oxidative ATP production.</span></div>
+    </div>
+  </div>
+  <div style="margin-top:18px" class="interactive-only">
+    <label class="qlabel" for="applyText">YOUR EXPLANATION — WRITE IT BEFORE REVEALING THE MODEL</label>
+    <textarea id="applyText" placeholder="Explain how fat contributes to ATP production during prolonged exercise. Mention β-oxidation, acetyl-CoA and why carbohydrate still matters."></textarea>
+    <div class="controls"><button class="ctrl primary" onclick="document.getElementById('applyModel').classList.add('show')">Reveal Model Answer</button><button class="ctrl" onclick="document.getElementById('applyText').value=''">Clear</button></div>
+    <div id="applyModel" class="model"><b>Model answer:</b> During prolonged exercise, fatty acids can enter mitochondria and undergo β-oxidation, producing acetyl-CoA, NADH and FADH₂. These products support oxidative ATP production. Fat has a large energy capacity, so it can make a substantial contribution during prolonged exercise. Carbohydrate remains important because it can provide ATP more rapidly, especially when exercise intensity rises. The relative contribution of each substrate is influenced by intensity, duration, training status and substrate availability.</div>
+  </div>
+  <div class="high"><b>Common misconception:</b> “Fat burns only when carbohydrate is absent.” Not supported. Carbohydrate and fat can be oxidised simultaneously; their relative contribution changes with the exercise context.</div>
+</section>
+
+<section class="section">
+  <div class="head"><div><div class="eyebrow">KEY CONSOLIDATION</div><h2>CAN YOU SEE THE WHOLE PICTURE?</h2></div><div class="num">Revision</div></div>
+  <div class="takehome">
+    <div class="take"><b>FAT</b><p>Large energy capacity; slower ATP provision.</p></div>
+    <div class="take"><b>β-OXIDATION</b><p>Fatty acids → acetyl-CoA + NADH + FADH₂.</p></div>
+    <div class="take"><b>PROTEIN</b><p>Usually smaller exercise-fuel contribution; carbon skeleton can enter energy pathways.</p></div>
+    <div class="take"><b>CONTEXT</b><p>Intensity, duration, training status and substrate availability change relative contribution.</p></div>
+  </div>
+  <div class="next"><b>NOW YOU KNOW → NEXT:</b> You can explain how fat and protein enter the larger metabolic network. Next, bring ATP-PCr, glycolysis and oxidative pathways together and ask: <b>How do all energy systems contribute at the same time?</b></div>
+</section>
+
+<div class="footer">TCE 504 Applied Exercise Physiology • Exercise Metabolism • Section 12</div>
+</main>
+<script>
+function answer(btn,correct,id){
+  const box=btn.parentElement; box.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+  btn.classList.add(correct?'correct':'wrong');
+  const f=document.getElementById(id); f.classList.add('show');
+  f.innerHTML=correct?'<b>Correct.</b> Keep that reasoning chain: multiple substrates can contribute, and their relative contribution changes with the exercise context.':'<b>Not quite.</b> Re-check the central idea: carbohydrate, fat and sometimes protein can all contribute, with relative contribution changing according to exercise context.';
+}
+function updateDemand(){
+  const v=+document.getElementById('demandSlider').value;
+  const fat=Math.round(75 - v*.5); const cho=100-fat;
+  document.getElementById('fatVal').textContent=fat+'%'; document.getElementById('choVal').textContent=cho+'%';
+  document.getElementById('fatBar').style.width=fat+'%'; document.getElementById('choBar').style.width=cho+'%';
+  let label='Moderate',text='Both carbohydrate and fat can contribute substantially.';
+  if(v<25){label='Low demand';text='<b>Lower demand:</b> relative fat oxidation can be an important contributor.'}
+  else if(v>75){label='High demand';text='<b>Higher demand:</b> the need for rapid ATP regeneration becomes more important, increasing carbohydrate relevance.'}
+  document.getElementById('demandBadge').textContent=label; document.getElementById('demandText').innerHTML=text;
+}
+function updateContext(){
+  const v=+document.getElementById('contextSlider').value; let title,line,badge;
+  if(v<30){badge='Easy / prolonged';title='Easy / prolonged';line='A large relative contribution from fat oxidation may be seen during lower-intensity, prolonged exercise.'}
+  else if(v>70){badge='Hard / high demand';title='Hard / high demand';line='Rapid ATP provision becomes more important as exercise demand rises; carbohydrate becomes increasingly relevant.'}
+  else{badge='Moderate continuous';title='Moderate continuous';line='Mixed substrate use can be substantial; fat oxidation may make an important contribution.'}
+  document.getElementById('contextBadge').textContent=badge;document.getElementById('contextType').textContent=title;document.getElementById('contextLine').textContent=line;
+}
+function toggleExam(){document.getElementById('body').classList.toggle('exam-on',document.getElementById('examToggle').checked)}
+updateDemand();updateContext();
+</script>
+</body>
+</html>

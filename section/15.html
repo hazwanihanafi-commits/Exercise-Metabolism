@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCE504 • Section 15 — Athlete Journey</title>
+<style>
+:root{
+  --purple:#53257f;--purple2:#6d3ca2;--gold:#ffb703;--ink:#182230;--muted:#667085;
+  --line:#e5e7ee;--soft:#f7f7fb;--blue:#2563eb;--green:#2e7d32;--red:#b91c1c;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#f4f5f9;line-height:1.55}
+.wrap{max-width:1180px;margin:auto;padding:24px}
+.hero{background:linear-gradient(135deg,#53257f,#6d3ca2,#8561ad);color:#fff;border-radius:24px;padding:34px;box-shadow:0 15px 38px rgba(43,23,62,.14)}
+.badge{display:inline-block;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.15);font-size:12px;font-weight:700;letter-spacing:.06em}
+.hero h1{font-size:40px;line-height:1.08;margin:10px 0 12px}.hero p{max-width:940px;color:#f4eff9}
+.rule{margin-top:18px;padding:14px 16px;border-left:5px solid var(--gold);border-radius:10px;background:rgba(255,255,255,.12);font-weight:700}
+.section{margin-top:24px}.section h2{font-size:28px;margin:0 0 8px}.lead{font-size:17px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card,.visual,.check{background:#fff;border:1px solid var(--line);border-radius:18px;padding:21px;box-shadow:0 8px 24px rgba(35,42,65,.05)}
+.visual{padding:13px;overflow:hidden}.visual svg{width:100%;height:auto;display:block}
+.purple{border-top:5px solid var(--purple)}.gold{border-top:5px solid var(--gold)}.blue{border-top:5px solid var(--blue)}.green{border-top:5px solid var(--green)}
+.callout,.note,.misconception{padding:16px 18px;border-radius:14px;margin-top:15px}.callout{background:#f0ebf8;border-left:5px solid var(--purple)}.note{background:#fffdf4;border-left:5px solid var(--gold)}.misconception{background:#fff5f5;border-left:5px solid var(--red)}
+.stage-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:16px}
+.stage-tab{background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px 10px;text-align:center;cursor:pointer;transition:.15s}
+.stage-tab:hover,.stage-tab.active{border:2px solid var(--purple);transform:translateY(-2px);box-shadow:0 7px 18px rgba(83,37,127,.10)}
+.stage-tab .ico{font-size:28px}.stage-tab b{display:block;margin-top:4px}
+.stage-main{margin-top:16px}
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:15px}
+.metric{background:#fafafe;border:1px solid var(--line);border-radius:13px;padding:14px}.metric span{display:block;font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}.metric strong{display:block;font-size:20px;margin-top:4px}
+.controls{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}.btn-primary{background:var(--purple);color:#fff}.btn-light{background:#eef0f5;color:#273041}.btn-gold{background:var(--gold);color:#171717}
+.answer{display:none;margin-top:10px;padding:13px;border-radius:10px;border-left:4px solid var(--green);background:#eef7f1}.answer.show{display:block}
+textarea{width:100%;min-height:125px;padding:12px;border:1px solid #d5d9e3;border-radius:12px;font:inherit;resize:vertical}
+.option{display:block;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin:7px 0;cursor:pointer}.option:hover{background:#fafafe}
+.feedback{margin-top:10px;font-weight:700}
+.path-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:18px}
+.path{height:92px;border-radius:12px;border:1px solid var(--line);display:flex;align-items:end;justify-content:center;padding:8px;position:relative;overflow:hidden;background:#f8f9fc}
+.path .fill{position:absolute;bottom:0;left:0;right:0;border-radius:10px 10px 0 0;background:#53257f;transition:height .35s ease}
+.path.blue .fill{background:#2563eb}.path.green .fill{background:#2e7d32}.path.gold .fill{background:#ffb703}
+.path span{position:relative;z-index:1;background:rgba(255,255,255,.86);padding:2px 5px;border-radius:6px;font-size:12px;font-weight:700}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.kf{background:var(--purple);color:#fff;border-radius:16px;padding:18px}.kf b{color:#ffd85d}
+.exam{position:fixed;right:14px;top:14px;background:#fff;border:1px solid var(--line);padding:8px 12px;border-radius:13px;box-shadow:0 7px 20px rgba(0,0,0,.08);z-index:10;font-size:13px;font-weight:700}
+.exam input{accent-color:var(--purple)}.exam-on .interactive-only{display:none!important}.exam-on .answer{display:block}
+.footer{text-align:center;color:var(--muted);font-size:12px;margin:32px 0 8px}
+@media(max-width:900px){.grid2,.grid3,.compare{grid-template-columns:1fr}.stage-tabs{grid-template-columns:repeat(3,1fr)}.metric-grid{grid-template-columns:repeat(2,1fr)}.path-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.wrap{padding:14px}.hero{padding:25px}.hero h1{font-size:29px}.stage-tabs{grid-template-columns:repeat(2,1fr)}.metric-grid,.path-grid{grid-template-columns:1fr}.card{padding:17px}}
+</style>
+</head>
+<body>
+<div class="exam"><label><input id="exam" type="checkbox" onchange="toggleExam()"> Exam Prep Mode</label></div>
+<div class="wrap">
+
+<header class="hero">
+  <span class="badge">TCE 504 • Exercise Metabolism • Section 15</span>
+  <h1>FOLLOW ONE ATHLETE THROUGH TIME</h1>
+  <p>Watch the physiological story change from <b>rest → exercise → early exercise → sustained exercise → recovery</b>. The same athlete is followed, but the body's demands and responses change over time.</p>
+  <div class="rule">CORE IDEA → Exercise physiology is a time story. Do not look at one variable in isolation.</div>
+</header>
+
+<section class="section">
+  <h2>01 • THE ATHLETE JOURNEY</h2>
+  <p class="lead">Click each stage. Look at HR, VO₂, ATP demand and the main metabolic emphasis.</p>
+
+  <div class="stage-tabs">
+    <div class="stage-tab active" onclick="setStage(0,this)"><div class="ico">🧍</div><b>REST</b><small>baseline</small></div>
+    <div class="stage-tab" onclick="setStage(1,this)"><div class="ico">🏃</div><b>EXERCISE</b><small>onset</small></div>
+    <div class="stage-tab" onclick="setStage(2,this)"><div class="ico">⏱️</div><b>0–5 MIN</b><small>transition</small></div>
+    <div class="stage-tab" onclick="setStage(3,this)"><div class="ico">🏃‍♀️</div><b>30–60 MIN</b><small>sustained</small></div>
+    <div class="stage-tab" onclick="setStage(4,this)"><div class="ico">🧘</div><b>2 H RECOVERY</b><small>restoration</small></div>
+  </div>
+
+  <div class="grid2 stage-main">
+    <div class="card" id="stageCard"></div>
+    <div class="visual">
+      <svg viewBox="0 0 820 420" role="img" aria-label="Athlete journey from rest through exercise and recovery">
+        <defs>
+          <marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6z" fill="#53257f"/></marker>
+        </defs>
+        <rect x="45" y="105" width="730" height="185" rx="28" fill="#fafafe" stroke="#e3e6ed"/>
+        <line x1="100" y1="200" x2="720" y2="200" stroke="#d8dce5" stroke-width="12" stroke-linecap="round"/>
+        <circle id="journeyDot" cx="100" cy="200" r="17" fill="#ffb703"/>
+        <circle cx="100" cy="200" r="34" fill="none" stroke="#53257f" stroke-width="3" opacity=".55"/>
+        <text id="svgStage" x="410" y="76" text-anchor="middle" fill="#53257f" font-size="27" font-weight="700">REST</text>
+        <text x="100" y="338" text-anchor="middle" fill="#667085" font-size="15">REST</text>
+        <text x="255" y="338" text-anchor="middle" fill="#667085" font-size="15">EXERCISE</text>
+        <text x="410" y="338" text-anchor="middle" fill="#667085" font-size="15">0–5 MIN</text>
+        <text x="565" y="338" text-anchor="middle" fill="#667085" font-size="15">30–60 MIN</text>
+        <text x="720" y="338" text-anchor="middle" fill="#667085" font-size="15">2 H RECOVERY</text>
+        <text x="410" y="240" text-anchor="middle" fill="#667085" font-size="16">ATP demand + physiological variables change over time</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric"><span>Heart rate</span><strong id="stageHR">60 bpm</strong></div>
+    <div class="metric"><span>VO₂</span><strong id="stageVO2">Resting</strong></div>
+    <div class="metric"><span>ATP demand</span><strong id="stageATP">Low</strong></div>
+    <div class="metric"><span>Main emphasis</span><strong id="stageFuel">Oxidative</strong></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>02 • VISUAL STORY: WHAT CHANGES?</h2>
+  <div class="visual">
+    <svg viewBox="0 0 1000 440" role="img" aria-label="Conceptual time-course of heart rate, oxygen uptake, ATP demand, and recovery">
+      <line x1="90" y1="355" x2="930" y2="355" stroke="#cfd4dd" stroke-width="2"/>
+      <line x1="90" y1="70" x2="90" y2="355" stroke="#cfd4dd" stroke-width="2"/>
+      <text x="90" y="48" fill="#53257f" font-size="20" font-weight="700">Relative physiological variable</text>
+      <text x="930" y="388" text-anchor="end" fill="#667085" font-size="15">time →</text>
+      <rect x="260" y="70" width="455" height="285" fill="#f0ebf8" opacity=".45"/>
+      <text x="487" y="92" text-anchor="middle" fill="#53257f" font-size="15" font-weight="700">exercise period</text>
+
+      <path d="M90 310 C175 305 220 280 270 155 C340 105 420 115 520 125 C620 140 680 165 715 205 C775 235 850 285 930 305" fill="none" stroke="#b91c1c" stroke-width="7" stroke-linecap="round"/>
+      <path d="M90 325 C180 322 220 300 270 215 C350 150 430 165 520 175 C610 180 675 205 715 235 C790 270 855 305 930 320" fill="none" stroke="#2563eb" stroke-width="7" stroke-linecap="round"/>
+      <path d="M90 330 C180 327 220 240 270 110 C360 85 450 130 520 135 C620 140 675 165 715 210 C790 255 860 300 930 325" fill="none" stroke="#53257f" stroke-width="7" stroke-linecap="round"/>
+
+      <text x="735" y="118" fill="#b91c1c" font-size="16" font-weight="700">HR</text>
+      <text x="735" y="146" fill="#2563eb" font-size="16" font-weight="700">VO₂</text>
+      <text x="735" y="174" fill="#53257f" font-size="16" font-weight="700">ATP demand</text>
+      <text x="260" y="365" text-anchor="middle" fill="#667085" font-size="13">exercise onset</text>
+      <text x="715" y="365" text-anchor="middle" fill="#667085" font-size="13">exercise stops</text>
+      <text x="822" y="230" fill="#2e7d32" font-size="16" font-weight="700">recovery</text>
+    </svg>
+  </div>
+  <div class="note"><b>How to read the figure:</b> the curves are conceptual, not athlete-specific measurements. They are designed to show that variables rise and fall on different time courses.</div>
+</section>
+
+<section class="section">
+  <h2>03 • STAGE 1 — REST</h2>
+  <div class="grid2">
+    <div class="visual">
+      <svg viewBox="0 0 720 350" aria-label="Resting athlete physiological state">
+        <circle cx="360" cy="92" r="36" fill="#53257f"/>
+        <path d="M360 130 V225 M310 165 L360 205 L410 165 M330 285 L360 225 L390 285" fill="none" stroke="#53257f" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="120" cy="125" r="57" fill="#eef7f1" stroke="#2e7d32" stroke-width="3"/>
+        <text x="120" y="120" text-anchor="middle" fill="#1f5f27" font-size="20" font-weight="700">LOW</text>
+        <text x="120" y="147" text-anchor="middle" fill="#667085" font-size="14">ATP demand</text>
+        <circle cx="600" cy="125" r="57" fill="#f0ebf8" stroke="#53257f" stroke-width="3"/>
+        <text x="600" y="120" text-anchor="middle" fill="#53257f" font-size="20" font-weight="700">O₂</text>
+        <text x="600" y="147" text-anchor="middle" fill="#667085" font-size="11.5">oxidative support</text>
+        <text x="360" y="325" text-anchor="middle" fill="#667085" font-size="15">Routine cellular work continues even at rest.</text>
+      </svg>
+    </div>
+    <div class="card purple">
+      <h3>The baseline</h3>
+      <p><b>HR:</b> 60 bpm in the source example.</p>
+      <p><b>VO₂:</b> resting.</p>
+      <p><b>ATP demand:</b> low.</p>
+      <p><b>Main emphasis:</b> oxidative metabolism.</p>
+      <div class="callout"><b>Key reasoning:</b> ATP demand is continuous but relatively low. Oxidative metabolism supports routine cellular work and a mixture of substrates contributes.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>04 • STAGE 2 — EXERCISE STARTS</h2>
+  <div class="grid2">
+    <div class="card gold">
+      <h3>The first problem is speed</h3>
+      <p>At exercise onset, ATP demand rises immediately.</p>
+      <p>Stored ATP and PCr respond rapidly, while glycolysis and oxidative metabolism increase too.</p>
+      <div class="callout"><b>Question:</b> Why cannot oxidative metabolism simply jump instantly to the full new demand?</div>
+      <div class="interactive-only">
+        <textarea placeholder="Type your explanation..."></textarea>
+        <button class="btn btn-primary" style="margin-top:10px" onclick="document.getElementById('startAnswer').classList.toggle('show')">Reveal model answer</button>
+      </div>
+      <div id="startAnswer" class="answer"><b>Model answer:</b> The exercise demand changes immediately, whereas oxygen consumption and oxidative ATP production rise progressively toward the new requirement. Rapid pathways therefore help bridge the immediate gap.</div>
+    </div>
+    <div class="visual">
+      <svg viewBox="0 0 720 350">
+        <defs><marker id="arr2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6z" fill="#53257f"/></marker></defs>
+        <rect x="40" y="112" width="165" height="98" rx="20" fill="#53257f"/>
+        <text x="122" y="151" text-anchor="middle" fill="#fff" font-size="21" font-weight="700">EXERCISE</text>
+        <text x="122" y="180" text-anchor="middle" fill="#ffd85d">starts</text>
+        <path d="M210 160 H300" stroke="#53257f" stroke-width="6" marker-end="url(#arr2)"/>
+        <circle cx="390" cy="160" r="82" fill="#fff8df" stroke="#ffb703" stroke-width="3"/>
+        <text x="390" y="151" text-anchor="middle" fill="#53257f" font-size="22" font-weight="700">ATP</text>
+        <text x="390" y="180" text-anchor="middle" fill="#667085">demand ↑↑</text>
+        <path d="M474 160 H565" stroke="#53257f" stroke-width="6" marker-end="url(#arr2)"/>
+        <rect x="570" y="66" width="110" height="65" rx="14" fill="#f0ebf8" stroke="#53257f" stroke-width="2"/>
+        <text x="625" y="95" text-anchor="middle" fill="#53257f" font-weight="700">ATP + PCr</text>
+        <text x="625" y="115" text-anchor="middle" fill="#667085" font-size="12">rapid response</text>
+        <rect x="570" y="142" width="110" height="65" rx="14" fill="#eef2ff" stroke="#2563eb" stroke-width="2"/>
+        <text x="625" y="170" text-anchor="middle" fill="#1e3a8a" font-weight="700">GLYCOLYSIS</text>
+        <text x="625" y="190" text-anchor="middle" fill="#667085" font-size="12">increases</text>
+        <rect x="570" y="218" width="110" height="65" rx="14" fill="#eef7f1" stroke="#2e7d32" stroke-width="2"/>
+        <text x="625" y="247" text-anchor="middle" fill="#1f5f27" font-weight="700">OXIDATIVE</text>
+        <text x="625" y="267" text-anchor="middle" fill="#667085" font-size="12">increases too</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>05 • STAGE 3 — 0–5 MIN</h2>
+  <div class="visual">
+    <svg viewBox="0 0 1000 390">
+      <defs><marker id="arr3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6z" fill="#2563eb"/></marker></defs>
+      <rect x="55" y="90" width="220" height="120" rx="22" fill="#53257f"/>
+      <text x="165" y="135" text-anchor="middle" fill="#fff" font-size="24" font-weight="700">0–5 MIN</text>
+      <text x="165" y="169" text-anchor="middle" fill="#ffd85d">transition</text>
+      <path d="M285 150 H390" stroke="#2563eb" stroke-width="7" marker-end="url(#arr3)"/>
+      <rect x="395" y="85" width="250" height="130" rx="22" fill="#eef2ff" stroke="#2563eb" stroke-width="3"/>
+      <text x="520" y="128" text-anchor="middle" fill="#1e3a8a" font-size="22" font-weight="700">VO₂ ↑</text>
+      <text x="520" y="158" text-anchor="middle" fill="#667085">toward the new demand</text>
+      <text x="520" y="186" text-anchor="middle" fill="#667085">oxidative contribution rises</text>
+      <path d="M655 150 H760" stroke="#2563eb" stroke-width="7" marker-end="url(#arr3)"/>
+      <rect x="765" y="82" width="180" height="138" rx="22" fill="#fff8df" stroke="#ffb703" stroke-width="3"/>
+      <text x="855" y="120" text-anchor="middle" fill="#53257f" font-size="21" font-weight="700">MIXED</text>
+      <text x="855" y="149" text-anchor="middle" fill="#667085">ATP-PCr + glycolytic</text>
+      <text x="855" y="176" text-anchor="middle" fill="#667085">+ oxidative</text>
+      <text x="855" y="203" text-anchor="middle" fill="#667085">all contribute</text>
+      <text x="500" y="285" text-anchor="middle" fill="#53257f" font-size="19" font-weight="700">The relative contribution changes while the pathways overlap.</text>
+    </svg>
+  </div>
+  <div class="metric-grid">
+    <div class="metric"><span>Example HR</span><strong>165 bpm</strong></div>
+    <div class="metric"><span>ATP demand</span><strong>High</strong></div>
+    <div class="metric"><span>VO₂</span><strong>High</strong></div>
+    <div class="metric"><span>Emphasis</span><strong>Mixed → oxidative rising</strong></div>
+  </div>
+  <div class="note">The values above are the example stage values in the source material; they are not universal normal values for all athletes.</div>
+</section>
+
+<section class="section">
+  <h2>06 • STAGE 4 — 30–60 MIN</h2>
+  <div class="grid2">
+    <div class="card green">
+      <h3>Sustained exercise changes the story</h3>
+      <p>With continued exercise, oxygen consumption has had time to respond to the ongoing demand.</p>
+      <p>In the source example, HR is ≈145 bpm, ATP demand is moderate-high, VO₂ is high, and the main emphasis is oxidative metabolism.</p>
+      <div class="callout"><b>Reasoning:</b> duration matters. The athlete now needs ATP supply that can be sustained for much longer than the initial exercise-onset phase.</div>
+    </div>
+    <div class="visual">
+      <svg viewBox="0 0 720 350">
+        <path d="M70 270 C175 260 280 225 365 185 C470 135 575 105 665 93" fill="none" stroke="#2e7d32" stroke-width="10" stroke-linecap="round"/>
+        <circle cx="590" cy="112" r="57" fill="#eef7f1" stroke="#2e7d32" stroke-width="3"/>
+        <text x="590" y="107" text-anchor="middle" fill="#1f5f27" font-size="18" font-weight="700">OXIDATIVE</text>
+        <text x="590" y="130" text-anchor="middle" fill="#667085" font-size="13">sustained support</text>
+        <text x="75" y="310" fill="#667085">exercise onset</text>
+        <text x="665" y="310" text-anchor="end" fill="#667085">30–60 min →</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>07 • STAGE 5 — 2 H RECOVERY</h2>
+  <div class="grid2">
+    <div class="visual">
+      <svg viewBox="0 0 720 350">
+        <defs><marker id="arr4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6z" fill="#53257f"/></marker></defs>
+        <rect x="40" y="90" width="190" height="115" rx="22" fill="#53257f"/>
+        <text x="135" y="132" text-anchor="middle" fill="#fff" font-size="22" font-weight="700">EXERCISE</text>
+        <text x="135" y="165" text-anchor="middle" fill="#ffd85d">stops</text>
+        <path d="M240 147 H325" stroke="#53257f" stroke-width="7" marker-end="url(#arr4)"/>
+        <rect x="330" y="90" width="190" height="115" rx="22" fill="#eef2ff" stroke="#2563eb" stroke-width="3"/>
+        <text x="425" y="132" text-anchor="middle" fill="#1e3a8a" font-size="22" font-weight="700">RECOVERY</text>
+        <text x="425" y="165" text-anchor="middle" fill="#667085">HR + VO₂ fall</text>
+        <path d="M530 147 H615" stroke="#53257f" stroke-width="7" marker-end="url(#arr4)"/>
+        <text x="658" y="38" text-anchor="middle" fill="#1f5f27" font-size="18" font-weight="700">RESTORATION</text>
+        <rect x="620" y="62" width="75" height="170" rx="22" fill="#eef7f1" stroke="#2e7d32" stroke-width="3"/>
+        <text x="658" y="104" text-anchor="middle" fill="#667085" font-size="12">PCr</text>
+        <text x="658" y="133" text-anchor="middle" fill="#667085" font-size="12">lactate</text>
+        <text x="658" y="162" text-anchor="middle" fill="#667085" font-size="12">temperature</text>
+        <text x="658" y="191" text-anchor="middle" fill="#667085" font-size="12">energy stores</text>
+        <text x="360" y="285" text-anchor="middle" fill="#53257f" font-size="18" font-weight="700">Recovery is active physiology, not an instant reset.</text>
+      </svg>
+    </div>
+    <div class="card blue">
+      <h3>What is still happening?</h3>
+      <p><b>HR:</b> 75 bpm in the source example and falling.</p>
+      <p><b>VO₂:</b> falling.</p>
+      <p><b>ATP demand:</b> low compared with exercise.</p>
+      <p><b>Main emphasis:</b> recovery oxidation.</p>
+      <div class="callout"><b>Recovery processes continue:</b> PCr resynthesis, lactate handling, temperature regulation and restoration of energy stores.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>08 • DATA CONNECTION — SAME ATHLETE, DIFFERENT STAGE</h2>
+  <p class="lead">Use the stage slider and notice how the interpretation must change with the time point.</p>
+  <div class="card">
+    <input id="stageSlider" type="range" min="0" max="4" value="0" step="1" style="width:100%;accent-color:#53257f" oninput="sliderStage()">
+    <div class="metric-grid">
+      <div class="metric"><span>Stage</span><strong id="dsStage">Rest</strong></div>
+      <div class="metric"><span>HR</span><strong id="dsHR">60 bpm</strong></div>
+      <div class="metric"><span>VO₂</span><strong id="dsVO2">Resting</strong></div>
+      <div class="metric"><span>ATP demand</span><strong id="dsATP">Low</strong></div>
+    </div>
+    <div class="callout" id="dsExplain"></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>09 • DON'T JUST MEMORISE — TRACE THE CHAIN</h2>
+  <div class="grid3">
+    <div class="card purple"><h3>DEMAND</h3><p>What is the athlete doing?</p><p>How hard? How long?</p></div>
+    <div class="card gold"><h3>RESPONSE</h3><p>What happens to HR, VO₂ and ATP turnover?</p><p>How rapidly do they change?</p></div>
+    <div class="card blue"><h3>RECOVERY</h3><p>What falls quickly?</p><p>What takes longer to restore?</p></div>
+  </div>
+  <div class="check interactive-only" style="margin-top:18px">
+    <div style="font-weight:700">Think: Why is “HR = 145 bpm” incomplete without knowing what the athlete is doing?</div>
+    <textarea placeholder="Type your reasoning..."></textarea>
+    <button class="btn btn-primary" style="margin-top:10px" onclick="document.getElementById('traceAnswer').classList.toggle('show')">Reveal model answer</button>
+    <div id="traceAnswer" class="answer"><b>Model answer:</b> A physiological value only becomes meaningful in context. HR of 145 bpm could reflect different demands depending on the activity, duration, fitness, environment and stage of exercise. Interpret the variable together with workload and time.</div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>10 • COMMON MISCONCEPTIONS</h2>
+  <div class="grid2">
+    <div class="misconception"><b>❌ “As soon as exercise stops, everything returns to rest.”</b><p>No. HR and VO₂ can remain elevated while recovery processes continue.</p></div>
+    <div class="misconception"><b>❌ “One measurement tells the whole metabolic story.”</b><p>No. Interpret variables in relation to exercise demand and time.</p></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>11 • QUICK CHECK</h2>
+  <div class="check">
+    <div style="font-weight:700;margin-bottom:10px">Immediately after hard exercise stops, which statement is most accurate?</div>
+    <label class="option"><input type="radio" name="q" value="0"> All physiological processes instantly return to rest.</label>
+    <label class="option"><input type="radio" name="q" value="1"> HR and VO₂ can remain elevated while recovery proceeds.</label>
+    <label class="option"><input type="radio" name="q" value="0"> ATP production stops completely.</label>
+    <label class="option"><input type="radio" name="q" value="0"> The mitochondria stop functioning.</label>
+    <button class="btn btn-primary interactive-only" onclick="checkQ()">Check answer</button>
+    <div id="feedback" class="feedback"></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>12 • HIGH-YIELD TAKE-HOME</h2>
+  <div class="kf">
+    <b>REMEMBER THIS JOURNEY:</b><br><br>
+    Rest → ATP demand is relatively low.<br>
+    Exercise starts → ATP demand rises immediately.<br>
+    0–5 min → rapid ATP support + rising oxidative contribution.<br>
+    30–60 min → sustained demand with strong oxidative support.<br>
+    2 h recovery → HR and VO₂ fall, but restoration continues.
+  </div>
+  <div class="callout"><b>NOW YOU KNOW → NEXT:</b> Next, we zoom in on <b>acute responses</b> — what changes in cardiovascular, respiratory, metabolic and muscle systems during a single exercise bout.</div>
+</section>
+
+<div class="footer">TCE 504 Applied Exercise Physiology • Exercise Metabolism • Interactive Digital Learning Experience</div>
+</div>
+
+<script>
+const stages=[
+ {name:'REST',hr:'60 bpm',vo2:'Resting',atp:'Low',fuel:'Oxidative',explain:'At rest, ATP demand is continuous but relatively low. Oxidative metabolism supports routine cellular work and a mixture of substrates contributes.'},
+ {name:'EXERCISE',hr:'150 bpm',vo2:'High',atp:'High',fuel:'Mixed',explain:'At exercise onset, ATP demand rises immediately. Stored ATP and PCr respond rapidly while glycolysis and oxidative metabolism increase too.'},
+ {name:'0–5 MIN',hr:'165 bpm',vo2:'High',atp:'High',fuel:'Mixed → oxidative rising',explain:'Oxygen consumption rises toward the new demand. Phosphagen, glycolytic and oxidative pathways all contribute while the athlete transitions into the exercise requirement.'},
+ {name:'30–60 MIN',hr:'145 bpm',vo2:'High',atp:'Moderate–high',fuel:'Oxidative',explain:'Sustained exercise relies heavily on oxidative metabolism. Substrate selection depends on intensity, training and availability.'},
+ {name:'2 H RECOVERY',hr:'75 bpm',vo2:'Falling',atp:'Low',fuel:'Recovery oxidation',explain:'HR and VO₂ move toward baseline while recovery processes continue: PCr resynthesis, lactate handling, temperature regulation and restoration of energy stores.'}
+];
+
+function setStage(i,el){
+ document.querySelectorAll('.stage-tab').forEach((x,j)=>x.classList.toggle('active',j===i));
+ const s=stages[i];
+ document.getElementById('journeyDot').setAttribute('cx',[100,255,410,565,720][i]);
+ document.getElementById('journeyDot').setAttribute('cy',200);
+ document.getElementById('svgStage').textContent=s.name;
+ document.getElementById('stageHR').textContent=s.hr;
+ document.getElementById('stageVO2').textContent=s.vo2;
+ document.getElementById('stageATP').textContent=s.atp;
+ document.getElementById('stageFuel').textContent=s.fuel;
+ document.getElementById('stageCard').innerHTML=
+ `<h3>${s.name}</h3>
+ <div class="metric-grid">
+   <div class="metric"><span>HR</span><strong>${s.hr}</strong></div>
+   <div class="metric"><span>VO₂</span><strong>${s.vo2}</strong></div>
+   <div class="metric"><span>ATP demand</span><strong>${s.atp}</strong></div>
+   <div class="metric"><span>Main emphasis</span><strong>${s.fuel}</strong></div>
+ </div>
+ <p style="margin-top:16px">${s.explain}</p>
+ <div class="callout"><b>Reasoning prompt:</b> What changed from the previous stage, and why?</div>`;
+}
+setStage(0,document.querySelector('.stage-tab.active'));
+
+function sliderStage(){
+ const i=+document.getElementById('stageSlider').value;
+ const s=stages[i];
+ document.getElementById('dsStage').textContent=s.name;
+ document.getElementById('dsHR').textContent=s.hr;
+ document.getElementById('dsVO2').textContent=s.vo2;
+ document.getElementById('dsATP').textContent=s.atp;
+ document.getElementById('dsExplain').innerHTML=`<b>${s.name}:</b> ${s.explain}`;
+}
+sliderStage();
+
+function checkQ(){
+ const c=document.querySelector('input[name="q"]:checked');
+ const f=document.getElementById('feedback');
+ if(!c){f.textContent='Choose an answer first.';return}
+ if(c.value==='1'){f.textContent='✓ Correct. Recovery is progressive, not an instant reset.';f.style.color='#2e7d32'}
+ else{f.textContent='Not quite. Revisit the recovery stage: HR and VO₂ can remain elevated while restoration continues.';f.style.color='#b91c1c'}
+}
+function toggleExam(){document.body.classList.toggle('exam-on',document.getElementById('exam').checked)}
+</script>
+</body>
+</html>

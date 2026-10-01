@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TCE504 • Section 11 • ETC → Oxidative Phosphorylation</title>
+<style>
+*{box-sizing:border-box}
+:root{--p:#53257f;--p2:#7042a0;--g:#ffb703;--ink:#182133;--muted:#667085;--line:#e3e7ee;--bg:#f4f6fa;--blue:#3298df;--green:#2e8b70;--pink:#ec4f7a}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+button,input,textarea{font:inherit}
+.top{height:64px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.brand{font-weight:900;color:var(--p)}.tag{font-size:12px;color:var(--muted);font-weight:800}
+.wrap{max-width:1120px;margin:auto;padding:28px 20px 70px}
+.hero{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;border-radius:28px;padding:32px;box-shadow:0 10px 28px rgba(35,20,60,.09)}
+.eyebrow{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;font-weight:900;color:var(--p);margin-bottom:8px}.hero .eyebrow{color:#fff;opacity:.9}
+h1{font-size:clamp(40px,6vw,64px);line-height:.96;letter-spacing:-2px;margin:0 0 14px}h2{font-size:30px;margin:0 0 10px}h3{margin:0 0 7px}
+.lead{font-size:17px;line-height:1.6;color:#536074;max-width:930px}.hero .lead{color:#eee8f6}
+.section{background:#fff;border:1px solid var(--line);border-radius:26px;padding:28px;margin-top:22px;box-shadow:0 7px 25px rgba(35,20,60,.045)}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}.num{background:var(--p);color:#fff;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:900;white-space:nowrap}
+.visual{margin-top:18px;background:#faf9fc;border:1px solid var(--line);border-radius:20px;padding:10px;overflow:hidden}.visual svg{width:100%;height:auto;display:block}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px}.box h3{color:var(--p)}.box p{margin:0;color:#596579;font-size:14px;line-height:1.5}
+.check{margin-top:17px;background:#faf9fc;border:1px solid var(--line);border-radius:17px;padding:18px}.qlabel{font-size:11px;letter-spacing:1px;color:var(--p);font-weight:900}.q{font-size:19px;font-weight:900;line-height:1.42;margin-top:6px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.opt{border:1px solid #d7dbe5;background:#fff;border-radius:12px;padding:12px;text-align:left;font-weight:700;cursor:pointer}.opt.correct{background:#edf8f1;border-color:#86c99a;color:#14532d}.opt.wrong{background:#fff3f3;border-color:#e2a0a0;color:#8a1c1c}
+.feedback{display:none;margin-top:10px;padding:12px;border-radius:12px;line-height:1.5}.feedback.show{display:block;background:#edf8f1;border:1px solid #bfe6ca;color:#14532d}
+.note{margin-top:15px;background:#eef7f3;border-left:5px solid var(--green);border-radius:14px;padding:15px 17px;color:#356155;line-height:1.5}
+.anim{margin-top:18px;background:linear-gradient(180deg,#fbfbff,#f4eff9);border:1px solid #e0d8eb;border-radius:22px;padding:18px}
+.anim-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.anim-head b{color:var(--p)}.anim-head span{font-size:12px;color:var(--muted);font-weight:700}
+.step-buttons{display:flex;gap:8px;flex-wrap:wrap}.stepbtn{border:1px solid #d7dbe5;background:#fff;border-radius:10px;padding:9px 11px;font-weight:800;font-size:12px;cursor:pointer}.stepbtn.active{background:#f0eafa;color:var(--p);border-color:var(--p)}
+.flow-stage{background:#fff;border:1px solid var(--line);border-radius:17px;padding:15px;overflow:hidden}
+.flow-row{display:grid;grid-template-columns:1fr 46px 1fr 46px 1fr 46px 1fr;gap:8px;align-items:center}
+.node{background:#fbf9fd;border:2px solid #e4deeb;border-radius:17px;padding:15px;text-align:center;min-height:125px;display:flex;flex-direction:column;justify-content:center;transition:.3s}
+.node.active{border-color:var(--p);background:#f8f2fc;transform:translateY(-3px);box-shadow:0 8px 20px rgba(83,37,127,.1)}
+.node b{font-size:17px;color:var(--p)}.node span{font-size:11px;color:var(--muted);line-height:1.4;margin-top:5px}.flow-arrow{font-size:29px;font-weight:900;color:var(--p);text-align:center}
+.token{position:relative;margin:-37px 0 0 6%;width:42px;height:42px;border-radius:50%;background:var(--g);color:#4a3500;display:grid;place-items:center;font-size:10px;font-weight:900;box-shadow:0 5px 12px rgba(0,0,0,.14);transition:margin-left .5s ease}
+.output-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:13px}.metric{border:1px solid var(--line);border-radius:15px;background:#fff;padding:15px;text-align:center}.metric .big{font-size:27px;font-weight:900;color:var(--p)}.metric .small{font-size:11px;color:var(--muted);line-height:1.35}
+.membrane{position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;min-height:335px;padding:20px;overflow:hidden}
+.space-top{position:absolute;left:20px;right:20px;top:18px;height:84px;border-radius:15px;background:#fff7df;border:1px solid #efd68e;display:flex;align-items:center;justify-content:center;color:#8a6400;font-weight:900;font-size:17px;line-height:1.2;letter-spacing:.2px;text-align:center;padding:0 18px;white-space:nowrap;z-index:5}
+.inner{position:absolute;left:20px;right:20px;top:112px;height:202px;border-radius:15px;background:#eef6ff;border:2px solid #cfe0f2}
+.space-bottom{position:absolute;left:20px;right:20px;bottom:18px;height:64px;border-radius:15px;background:#f3f4f6;border:1px solid #d6dae0;display:flex;align-items:center;justify-content:center;color:#536074;font-weight:900}
+.complex{position:absolute;top:148px;width:70px;height:105px;border-radius:15px;background:var(--p);color:#fff;display:grid;place-items:center;text-align:center;font-weight:900;z-index:3}.c1{left:13%}.c3{left:34%}.c4{left:55%}.atps{right:12%;top:160px;background:var(--g);color:#4a3500;width:115px;height:75px;z-index:3}
+.proton{position:absolute;width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:10px;font-weight:900;z-index:6}.h1{left:7%;top:68px}.h2{left:19%;top:77px}.h3{left:31%;top:68px}.h4{left:63%;top:68px}.h5{left:75%;top:77px}.h6{left:87%;top:68px}
+.arrowline{position:absolute;height:4px;background:#2e8b70;top:145px;left:7%;right:23%;border-radius:999px}
+.arrowline:after{content:"";position:absolute;right:-1px;top:-5px;border-left:11px solid #2e8b70;border-top:7px solid transparent;border-bottom:7px solid transparent}
+.hplusline{position:absolute;right:22%;top:110px;width:4px;height:104px;background:var(--blue)}
+.atpflow{position:absolute;right:11%;top:215px;color:var(--p);font-weight:900;font-size:13px}
+.interactive-card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:16px;margin-top:14px}.interactive-card h3{color:var(--p)}
+.readouts{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:11px}.read{background:#f7f4fa;border-radius:12px;padding:11px;text-align:center}.read b{display:block;color:var(--p);font-size:18px}.read span{font-size:10px;color:var(--muted)}
+.case{margin-top:18px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;border-radius:20px;padding:21px}.case h2{color:#fff}.case p{color:#eee8f6;line-height:1.5}.casegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.casebox{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.09);border-radius:14px;padding:13px}.casebox b{color:#ffcf55;display:block;margin-bottom:5px}.casebox span{font-size:13px;line-height:1.42}
+textarea{width:100%;min-height:105px;border:1px solid #d7dbe5;border-radius:12px;padding:12px;resize:vertical}.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.ctrl{border:1px solid #d7dbe5;background:#fff;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer}.ctrl.primary{background:var(--p);color:#fff;border-color:var(--p)}
+.model{display:none;margin-top:10px;background:#edf8f1;border:1px solid #bfe6ca;color:#14532d;border-radius:12px;padding:12px;line-height:1.55}
+.takehome{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.take{border:1px solid var(--line);border-radius:15px;padding:15px;background:#fff}.take b{display:block;color:var(--p);margin-bottom:5px}.take p{margin:0;color:#596579;font-size:13px;line-height:1.45}
+.next{margin-top:22px;background:#eef7f3;border-left:5px solid var(--green);border-radius:15px;padding:18px 20px;line-height:1.5}.next b{color:#176b55}
+@media(max-width:850px){.g3,.g4,.output-grid,.casegrid,.takehome,.readouts{grid-template-columns:1fr 1fr}.flow-row{grid-template-columns:1fr}.flow-arrow{transform:rotate(90deg)}.options,.g2{grid-template-columns:1fr}.complex{display:none}.membrane{min-height:390px}}
+@media(max-width:580px){.top{padding:0 13px}.wrap{padding:19px 13px 50px}.hero,.section{padding:20px}.g3,.g4,.output-grid,.casegrid,.takehome,.readouts{grid-template-columns:1fr}.step-buttons{display:grid;grid-template-columns:1fr 1fr}h1{font-size:42px}.space-top{font-size:15px;white-space:normal;padding:0 14px}.space-bottom{font-size:12px}}
+
+.visual svg text{paint-order:stroke fill;stroke:#fff;stroke-width:2px;stroke-linejoin:round}
+.visual svg text[fill="#fff"]{stroke:none}
+
+
+.clean-diagram{background:#fff}
+.clean-diagram svg text{font-family:Arial,Helvetica,sans-serif}
+.clean-diagram svg line{stroke-linecap:round}
+
+
+.final-readable text{font-family:Arial,Helvetica,sans-serif}
+
+</style>
+</head>
+<body>
+<header class="top"><div class="brand">TCE 504 • Applied Exercise Physiology</div><div class="tag">11 / ETC • OXIDATIVE PHOSPHORYLATION</div></header>
+<main class="wrap">
+
+<section class="hero">
+<div class="eyebrow">SECTION 11 • METABOLIC PATHWAY 4</div>
+<h1>ETC → Oxidative Phosphorylation</h1>
+<p class="lead">Now follow the high-energy electrons carried by <b>NADH and FADH₂</b>. The respiratory chain uses electron flow to build an H⁺ gradient, and ATP synthase uses that gradient to support ATP production.</p>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 1 • THE BIG IDEA</div><h2>Electron flow becomes a proton gradient.</h2><p class="lead">The electron transport chain is located in the <b>inner mitochondrial membrane</b>. Electrons move through respiratory complexes, and this energy supports proton pumping from the matrix into the intermembrane space.</p></div><div class="num">01</div></div>
+
+<div class="visual clean-diagram">
+<svg viewBox="0 0 1000 360" role="img" aria-label="ETC electron flow proton pumping and ATP synthase">
+<defs>
+<marker id="p1e" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 L10 3 L0 6Z" fill="#2e8b70"/></marker>
+<marker id="p1h" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 L10 3 L0 6Z" fill="#3298df"/></marker>
+</defs>
+<rect x="20" y="18" width="960" height="324" rx="24" fill="#fbf9fd" stroke="#e3e7ee"/>
+<rect x="45" y="45" width="910" height="62" rx="16" fill="#fff7df" stroke="#ecd488"/>
+<text x="500" y="82" text-anchor="middle" font-size="12" font-weight="900" fill="#8a6400" letter-spacing="0.2">INTERMEMBRANE SPACE • H⁺ ACCUMULATES</text>
+
+<rect x="45" y="107" width="910" height="155" rx="16" fill="#eef6ff" stroke="#cfe0f2"/>
+<text x="500" y="132" text-anchor="middle" font-size="10" font-weight="900" fill="#1e67a0" letter-spacing="0.15">INNER MITOCHONDRIAL MEMBRANE</text>
+
+<rect x="110" y="165" width="115" height="65" rx="15" fill="#53257f"/>
+<text x="167" y="193" text-anchor="middle" font-size="13" font-weight="900" fill="#fff">COMPLEX I</text>
+<text x="167" y="213" text-anchor="middle" font-size="8" fill="#fff">NADH</text>
+
+<rect x="305" y="165" width="115" height="65" rx="15" fill="#53257f"/>
+<text x="362" y="193" text-anchor="middle" font-size="13" font-weight="900" fill="#fff">COMPLEX III</text>
+
+<rect x="500" y="165" width="115" height="65" rx="15" fill="#53257f"/>
+<text x="557" y="193" text-anchor="middle" font-size="13" font-weight="900" fill="#fff">COMPLEX IV</text>
+
+<rect x="710" y="165" width="150" height="65" rx="18" fill="#ffb703"/>
+<text x="785" y="192" text-anchor="middle" font-size="16" font-weight="900" fill="#4a3500">ATP SYNTHASE</text>
+<text x="785" y="212" text-anchor="middle" font-size="11" fill="#4a3500">H⁺ → ATP</text>
+
+<!-- electron arrows: one clean horizontal line -->
+<line x1="75" y1="245" x2="690" y2="245" stroke="#2e8b70" stroke-width="7" marker-end="url(#p1e)"/>
+<text x="383" y="288" text-anchor="middle" font-size="13" font-weight="900" fill="#2e8b70">Electron flow powers proton pumping</text>
+
+<!-- proton arrows: isolated vertical arrows -->
+<line x1="167" y1="165" x2="167" y2="111" stroke="#3298df" stroke-width="5" marker-end="url(#p1h)"/>
+<line x1="362" y1="165" x2="362" y2="111" stroke="#3298df" stroke-width="5" marker-end="url(#p1h)"/>
+<line x1="557" y1="165" x2="557" y2="111" stroke="#3298df" stroke-width="5" marker-end="url(#p1h)"/>
+
+<text x="167" y="151" text-anchor="middle" font-size="11" font-weight="900" fill="#3298df">H⁺ ↑</text>
+<text x="362" y="151" text-anchor="middle" font-size="11" font-weight="900" fill="#3298df">H⁺ ↑</text>
+<text x="557" y="151" text-anchor="middle" font-size="11" font-weight="900" fill="#3298df">H⁺ ↑</text>
+
+<line x1="785" y1="107" x2="785" y2="158" stroke="#3298df" stroke-width="5" marker-end="url(#p1h)"/>
+<text x="785" y="98" text-anchor="middle" font-size="11" font-weight="900" fill="#3298df">H⁺ flow</text>
+
+<rect x="45" y="270" width="910" height="60" rx="16" fill="#f3f4f6" stroke="#d8dce2"/>
+<text x="500" y="307" text-anchor="middle" font-size="15" font-weight="900" fill="#53257f">NADH / FADH₂ → ETC → H⁺ gradient → ATP synthase → ATP</text>
+</svg>
+</div>
+
+<div class="check"><div class="qlabel">STOP & THINK</div><div class="q">What directly drives ATP synthase during oxidative phosphorylation?</div>
+<div class="options"><button class="opt" onclick="check(this,true,'q1')">The electrochemical H⁺ gradient across the inner mitochondrial membrane.</button><button class="opt" onclick="check(this,false,'q1')">Lactate in the blood.</button><button class="opt" onclick="check(this,false,'q1')">Muscle glycogen directly.</button><button class="opt" onclick="check(this,false,'q1')">Creatine in the cytosol.</button></div><div id="q1" class="feedback"></div></div>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 2 • WHERE DO THE ELECTRONS COME FROM?</div><h2>NADH and FADH₂ enter at different points.</h2><p class="lead">Both are reduced electron carriers. Their electrons enter the respiratory chain through different entry points, but both ultimately contribute to the processes that support oxidative ATP production.</p></div><div class="num">02</div></div>
+
+<div class="visual clean-diagram">
+<svg viewBox="0 0 1000 320" role="img" aria-label="NADH and FADH2 deliver electrons to different ETC entry points">
+<defs>
+<marker id="p2e" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 L10 3 L0 6Z" fill="#53257f"/></marker>
+</defs>
+<rect x="20" y="18" width="960" height="284" rx="24" fill="#fbf9fd" stroke="#e3e7ee"/>
+
+<rect x="55" y="66" width="205" height="86" rx="18" fill="#f3eef9"/>
+<text x="157" y="97" text-anchor="middle" font-size="19" font-weight="900" fill="#53257f">NADH</text>
+<text x="157" y="122" text-anchor="middle" font-size="12" fill="#667085">high-energy electrons</text>
+
+<rect x="55" y="175" width="205" height="86" rx="18" fill="#f3eef9"/>
+<text x="157" y="206" text-anchor="middle" font-size="19" font-weight="900" fill="#53257f">FADH₂</text>
+<text x="157" y="231" text-anchor="middle" font-size="12" fill="#667085">high-energy electrons</text>
+
+<rect x="365" y="61" width="180" height="90" rx="18" fill="#eef6ff" stroke="#cfe0f2"/>
+<text x="455" y="96" text-anchor="middle" font-size="18" font-weight="900" fill="#1e67a0">COMPLEX I</text>
+<text x="455" y="123" text-anchor="middle" font-size="12" fill="#596579">NADH entry</text>
+
+<rect x="365" y="170" width="180" height="90" rx="18" fill="#eef6ff" stroke="#cfe0f2"/>
+<text x="455" y="205" text-anchor="middle" font-size="18" font-weight="900" fill="#1e67a0">COMPLEX II</text>
+<text x="455" y="232" text-anchor="middle" font-size="12" fill="#596579">FADH₂ entry</text>
+
+<line x1="260" y1="109" x2="355" y2="109" stroke="#53257f" stroke-width="5" marker-end="url(#p2e)"/>
+<line x1="260" y1="218" x2="355" y2="218" stroke="#53257f" stroke-width="5" marker-end="url(#p2e)"/>
+
+<rect x="650" y="92" width="270" height="145" rx="20" fill="#eef7f3" stroke="#cfe9df"/>
+<text x="785" y="128" text-anchor="middle" font-size="19" font-weight="900" fill="#176b55">SHARED PATHWAY</text>
+<text x="785" y="158" text-anchor="middle" font-size="13" fill="#596579">electron transfer continues</text>
+<text x="785" y="183" text-anchor="middle" font-size="13" fill="#596579">→ proton pumping</text>
+<text x="785" y="208" text-anchor="middle" font-size="13" font-weight="900" fill="#53257f">→ oxidative ATP production</text>
+<line x1="545" y1="109" x2="640" y2="145" stroke="#53257f" stroke-width="5" marker-end="url(#p2e)"/>
+<line x1="545" y1="218" x2="640" y2="184" stroke="#53257f" stroke-width="5" marker-end="url(#p2e)"/>
+
+<text x="500" y="288" text-anchor="middle" font-size="14" font-weight="900" fill="#53257f">Different entry points • common respiratory chain • proton gradient • ATP production</text>
+</svg>
+</div>
+
+<div class="grid g3" style="margin-top:15px"><div class="box"><h3>NADH</h3><p>Reduced electron carrier that donates high-energy electrons to the respiratory chain, beginning at Complex I.</p></div><div class="box"><h3>FADH₂</h3><p>Reduced electron carrier that donates electrons through Complex II.</p></div><div class="box"><h3>Shared destination</h3><p>Electron flow converges within the respiratory chain and supports proton pumping.</p></div></div>
+<div class="check"><div class="qlabel">CHECK THE CONCEPT</div><div class="q">Why are NADH and FADH₂ important even though they are not ATP?</div>
+<div class="options"><button class="opt" onclick="check(this,true,'q2')">They carry high-energy electrons that power processes supporting oxidative ATP production.</button><button class="opt" onclick="check(this,false,'q2')">They are stored forms of muscle ATP.</button><button class="opt" onclick="check(this,false,'q2')">They directly contract actin.</button><button class="opt" onclick="check(this,false,'q2')">They replace oxygen as the final acceptor.</button></div><div id="q2" class="feedback"></div></div>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 3 • INTERACTIVE PROTON GRADIENT</div><h2>Watch H⁺ build up and flow back.</h2><p class="lead">This is the central chemiosmotic idea: the ETC builds the gradient; ATP synthase provides the route for proton flow back toward the matrix.</p></div><div class="num">03</div></div>
+
+<div class="anim">
+<div class="anim-head"><b>INTERACTIVE • BUILD → FLOW → ATP</b><span id="protonStatus">Stage 1 of 4</span></div>
+<div class="membrane" id="membrane">
+<div class="space-top">INTERMEMBRANE SPACE — HIGHER H⁺</div>
+<div class="inner"></div>
+<div class="space-bottom">MATRIX — LOWER H⁺</div>
+<div class="complex c1">I<br><small>pump H⁺</small></div><div class="complex c3">III<br><small>pump H⁺</small></div><div class="complex c4">IV<br><small>pump H⁺</small></div>
+<div class="complex atps">ATP synthase<br><span style="font-size:11px">H⁺ → ATP</span></div>
+<div class="arrowline"></div>
+<div class="hplusline" id="hplusline"></div>
+<div class="proton h1">H⁺</div><div class="proton h2">H⁺</div><div class="proton h3">H⁺</div><div class="proton h4">H⁺</div><div class="proton h5">H⁺</div><div class="proton h6">H⁺</div>
+<div class="atpflow" id="atpflow">ATP synthase ready</div>
+</div>
+
+<div class="step-buttons">
+<button class="stepbtn active" onclick="setProton(0)">01 • Electrons enter</button>
+<button class="stepbtn" onclick="setProton(1)">02 • H⁺ pumped</button>
+<button class="stepbtn" onclick="setProton(2)">03 • Gradient builds</button>
+<button class="stepbtn" onclick="setProton(3)">04 • H⁺ flows → ATP</button>
+</div>
+<div class="interactive-card"><h3 id="pTitle">Stage 1 — Electrons enter the chain.</h3><p id="pText">NADH and FADH₂ provide high-energy electrons. Electron flow begins through the respiratory complexes.</p></div>
+<div class="controls"><button class="ctrl" onclick="prevProton()">← Previous</button><button class="ctrl primary" onclick="nextProton()">Next stage →</button><button class="ctrl" onclick="playProton()">▶ Play</button><button class="ctrl" onclick="resetProton()">Reset</button></div>
+</div>
+
+<div class="check"><div class="qlabel">STOP & THINK</div><div class="q">What is the purpose of pumping H⁺ into the intermembrane space?</div>
+<div class="options"><button class="opt" onclick="check(this,true,'q3')">To create an electrochemical gradient that can drive ATP synthase.</button><button class="opt" onclick="check(this,false,'q3')">To destroy the mitochondrial membrane.</button><button class="opt" onclick="check(this,false,'q3')">To store glucose.</button><button class="opt" onclick="check(this,false,'q3')">To make lactate directly.</button></div><div id="q3" class="feedback"></div></div>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 4 • ATP SYNTHASE</div><h2>ATP synthase turns proton flow into ATP formation.</h2><p class="lead">As H⁺ moves down its electrochemical gradient through ATP synthase, the enzyme uses that energy to support phosphorylation of ADP to ATP.</p></div><div class="num">04</div></div>
+
+<div class="visual clean-diagram">
+<svg viewBox="0 0 1000 315" role="img" aria-label="ATP synthase uses proton flow to support ATP formation">
+<defs>
+<marker id="p4a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 L10 3 L0 6Z" fill="#3298df"/></marker>
+<marker id="p4b" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 L10 3 L0 6Z" fill="#53257f"/></marker>
+</defs>
+<rect x="20" y="18" width="960" height="279" rx="24" fill="#fbf9fd" stroke="#e3e7ee"/>
+<rect x="55" y="52" width="890" height="58" rx="16" fill="#fff7df" stroke="#efd68e"/>
+<text x="500" y="87" text-anchor="middle" font-size="19" font-weight="900" fill="#8a6400">INTERMEMBRANE SPACE • HIGHER H⁺</text>
+
+<rect x="55" y="110" width="890" height="105" rx="0" fill="#eef6ff" stroke="#cfe0f2"/>
+<text x="500" y="139" text-anchor="middle" font-size="14" font-weight="900" fill="#1e67a0">INNER MITOCHONDRIAL MEMBRANE</text>
+
+<rect x="400" y="150" width="200" height="82" rx="20" fill="#ffb703"/>
+<text x="500" y="182" text-anchor="middle" font-size="18" font-weight="900" fill="#4a3500">ATP SYNTHASE</text>
+<text x="500" y="205" text-anchor="middle" font-size="11" fill="#4a3500">uses proton flow</text>
+
+<line x1="440" y1="95" x2="440" y2="148" stroke="#3298df" stroke-width="6" marker-end="url(#p4a)"/>
+<line x1="500" y1="95" x2="500" y2="148" stroke="#3298df" stroke-width="6" marker-end="url(#p4a)"/>
+<line x1="560" y1="95" x2="560" y2="148" stroke="#3298df" stroke-width="6" marker-end="url(#p4a)"/>
+<text x="440" y="82" text-anchor="middle" font-size="11" font-weight="900" fill="#3298df">H⁺</text>
+<text x="500" y="82" text-anchor="middle" font-size="11" font-weight="900" fill="#3298df">H⁺</text>
+<text x="560" y="82" text-anchor="middle" font-size="11" font-weight="900" fill="#3298df">H⁺</text>
+
+<rect x="55" y="215" width="890" height="58" rx="16" fill="#f3f4f6" stroke="#d8dce2"/>
+<text x="500" y="249" text-anchor="middle" font-size="16" font-weight="900" fill="#536074">MATRIX • H⁺ flows down the gradient</text>
+
+<line x1="620" y1="190" x2="745" y2="190" stroke="#53257f" stroke-width="5" marker-end="url(#p4b)"/>
+<text x="805" y="175" text-anchor="middle" font-size="12" font-weight="900" fill="#53257f">ADP + Pi → ATP</text>
+<text x="805" y="198" text-anchor="middle" font-size="11" fill="#596579">energy supplied by proton flow</text>
+</svg>
+</div>
+
+<div class="grid g3" style="margin-top:15px">
+<div class="box"><h3>Input</h3><p>ADP + inorganic phosphate (Pi).</p></div>
+<div class="box"><h3>Driving force</h3><p>H⁺ electrochemical gradient.</p></div>
+<div class="box"><h3>Output</h3><p>ATP for cellular work.</p></div>
+</div>
+
+<div class="check"><div class="qlabel">CHECK THE MECHANISM</div><div class="q">Which equation best captures ATP formation at ATP synthase?</div>
+<div class="options"><button class="opt" onclick="check(this,true,'q4')">ADP + Pi → ATP, driven by energy from proton flow down the gradient.</button><button class="opt" onclick="check(this,false,'q4')">ATP → ADP + Pi, driven by proton pumping.</button><button class="opt" onclick="check(this,false,'q4')">Glucose → lactate → ATP synthase.</button><button class="opt" onclick="check(this,false,'q4')">O₂ → ATP directly.</button></div><div id="q4" class="feedback"></div></div>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 5 • OXYGEN</div><h2>Why is oxygen essential?</h2><p class="lead">At the end of the respiratory chain, oxygen acts as the <b>final electron acceptor</b>. Electrons and protons are combined with oxygen to form water.</p></div><div class="num">05</div></div>
+
+<div class="visual">
+<svg viewBox="0 0 1000 310" role="img" aria-label="Oxygen final electron acceptor at end of respiratory chain">
+<defs><marker id="oA" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6Z" fill="#53257f"/></marker></defs>
+<rect x="18" y="18" width="964" height="274" rx="24" fill="#fbf9fd"/>
+<rect x="55" y="78" width="190" height="140" rx="20" fill="#f3eef9"/><text x="150" y="118" text-anchor="middle" fill="#53257f" font-size="19" font-weight="900">ELECTRONS</text><text x="150" y="151" text-anchor="middle" fill="#3298df" font-size="17" font-weight="900">NADH / FADH₂</text><text x="150" y="185" text-anchor="middle" fill="#596579" font-size="12">high-energy e⁻</text>
+<path d="M245 148 H360" stroke="#53257f" stroke-width="5" marker-end="url(#oA)"/>
+<rect x="365" y="78" width="240" height="140" rx="20" fill="#eef6ff" stroke="#cfe0f2"/><text x="485" y="118" text-anchor="middle" fill="#1e67a0" font-size="20" font-weight="900">COMPLEX IV</text><text x="485" y="151" text-anchor="middle" fill="#596579" font-size="13">final electron-transfer step</text><text x="485" y="183" text-anchor="middle" fill="#53257f" font-size="16" font-weight="900">O₂ accepts electrons</text>
+<path d="M605 148 H715" stroke="#53257f" stroke-width="5" marker-end="url(#oA)"/>
+<circle cx="810" cy="135" r="56" fill="#3298df"/>
+<text x="810" y="142" text-anchor="middle" fill="#fff" font-size="22" font-weight="900">O₂</text>
+<rect x="737" y="205" width="146" height="32" rx="16" fill="#eaf4fb" stroke="#b8d8ee"/>
+<text x="810" y="226" text-anchor="middle" fill="#1e67a0" font-size="11" font-weight="900">FINAL ELECTRON ACCEPTOR</text>
+<text x="500" y="274" text-anchor="middle" fill="#53257f" font-size="16" font-weight="900">O₂ + electrons + H⁺ → H₂O</text>
+</svg>
+</div>
+
+<div class="note"><b>Key consequence:</b> Without an available final electron acceptor, electron transport through the respiratory chain cannot continue normally. Oxygen therefore supports the ongoing operation of oxidative phosphorylation.</div>
+
+<div class="check"><div class="qlabel">CHECK THE ROLE OF O₂</div><div class="q">What is oxygen doing at the end of the ETC?</div>
+<div class="options"><button class="opt" onclick="check(this,true,'q5')">Accepting electrons and contributing to water formation.</button><button class="opt" onclick="check(this,false,'q5')">Donating the first electrons to Complex I.</button><button class="opt" onclick="check(this,false,'q5')">Serving as ATP synthase.</button><button class="opt" onclick="check(this,false,'q5')">Converting glucose directly into ATP.</button></div><div id="q5" class="feedback"></div></div>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 6 • APPLY IT — ENDURANCE ATHLETE</div><h2>Connect oxygen availability to sustained ATP production.</h2><p class="lead">Sustained exercise places a large demand on oxidative ATP production. Use the sequence below to explain why the respiratory chain matters to the athlete.</p></div><div class="num">06</div></div>
+
+<div class="case">
+<h2>Think about the athlete.</h2>
+<p>A runner moves from a short explosive effort into sustained running. Oxygen consumption rises as the metabolic demand increases, and mitochondrial oxidative metabolism becomes increasingly important.</p>
+<div class="casegrid">
+<div class="casebox"><b>STEP 1 • ELECTRONS</b><span>NADH/FADH₂ deliver high-energy electrons to the respiratory chain.</span></div>
+<div class="casebox"><b>STEP 2 • GRADIENT</b><span>Electron flow supports H⁺ pumping and builds the proton gradient.</span></div>
+<div class="casebox"><b>STEP 3 • ATP</b><span>H⁺ flow through ATP synthase supports oxidative ATP production.</span></div>
+</div>
+</div>
+
+<div class="check"><div class="qlabel">APPLY YOUR REASONING</div><div class="q">A runner asks: “Why does oxygen matter for my ability to keep producing ATP during sustained exercise?”</div>
+<textarea id="applyAnswer" placeholder="Write your explanation here..."></textarea>
+<div class="controls"><button class="ctrl primary" onclick="showModel()">Show model answer</button></div>
+<div id="model" class="model"><b>Model answer:</b> Oxygen is the final electron acceptor at the end of the respiratory chain. NADH and FADH₂ deliver electrons to the ETC, electron flow supports H⁺ pumping and a proton gradient, and H⁺ flow through ATP synthase supports ATP production. This allows oxidative metabolism to provide a high-capacity source of ATP during sustained exercise.</div>
+</div>
+
+<div class="check"><div class="qlabel">ONE-MINUTE TEACH-BACK</div><div class="q">Complete: “NADH/FADH₂ matter because…”</div><textarea id="teachBack" placeholder="Type one clear sentence..."></textarea></div>
+</section>
+
+<section class="section">
+<div class="eyebrow">KEY TAKE-HOME MESSAGES</div>
+<div class="takehome">
+<div class="take"><b>01 • Electron carriers</b><p>NADH and FADH₂ deliver high-energy electrons to the respiratory chain.</p></div>
+<div class="take"><b>02 • H⁺ gradient</b><p>Electron flow supports proton pumping and builds an electrochemical gradient.</p></div>
+<div class="take"><b>03 • ATP synthase</b><p>H⁺ flow through ATP synthase supports phosphorylation of ADP to ATP.</p></div>
+<div class="take"><b>04 • Oxygen</b><p>Oxygen is the final electron acceptor and supports continued oxidative phosphorylation.</p></div>
+</div>
+</section>
+
+<section class="section">
+<div class="eyebrow">CHECK YOUR UNDERSTANDING</div>
+<div class="check" style="background:#fff"><div class="q">1. What directly drives ATP synthase?</div><div class="options"><button class="opt" onclick="check(this,true,'f1')">A. H⁺ electrochemical gradient</button><button class="opt" onclick="check(this,false,'f1')">B. Lactate</button><button class="opt" onclick="check(this,false,'f1')">C. Glycogen</button><button class="opt" onclick="check(this,false,'f1')">D. PCr</button></div><div id="f1" class="feedback"></div></div>
+<div class="check" style="background:#fff"><div class="q">2. What is oxygen's role at the end of the ETC?</div><div class="options"><button class="opt" onclick="check(this,true,'f2')">A. Final electron acceptor</button><button class="opt" onclick="check(this,false,'f2')">B. ATP synthase enzyme</button><button class="opt" onclick="check(this,false,'f2')">C. Source of glucose</button><button class="opt" onclick="check(this,false,'f2')">D. Stored phosphate donor</button></div><div id="f2" class="feedback"></div></div>
+<div class="check" style="background:#fff"><div class="q">3. In one sentence, connect NADH/FADH₂ to ATP production.</div><textarea id="finalAnswer" placeholder="Type your answer here..."></textarea><div class="controls"><button class="ctrl primary" onclick="showFinalModel()">Show model answer</button></div><div id="finalModel" class="model"><b>Model answer:</b> NADH and FADH₂ carry electrons to the respiratory chain, which supports H⁺ pumping and a proton gradient that drives ATP synthase to produce ATP.</div></div>
+</section>
+
+<div class="next"><b>NEXT → SECTION 12: FAT & PROTEIN METABOLISM</b><br>Now move beyond carbohydrate: follow fatty acids and amino acids into the metabolic pathways that support ATP production.</div>
+
+</main>
+
+<script>
+function check(btn,correct,id){
+  const g=btn.parentElement;g.querySelectorAll('.opt').forEach(b=>b.classList.remove('correct','wrong'));
+  btn.classList.add(correct?'correct':'wrong');
+  const f=document.getElementById(id);f.className='feedback show';
+  f.innerHTML=correct?'<b>Correct.</b> Carry this link forward.':'<b>Not quite.</b> Re-read the pathway and focus on electrons → H⁺ gradient → ATP synthase.';
+}
+
+const protonSteps=[
+  ['Stage 1 — Electrons enter the chain.','NADH and FADH₂ provide high-energy electrons. Electron flow begins through the respiratory complexes.'],
+  ['Stage 2 — H⁺ is pumped.','Energy from electron transfer supports proton pumping from the matrix into the intermembrane space.'],
+  ['Stage 3 — The gradient builds.','As more H⁺ accumulates, an electrochemical gradient is established across the inner mitochondrial membrane.'],
+  ['Stage 4 — H⁺ flows through ATP synthase.','Proton flow back toward the matrix provides the energy that drives ATP synthase and supports ATP formation.']
+];
+let pIdx=0,pTimer=null;
+function setProton(i){
+ pIdx=i;
+ document.getElementById('protonStatus').textContent=`Stage ${i+1} of 4`;
+ document.querySelectorAll('.stepbtn').forEach((b,j)=>b.classList.toggle('active',j===i));
+ document.getElementById('pTitle').textContent=protonSteps[i][0];
+ document.getElementById('pText').textContent=protonSteps[i][1];
+ document.getElementById('hplusline').style.height=(i+1)*24+'px';
+ document.querySelectorAll('.proton').forEach((x,j)=>x.style.opacity=i===0?'0.35':j<=i+1?'1':'0.35');
+ document.getElementById('atpflow').textContent=i===3?'H⁺ flow → ATP':'ATP synthase ready';
+}
+function nextProton(){pIdx=pIdx===3?0:pIdx+1;setProton(pIdx)}
+function prevProton(){pIdx=pIdx===0?3:pIdx-1;setProton(pIdx)}
+function playProton(){clearInterval(pTimer);pIdx=0;setProton(0);pTimer=setInterval(()=>{if(pIdx<3){pIdx++;setProton(pIdx)}else clearInterval(pTimer)},1200)}
+function resetProton(){clearInterval(pTimer);pIdx=0;setProton(0)}
+
+function showModel(){document.getElementById('model').style.display='block';localStorage.setItem('tce504_s11_apply',document.getElementById('applyAnswer').value)}
+function showFinalModel(){document.getElementById('finalModel').style.display='block';localStorage.setItem('tce504_s11_final',document.getElementById('finalAnswer').value)}
+const a=localStorage.getItem('tce504_s11_apply');if(a)document.getElementById('applyAnswer').value=a;
+const b=localStorage.getItem('tce504_s11_final');if(b)document.getElementById('finalAnswer').value=b;
+setProton(0);
+</script>
+</body>
+</html>
