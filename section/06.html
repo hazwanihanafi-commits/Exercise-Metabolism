@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TCE504 • Section 06 • Digestion → Cellular Fuel</title>
+<style>
+*{box-sizing:border-box}
+:root{
+ --p:#53257f;--p2:#7042a0;--g:#ffb703;--ink:#182133;--muted:#667085;
+ --line:#e4e7ee;--bg:#f4f6fa;--card:#fff;--green:#2e8b70;
+ --pink:#ec4f7a;--orange:#f2a11b;--blue:#3298df;--red:#c94d5f
+}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+.top{height:64px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.brand{font-weight:900;color:var(--p)}
+.tag{font-size:12px;color:var(--muted);font-weight:800}
+.wrap{max-width:1110px;margin:auto;padding:28px 20px 70px}
+.hero{background:#fff;border:1px solid var(--line);border-radius:28px;padding:31px;box-shadow:0 8px 28px rgba(35,20,60,.05)}
+.hero.purple{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;border-color:transparent}
+.eyebrow{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--p);font-weight:900;margin-bottom:8px}
+.hero .eyebrow{color:inherit;opacity:.85}
+h1{font-size:clamp(40px,6vw,64px);line-height:.97;letter-spacing:-2px;margin:0 0 13px}
+h2{font-size:29px;margin:0 0 10px} h3{margin:0 0 7px}
+.lead{font-size:17px;line-height:1.6;color:#536074;max-width:930px}
+.hero .lead{color:inherit;opacity:.92}
+.flow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:18px}
+.pill{padding:10px 13px;border-radius:999px;background:#f0eafa;color:var(--p);font-weight:900;font-size:13px}
+.arrow{color:#a5a9b4;font-weight:900}
+.section{background:#fff;border:1px solid var(--line);border-radius:26px;padding:28px;margin-top:22px;box-shadow:0 7px 25px rgba(35,20,60,.045);scroll-margin-top:84px}
+.section-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
+.num{background:var(--p);color:#fff;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:900;white-space:nowrap}
+.visual{margin-top:19px;background:#faf9fc;border:1px solid var(--line);border-radius:20px;padding:12px;overflow:hidden}
+.visual svg{width:100%;height:auto;display:block}
+.caption{font-size:12px;color:var(--muted);line-height:1.5;margin:9px 3px 0}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.box{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px}.box h3{color:var(--p)}.box p{margin:0;color:#596579;font-size:14px;line-height:1.5}
+.chain{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:15px}
+.chain-step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.chain-step b{display:block;color:var(--p);font-size:12px}.chain-step span{font-size:11px;color:var(--muted)}
+.check{margin-top:17px;background:#faf9fc;border:1px solid var(--line);border-radius:18px;padding:18px}
+.qlabel{font-size:11px;letter-spacing:1px;color:var(--p);font-weight:900}.question{font-size:19px;font-weight:900;line-height:1.4;margin-top:6px}
+.options{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:12px}
+.opt{border:1px solid #d7dbe5;background:#fff;border-radius:12px;padding:12px;text-align:left;font-weight:700;cursor:pointer}
+.opt.correct{background:#edf8f1;border-color:#86c99a;color:#14532d}.opt.wrong{background:#fff3f3;border-color:#e2a0a0;color:#8a1c1c}
+.feedback{display:none;margin-top:11px;padding:12px;border-radius:12px;line-height:1.5}
+.feedback.show{display:block;background:#edf8f1;border:1px solid #bfe6ca;color:#14532d}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.substrate-select{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.substrate-select .tab{border:1px solid #d7dbe5;background:#fff;color:#4f5a6d;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer}
+.substrate-select .tab.active{background:#f0eafa;border-color:var(--p);color:var(--p)}
+.journey-stage{position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 18px 30px;display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr 34px 1fr 34px 1fr;gap:7px;align-items:center;overflow:hidden}
+.stage-node{position:relative;z-index:2;min-height:150px;background:#fbf9fd;border:2px solid #e5e0ed;border-radius:17px;padding:12px 8px;text-align:center;transition:.3s ease}
+.stage-node.active{border-color:var(--p);box-shadow:0 9px 24px rgba(83,37,127,.12);transform:translateY(-3px);background:#fff}
+.stage-node.done{border-color:#b8dccf;background:#f3fbf7}
+.stage-num{font-size:11px;font-weight:900;color:var(--p)}
+.stage-icon{font-size:31px;margin:7px 0}.stage-title{font-size:11px;font-weight:900;color:var(--p);line-height:1.25}.stage-sub{font-size:10px;color:var(--muted);line-height:1.35;margin-top:5px}
+.journey-arrow{font-size:28px;font-weight:900;color:#c2aacf;text-align:center}
+.traveller{position:absolute;z-index:5;top:31px;left:7%;width:48px;height:48px;border-radius:50%;background:#53257f;color:#fff;display:grid;place-items:center;box-shadow:0 6px 15px rgba(83,37,127,.2);transition:left .45s ease}
+.traveller-dot{position:absolute;width:12px;height:12px;border-radius:50%;background:#ffb703}.traveller-label{font-size:9px;font-weight:900;margin-top:30px;color:#53257f;background:#fff;padding:2px 4px;border-radius:5px;white-space:nowrap}
+.step-explanation{display:flex;gap:12px;align-items:flex-start;margin-top:14px;background:#f7f4fa;border:1px solid var(--line);border-radius:15px;padding:14px 16px}
+.step-badge{background:var(--p);color:#fff;border-radius:8px;padding:6px 8px;font-size:10px;font-weight:900}
+.journey-progress{margin-top:14px}.journey-progress-line{height:8px;background:#ece9f2;border-radius:999px;overflow:hidden}.journey-progress-line>div{height:100%;width:20%;background:var(--p);border-radius:999px;transition:width .4s}.journey-progress-labels{display:grid;grid-template-columns:repeat(5,1fr);font-size:10px;color:var(--muted);font-weight:800;text-align:center;margin-top:6px}
+.journey-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+@media(max-width:900px){.journey-stage{grid-template-columns:1fr;gap:8px}.journey-arrow{transform:rotate(90deg)}.traveller{display:none}.stage-node{min-height:110px}.journey-progress{display:none}}
+
+.tab{border:1px solid #d7dbe5;background:#fff;color:#4f5a6d;border-radius:10px;padding:9px 11px;font-weight:800;cursor:pointer}
+.tab.active{background:#f0eafa;border-color:var(--p);color:var(--p)}
+.detail{margin-top:13px;background:#f7f4fa;border-radius:15px;padding:15px;line-height:1.55;color:#596579}
+.info-strip{margin-top:16px;background:#eef7f3;border-left:5px solid var(--green);border-radius:14px;padding:15px 17px;line-height:1.5}
+.anim-shell{margin-top:19px;background:linear-gradient(180deg,#fbfbff,#f3eef8);border:1px solid #e2dced;border-radius:22px;padding:18px}
+.anim-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
+.anim-head b{color:var(--p)}.anim-head span{font-size:12px;color:var(--muted);font-weight:700}
+.pathway{position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;overflow:hidden}
+.pathway svg{width:100%;height:auto;display:block}
+.molecule{transition:transform .4s ease}
+.molecule-dot{filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.ctrl{border:1px solid #d7dbe5;background:#fff;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer}
+.ctrl.primary{background:var(--p);color:#fff;border-color:var(--p)}
+.molecule-info{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:15px;padding:15px}
+.mol-title{font-size:17px;font-weight:900;color:var(--p)}.mol-desc{font-size:14px;line-height:1.5;color:#596579;margin-top:5px}
+.apply-card{background:linear-gradient(135deg,#53257f,#6f3ea1);color:#fff;border-radius:20px;padding:22px;margin-top:18px}
+.apply-card h2{color:#fff}.apply-card p{color:#eee7f5;line-height:1.55}
+.case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:14px}
+.case{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:14px}
+.case b{display:block;color:#ffd45a;margin-bottom:5px}.case span{font-size:13px;line-height:1.45}
+textarea{width:100%;min-height:105px;border:1px solid #d7dbe5;border-radius:12px;padding:12px;font:inherit;resize:vertical}
+.model{display:none;margin-top:10px;background:#edf8f1;border:1px solid #bfe6ca;color:#14532d;border-radius:12px;padding:12px;line-height:1.5}
+.next{margin-top:22px;background:#eef7f3;border-left:5px solid var(--green);border-radius:15px;padding:18px 20px;line-height:1.5}.next b{color:#176b55}
+.small{font-size:12px;color:var(--muted)}
+@media(max-width:850px){.g3,.g4,.chain,.case-grid{grid-template-columns:1fr 1fr}.g2,.options{grid-template-columns:1fr}}
+@media(max-width:580px){.top{padding:0 13px}.wrap{padding:19px 13px 50px}.section,.hero{padding:20px}.g3,.g4,.chain,.case-grid{grid-template-columns:1fr}.anim-head{flex-direction:column;align-items:flex-start}h1{font-size:42px}}
+</style>
+</head>
+
+<body>
+<header class="top">
+  <div class="brand">TCE 504 • Applied Exercise Physiology</div>
+  <div class="tag">06 / DIGESTION → CELLULAR FUEL</div>
+</header>
+
+<main class="wrap">
+
+<section class="hero purple">
+  <div class="eyebrow">SECTION 06 • DIGESTION → CELLULAR FUEL</div>
+  <h1>How does food become available to the working cell?</h1>
+  <p class="lead">You already know that food provides substrates. Now follow the journey: <b>digestion → absorption → circulation → cellular uptake</b>.</p>
+  <div class="flow">
+    <span class="pill">FOOD</span><span class="arrow">→</span>
+    <span class="pill">DIGESTION</span><span class="arrow">→</span>
+    <span class="pill">ABSORPTION</span><span class="arrow">→</span>
+    <span class="pill">CIRCULATING SUBSTRATES</span><span class="arrow">→</span>
+    <span class="pill">CELLULAR UPTAKE</span>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div><div class="eyebrow">PART 1 • DIGESTION</div><h2>First, food must be broken down.</h2><p class="lead">Food is mechanically and chemically processed into smaller molecules that can become available as substrates.</p></div><div class="num">01</div></div>
+
+  <div class="visual">
+  <svg viewBox="0 0 1000 390" role="img" aria-label="Digestion of carbohydrate fat and protein into smaller molecules">
+    <defs><marker id="arr1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0 L10 3 L0 6Z" fill="#53257f"/></marker></defs>
+    <rect x="18" y="18" width="964" height="354" rx="24" fill="#fbf9fd"/>
+    <rect x="42" y="62" width="220" height="245" rx="20" fill="#fff0f5" stroke="#f0ccd9"/>
+    <text x="152" y="95" text-anchor="middle" fill="#53257f" font-size="20" font-weight="900">CARBOHYDRATE</text>
+    <text x="152" y="127" text-anchor="middle" fill="#667085" font-size="14">starch / disaccharides</text>
+    <g transform="translate(100 154)"><circle cx="0" cy="0" r="24" fill="#ffb703"/><circle cx="53" cy="0" r="24" fill="#ffcf52"/><circle cx="26" cy="43" r="24" fill="#ffd978"/></g>
+    <path d="M263 190 H323" stroke="#53257f" stroke-width="5" marker-end="url(#arr1)"/>
+    <rect x="325" y="62" width="330" height="245" rx="20" fill="#fff" stroke="#e4e7ee"/>
+    <text x="490" y="95" text-anchor="middle" fill="#53257f" font-size="20" font-weight="900">DIGESTION</text>
+    <text x="490" y="128" text-anchor="middle" fill="#667085" font-size="14">mechanical + chemical processing</text>
+    <path d="M400 170 C360 215 440 265 490 210 C540 155 620 205 575 258" fill="none" stroke="#e5b1c3" stroke-width="13" stroke-linecap="round"/>
+    <text x="490" y="302" text-anchor="middle" fill="#596579" font-size="13">Large food molecules → smaller molecules</text>
+    <path d="M656 190 H716" stroke="#53257f" stroke-width="5" marker-end="url(#arr1)"/>
+    <rect x="718" y="62" width="240" height="245" rx="20" fill="#eef7f3" stroke="#cfe9df"/>
+    <text x="838" y="95" text-anchor="middle" fill="#176b55" font-size="20" font-weight="900">SUBSTRATES</text>
+    <text x="782" y="143" fill="#53257f" font-size="15" font-weight="900">Glucose</text>
+    <text x="782" y="183" fill="#f2a11b" font-size="15" font-weight="900">Fatty acids</text>
+    <text x="782" y="223" fill="#7e66b6" font-size="15" font-weight="900">Amino acids</text>
+    <text x="838" y="272" text-anchor="middle" fill="#596579" font-size="13">Can be stored, transported</text>
+    <text x="838" y="291" text-anchor="middle" fill="#596579" font-size="13">and metabolised</text>
+    <text x="50" y="342" fill="#667085" font-size="12">Carbohydrate → monosaccharides</text>
+    <text x="360" y="342" fill="#667085" font-size="12">Fat → fatty acids + monoacylglycerols</text>
+    <text x="720" y="342" fill="#667085" font-size="12">Protein → amino acids</text>
+  </svg>
+  </div>
+
+  <div class="g3 grid" style="margin-top:15px">
+    <div class="box"><h3>Carbohydrate</h3><p>Starch and disaccharides are broken into monosaccharides, especially glucose.</p></div>
+    <div class="box"><h3>Fat</h3><p>Lipids are emulsified and hydrolysed into fatty acids and monoacylglycerols.</p></div>
+    <div class="box"><h3>Protein</h3><p>Proteins are broken into amino acids.</p></div>
+  </div>
+
+  <div class="check">
+    <div class="qlabel">STOP & THINK</div>
+    <div class="question">Why is digestion necessary before these nutrients can support cellular metabolism?</div>
+    <div class="options">
+      <button class="opt" onclick="check(this,true,'d1')">It converts large food molecules into smaller molecules that can become available as substrates.</button>
+      <button class="opt" onclick="check(this,false,'d1')">It converts food directly into ATP inside the stomach.</button>
+      <button class="opt" onclick="check(this,false,'d1')">It removes the need for circulation.</button>
+      <button class="opt" onclick="check(this,false,'d1')">It sends intact food molecules directly into muscle mitochondria.</button>
+    </div>
+    <div id="d1" class="feedback"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div><div class="eyebrow">PART 2 • ABSORPTION</div><h2>Next, the substrates cross the gut wall.</h2><p class="lead">After digestion, the smaller molecules are absorbed and can enter blood or lymph before reaching tissues.</p></div><div class="num">02</div></div>
+
+  <div class="visual">
+  <svg viewBox="0 0 1000 360" role="img" aria-label="Intestinal absorption into circulation">
+    <defs><marker id="arr2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0 L10 3 L0 6Z" fill="#53257f"/></marker></defs>
+    <rect x="18" y="18" width="964" height="324" rx="24" fill="#fbf9fd"/>
+    <rect x="45" y="78" width="290" height="205" rx="22" fill="#fff0f5" stroke="#f0ccd9"/>
+    <text x="190" y="111" text-anchor="middle" fill="#53257f" font-size="20" font-weight="900">INTESTINE</text>
+    <path d="M105 170 q35 -60 70 0 t70 0 t70 0" fill="none" stroke="#ec88aa" stroke-width="18" stroke-linecap="round"/>
+    <circle cx="125" cy="145" r="9" fill="#ffb703"/><circle cx="170" cy="151" r="9" fill="#7e66b6"/><circle cx="216" cy="145" r="9" fill="#f2a11b"/><circle cx="260" cy="150" r="9" fill="#ffb703"/>
+    <text x="190" y="246" text-anchor="middle" fill="#596579" font-size="14">Digested molecules become</text>
+    <text x="190" y="267" text-anchor="middle" fill="#596579" font-size="14">available for absorption.</text>
+
+    <path d="M335 180 H425" stroke="#53257f" stroke-width="5" marker-end="url(#arr2)"/>
+    <rect x="428" y="78" width="210" height="205" rx="22" fill="#eef6ff" stroke="#d5e6f7"/>
+    <text x="533" y="111" text-anchor="middle" fill="#1e67a0" font-size="20" font-weight="900">CIRCULATION</text>
+    <path d="M468 156 C540 125 610 160 586 205 C560 244 492 233 473 194" fill="none" stroke="#8fbde8" stroke-width="15" stroke-linecap="round"/>
+    <circle cx="498" cy="170" r="8" fill="#ffb703"/><circle cx="538" cy="186" r="8" fill="#f2a11b"/><circle cx="575" cy="173" r="8" fill="#7e66b6"/>
+    <text x="533" y="248" text-anchor="middle" fill="#596579" font-size="14">Blood or lymph carries</text>
+    <text x="533" y="269" text-anchor="middle" fill="#596579" font-size="14">absorbed molecules onward.</text>
+
+    <path d="M638 180 H728" stroke="#53257f" stroke-width="5" marker-end="url(#arr2)"/>
+    <rect x="731" y="78" width="220" height="205" rx="22" fill="#eef7f3" stroke="#cfe9df"/>
+    <text x="841" y="111" text-anchor="middle" fill="#176b55" font-size="20" font-weight="900">TISSUES</text>
+    <circle cx="792" cy="170" r="28" fill="#fff4c7" stroke="#ffb703" stroke-width="3"/><text x="792" y="176" text-anchor="middle" fill="#53257f" font-weight="900">GLU</text>
+    <circle cx="840" cy="207" r="28" fill="#fff0d8" stroke="#f2a11b" stroke-width="3"/><text x="840" y="213" text-anchor="middle" fill="#9a5f00" font-weight="900">FA</text>
+    <circle cx="888" cy="170" r="28" fill="#f0eafa" stroke="#7e66b6" stroke-width="3"/><text x="888" y="176" text-anchor="middle" fill="#53257f" font-weight="900">AA</text>
+    <text x="841" y="248" text-anchor="middle" fill="#596579" font-size="14">Substrates can reach</text>
+    <text x="841" y="269" text-anchor="middle" fill="#596579" font-size="14">working tissues.</text>
+  </svg>
+  </div>
+
+  <div class="info-strip"><b>Key idea:</b> absorption does not equal ATP production. Absorption makes substrates available for transport to tissues.</div>
+
+  <div class="check">
+    <div class="qlabel">CHECK THE LOGIC</div>
+    <div class="question">After absorption, what is the next major step before a muscle can use the substrates?</div>
+    <div class="options">
+      <button class="opt" onclick="check(this,true,'d2')">Circulation and delivery to tissues.</button>
+      <button class="opt" onclick="check(this,false,'d2')">Immediate direct conversion of food into ATP in the intestine.</button>
+      <button class="opt" onclick="check(this,false,'d2')">Immediate protein synthesis only.</button>
+      <button class="opt" onclick="check(this,false,'d2')">Excretion of every absorbed molecule.</button>
+    </div>
+    <div id="d2" class="feedback"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div><div class="eyebrow">PART 3 • CIRCULATION</div><h2>Substrate availability depends on the whole-body context.</h2><p class="lead">What reaches the muscle is influenced by recent food intake, liver metabolism, adipose tissue lipolysis, exercise intensity and hormonal state.</p></div><div class="num">03</div></div>
+
+  <div class="visual">
+  <svg viewBox="0 0 1000 370" role="img" aria-label="Whole body regulation of circulating substrates">
+    <defs><marker id="arr3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0 L10 3 L0 6Z" fill="#53257f"/></marker></defs>
+    <rect x="18" y="18" width="964" height="334" rx="24" fill="#fbf9fd"/>
+    <rect x="44" y="80" width="190" height="190" rx="20" fill="#fff8df" stroke="#f4e1a5"/>
+    <text x="139" y="112" text-anchor="middle" fill="#8c6500" font-size="19" font-weight="900">FOOD INTAKE</text>
+    <text x="139" y="145" text-anchor="middle" fill="#596579" font-size="14">Recent meal</text>
+    <text x="139" y="170" text-anchor="middle" fill="#596579" font-size="14">substrate availability</text>
+    <circle cx="104" cy="218" r="18" fill="#ffb703"/><circle cx="139" cy="200" r="18" fill="#f2a11b"/><circle cx="174" cy="218" r="18" fill="#7e66b6"/>
+
+    <rect x="280" y="58" width="190" height="110" rx="18" fill="#eef6ff" stroke="#d7e7f7"/>
+    <text x="375" y="88" text-anchor="middle" fill="#1e67a0" font-size="17" font-weight="900">LIVER</text>
+    <text x="375" y="116" text-anchor="middle" fill="#596579" font-size="13">glucose handling</text>
+    <text x="375" y="138" text-anchor="middle" fill="#596579" font-size="13">and circulating supply</text>
+    <path d="M234 145 H280" stroke="#53257f" stroke-width="4" marker-end="url(#arr3)"/>
+
+    <rect x="280" y="198" width="190" height="110" rx="18" fill="#fff0f5" stroke="#efd0dc"/>
+    <text x="375" y="228" text-anchor="middle" fill="#9b3459" font-size="17" font-weight="900">ADIPOSE TISSUE</text>
+    <text x="375" y="256" text-anchor="middle" fill="#596579" font-size="13">lipolysis</text>
+    <text x="375" y="278" text-anchor="middle" fill="#596579" font-size="13">fatty-acid availability</text>
+
+    <rect x="548" y="102" width="180" height="150" rx="22" fill="#f3eef9" stroke="#dfd5ea"/>
+    <text x="638" y="136" text-anchor="middle" fill="#53257f" font-size="19" font-weight="900">BLOOD</text>
+    <text x="638" y="166" text-anchor="middle" fill="#667085" font-size="13">Circulating</text>
+    <text x="638" y="187" text-anchor="middle" fill="#667085" font-size="13">substrates</text>
+    <circle cx="600" cy="216" r="8" fill="#ffb703"/><circle cx="626" cy="216" r="8" fill="#f2a11b"/><circle cx="652" cy="216" r="8" fill="#7e66b6"/>
+
+    <path d="M470 115 C510 125 520 140 548 153" fill="none" stroke="#53257f" stroke-width="4" marker-end="url(#arr3)"/>
+    <path d="M470 250 C510 238 525 217 548 207" fill="none" stroke="#53257f" stroke-width="4" marker-end="url(#arr3)"/>
+
+    <rect x="778" y="80" width="174" height="195" rx="22" fill="#eef7f3" stroke="#cfe9df"/>
+    <text x="865" y="113" text-anchor="middle" fill="#176b55" font-size="19" font-weight="900">MUSCLE</text>
+    <text x="865" y="142" text-anchor="middle" fill="#596579" font-size="13">Cellular uptake</text>
+    <path d="M803 178 q30 -35 60 0 t60 0" fill="none" stroke="#79c6ab" stroke-width="12" stroke-linecap="round"/>
+    <path d="M728 177 H778" stroke="#53257f" stroke-width="4" marker-end="url(#arr3)"/>
+    <text x="865" y="232" text-anchor="middle" fill="#596579" font-size="13">Exercise intensity,</text>
+    <text x="865" y="252" text-anchor="middle" fill="#596579" font-size="13">training and hormonal</text>
+    <text x="865" y="272" text-anchor="middle" fill="#596579" font-size="13">state also matter.</text>
+  </svg>
+  </div>
+
+  <div class="g3 grid" style="margin-top:15px">
+    <div class="box"><h3>Recent food intake</h3><p>Changes the availability of circulating substrates after a meal.</p></div>
+    <div class="box"><h3>Liver + adipose tissue</h3><p>Help regulate substrate availability reaching the circulation.</p></div>
+    <div class="box"><h3>Exercise context</h3><p>Intensity, hormonal state and exercise itself influence substrate mobilisation and use.</p></div>
+  </div>
+
+  <div class="check">
+    <div class="qlabel">PREDICT</div>
+    <div class="question">Can substrate availability be explained by the meal alone?</div>
+    <div class="options">
+      <button class="opt" onclick="check(this,false,'d3')">Yes. The meal is the only determinant.</button>
+      <button class="opt" onclick="check(this,true,'d3')">No. Multiple whole-body factors influence circulating substrate availability.</button>
+    </div>
+    <div id="d3" class="feedback"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div><div class="eyebrow">PART 4 • CELLULAR UPTAKE</div><h2>Now the substrate reaches the working muscle cell.</h2><p class="lead">At this point, the question changes from “where did the substrate come from?” to “how does the cell handle it?”</p></div><div class="num">04</div></div>
+
+  <div class="visual">
+  <svg viewBox="0 0 1000 420" role="img" aria-label="Glucose uptake through GLUT4 and fatty acids entering muscle toward mitochondria">
+    <defs><marker id="arr4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0 L10 3 L0 6Z" fill="#53257f"/></marker></defs>
+    <rect x="18" y="18" width="964" height="384" rx="24" fill="#fbf9fd"/>
+    <text x="86" y="62" fill="#53257f" font-size="20" font-weight="900">BLOOD</text>
+    <text x="366" y="62" fill="#53257f" font-size="20" font-weight="900">MUSCLE CELL</text>
+    <text x="748" y="62" fill="#53257f" font-size="20" font-weight="900">MITOCHONDRION</text>
+
+    <line x1="285" y1="35" x2="285" y2="375" stroke="#d6dbe4" stroke-dasharray="6 7"/>
+    <line x1="650" y1="35" x2="650" y2="375" stroke="#d6dbe4" stroke-dasharray="6 7"/>
+
+    <circle cx="113" cy="133" r="28" fill="#fff4c7" stroke="#ffb703" stroke-width="3"/><text x="113" y="140" text-anchor="middle" fill="#53257f" font-weight="900">GLU</text>
+    <circle cx="113" cy="220" r="28" fill="#fff0d8" stroke="#f2a11b" stroke-width="3"/><text x="113" y="227" text-anchor="middle" fill="#9a5f00" font-weight="900">FA</text>
+    <circle cx="113" cy="307" r="28" fill="#f0eafa" stroke="#7e66b6" stroke-width="3"/><text x="113" y="314" text-anchor="middle" fill="#53257f" font-weight="900">AA</text>
+
+    <rect x="295" y="92" width="325" height="108" rx="20" fill="#eef6ff" stroke="#d5e6f7"/>
+    <text x="458" y="124" text-anchor="middle" fill="#1e67a0" font-size="18" font-weight="900">GLUT4-MEDIATED GLUCOSE UPTAKE</text>
+    <text x="458" y="154" text-anchor="middle" fill="#596579" font-size="13">Exercise contraction promotes GLUT4 translocation</text>
+    <text x="458" y="174" text-anchor="middle" fill="#596579" font-size="13">independently of insulin.</text>
+    <path d="M141 133 H295" stroke="#53257f" stroke-width="4" marker-end="url(#arr4)"/>
+
+    <rect x="295" y="228" width="325" height="108" rx="20" fill="#fff8df" stroke="#f3e2aa"/>
+    <text x="458" y="259" text-anchor="middle" fill="#8c6500" font-size="18" font-weight="900">FATTY ACID HANDLING</text>
+    <text x="458" y="289" text-anchor="middle" fill="#596579" font-size="13">Fatty acids are transported toward</text>
+    <text x="458" y="309" text-anchor="middle" fill="#596579" font-size="13">mitochondrial oxidation.</text>
+    <path d="M141 220 H295" stroke="#53257f" stroke-width="4" marker-end="url(#arr4)"/>
+
+    <circle cx="805" cy="203" r="118" fill="#f6f2fa" stroke="#cfc2df" stroke-width="3"/>
+    <path d="M726 180 C760 120 850 120 885 178 C915 228 863 282 795 278 C747 274 713 225 726 180Z" fill="#e6dfef"/>
+    <path d="M754 178 q35 -45 72 0 t72 0" fill="none" stroke="#8a6bb3" stroke-width="12" stroke-linecap="round"/>
+    <text x="805" y="203" text-anchor="middle" fill="#53257f" font-size="20" font-weight="900">OXIDATIVE</text>
+    <text x="805" y="227" text-anchor="middle" fill="#53257f" font-size="20" font-weight="900">METABOLISM</text>
+    <path d="M620 282 H685" stroke="#53257f" stroke-width="4" marker-end="url(#arr4)"/>
+    <circle cx="708" cy="282" r="9" fill="#f2a11b"/><text x="805" y="334" text-anchor="middle" fill="#596579" font-size="13">Substrates can enter pathways</text>
+    <text x="805" y="353" text-anchor="middle" fill="#596579" font-size="13">that support ATP resynthesis.</text>
+
+    <rect x="53" y="346" width="205" height="34" rx="10" fill="#fff" stroke="#e4e7ee"/><text x="156" y="369" text-anchor="middle" fill="#667085" font-size="11">AA = amino acids; FA = fatty acids</text>
+  </svg>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showFuel('glucose',this)">Glucose</button>
+    <button class="tab" onclick="showFuel('fat',this)">Fatty acids</button>
+    <button class="tab" onclick="showFuel('protein',this)">Amino acids</button>
+  </div>
+  <div id="fuelDetail" class="detail"><b>Glucose:</b> glucose enters muscle through GLUT4. During exercise, muscle contraction promotes GLUT4 translocation independently of insulin. Glycogen can enter glycolysis after mobilisation.</div>
+
+  <div class="check">
+    <div class="qlabel">CHECK THE CELLULAR STEP</div>
+    <div class="question">Which statement is correct during exercise?</div>
+    <div class="options">
+      <button class="opt" onclick="check(this,true,'d4')">Muscle contraction promotes GLUT4 translocation, supporting glucose uptake.</button>
+      <button class="opt" onclick="check(this,false,'d4')">Exercise blocks glucose entry into muscle.</button>
+      <button class="opt" onclick="check(this,false,'d4')">Fatty acids are converted into glycogen directly.</button>
+      <button class="opt" onclick="check(this,false,'d4')">Amino acids are the only substrate that can enter muscle.</button>
+    </div>
+    <div id="d4" class="feedback"></div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">PART 5 • FOLLOW ONE SUBSTRATE</div>
+      <h2>Choose a substrate. Watch where it goes.</h2>
+      <p class="lead">This is the part you control. Select <b>glucose</b>, <b>fatty acids</b> or <b>amino acids</b>, then move through the pathway step by step.</p>
+    </div>
+    <div class="num">05</div>
+  </div>
+
+  <div class="anim-shell">
+    <div class="anim-head">
+      <b>INTERACTIVE SUBSTRATE JOURNEY</b>
+      <span id="journeyStatus">Step 1 of 5</span>
+    </div>
+
+    <div class="substrate-select">
+      <button class="tab active" onclick="selectSubstrate('glucose',this)">🟡 Glucose</button>
+      <button class="tab" onclick="selectSubstrate('fat',this)">🟠 Fatty acids</button>
+      <button class="tab" onclick="selectSubstrate('protein',this)">🟣 Amino acids</button>
+    </div>
+
+    <div class="journey-stage">
+      <div class="stage-node" id="node1">
+        <div class="stage-num">1</div>
+        <div class="stage-icon">🩸</div>
+        <div class="stage-title">CIRCULATION</div>
+        <div class="stage-sub">substrate is available in blood</div>
+      </div>
+
+      <div class="journey-arrow" id="arrow1">→</div>
+
+      <div class="stage-node" id="node2">
+        <div class="stage-num">2</div>
+        <div class="stage-icon">🚪</div>
+        <div class="stage-title" id="uptakeNodeTitle">MUSCLE UPTAKE</div>
+        <div class="stage-sub" id="uptakeNodeSub">substrate enters the muscle cell</div>
+      </div>
+
+      <div class="journey-arrow" id="arrow2">→</div>
+
+      <div class="stage-node" id="node3">
+        <div class="stage-num">3</div>
+        <div class="stage-icon" id="locationIcon">🧫</div>
+        <div class="stage-title" id="locationTitle">CYTOSOL</div>
+        <div class="stage-sub" id="locationSub">cellular location</div>
+      </div>
+
+      <div class="journey-arrow" id="arrow3">→</div>
+
+      <div class="stage-node" id="node4">
+        <div class="stage-num">4</div>
+        <div class="stage-icon">⚙️</div>
+        <div class="stage-title" id="pathwayTitle">GLYCOLYSIS</div>
+        <div class="stage-sub" id="pathwaySub">metabolic pathway</div>
+      </div>
+
+      <div class="journey-arrow" id="arrow4">→</div>
+
+      <div class="stage-node" id="node5">
+        <div class="stage-num">5</div>
+        <div class="stage-icon">⚡</div>
+        <div class="stage-title">ATP RESYNTHESIS</div>
+        <div class="stage-sub">supports cellular work</div>
+      </div>
+
+      <div class="traveller" id="traveller">
+        <div class="traveller-dot"></div>
+        <div class="traveller-label" id="travellerLabel">GLU</div>
+      </div>
+    </div>
+
+    <div class="step-explanation">
+      <div class="step-badge" id="stepBadge">STEP 1</div>
+      <div>
+        <div class="mol-title" id="journeyTitle">Glucose is circulating.</div>
+        <div class="mol-desc" id="journeyDesc">Glucose is available in the circulation before entering the working muscle.</div>
+      </div>
+    </div>
+
+    <div class="controls journey-controls">
+      <button class="ctrl" onclick="previousJourney()">← Previous</button>
+      <button class="ctrl primary" id="nextJourneyBtn" onclick="nextJourney()">Next step →</button>
+      <button class="ctrl" onclick="playJourney()">▶ Play journey</button>
+      <button class="ctrl" onclick="resetJourney()">Reset</button>
+    </div>
+
+    <div class="journey-progress">
+      <div class="journey-progress-line"><div id="journeyProgressBar"></div></div>
+      <div class="journey-progress-labels">
+        <span>Blood</span><span>Uptake</span><span>Location</span><span>Pathway</span><span>ATP</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="apply-card">
+    <h2>APPLY IT — Think about the athlete.</h2>
+    <p>A runner begins exercise. Don't say “the food becomes ATP.” Use the chain you just followed:</p>
+    <div class="case-grid">
+      <div class="case"><b>1 • AVAILABILITY</b><span>Substrates are available from recent food, body stores and circulating sources.</span></div>
+      <div class="case"><b>2 • UPTAKE</b><span>The working muscle takes up available substrates.</span></div>
+      <div class="case"><b>3 • METABOLISM</b><span>Substrates enter the appropriate metabolic pathways that support ATP resynthesis.</span></div>
+    </div>
+  </div>
+
+  <div class="check">
+    <div class="qlabel">APPLY YOUR REASONING</div>
+    <div class="question">A runner increases exercise intensity. Which statement best explains the role of food-derived substrates?</div>
+    <div class="options">
+      <button class="opt" onclick="check(this,false,'d5')">Food is converted directly into movement.</button>
+      <button class="opt" onclick="check(this,true,'d5')">Food is digested into substrates that can be transported, taken up by muscle and metabolised to support ATP resynthesis.</button>
+      <button class="opt" onclick="check(this,false,'d5')">Food removes the need for ATP.</button>
+      <button class="opt" onclick="check(this,false,'d5')">Only protein reaches the muscle.</button>
+    </div>
+    <div id="d5" class="feedback"></div>
+  </div>
+
+  <div class="check">
+    <div class="qlabel">ONE-SENTENCE EXPLANATION</div>
+    <div class="question">Explain the sequence: digestion → absorption → circulation → cellular uptake.</div>
+    <textarea id="summaryAnswer" placeholder="Write your explanation here..."></textarea>
+    <div class="controls"><button class="ctrl primary" onclick="showModel()">Show model answer</button></div>
+    <div id="model" class="model"><b>Model answer:</b> Food is digested into smaller molecules, these are absorbed and enter blood or lymph, circulating substrates are delivered to tissues, and muscle cells take them up so they can enter metabolic pathways that support ATP resynthesis.</div>
+  </div>
+</section>
+<div class="next"><b>NEXT → SECTION 07: ATP-PCr / PHOSPHAGEN</b><br>You now know how substrates become available to the working cell. Next, we focus on the pathway that can regenerate ATP very rapidly when demand rises suddenly.</div>
+
+</main>
+
+<script>
+function check(btn,correct,id){
+ const group=btn.parentElement;group.querySelectorAll('.opt').forEach(b=>b.classList.remove('correct','wrong'));
+ btn.classList.add(correct?'correct':'wrong');
+ const f=document.getElementById(id);f.className='feedback show';
+ f.innerHTML=correct?'<b>Correct.</b> That is the key concept to carry forward.':'<b>Not quite.</b> Re-read the visual and focus on the sequence from food to cellular substrate availability.';
+}
+const fuelDetails={
+ glucose:"<b>Glucose:</b> glucose enters muscle through GLUT4. During exercise, muscle contraction promotes GLUT4 translocation independently of insulin. Glycogen can enter glycolysis after mobilisation.",
+ fat:"<b>Fatty acids:</b> fatty acids enter mitochondria and undergo <b>β-oxidation</b>, producing acetyl-CoA, NADH and FADH₂ for oxidative ATP production.",
+ protein:"<b>Amino acids:</b> amino acids may be deaminated. Their carbon skeletons can enter pathways linked to TCA intermediates or gluconeogenesis; nitrogen must be handled separately."
+};
+function showFuel(type,btn){
+ document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+ document.getElementById('fuelDetail').innerHTML=fuelDetails[type];
+}
+
+const journeyData={
+ glucose:{
+  label:'GLU', color:'#ffb703',
+  steps:[
+   ['Glucose is circulating.','Glucose is available in the circulation before entering the working muscle.'],
+   ['Glucose enters the muscle cell.','During exercise, muscle contraction promotes GLUT4 translocation independently of insulin.'],
+   ['Glucose is in the cytosol.','Glycolysis occurs in the cytosol. Glycogen can also supply glucose after mobilisation.'],
+   ['Glucose enters glycolysis.','Glucose is processed through glycolysis to support rapid ATP resynthesis.'],
+   ['ATP can be resynthesised.','The metabolic pathway contributes to ATP resynthesis for cellular work.']
+  ],
+  uptake:'GLUT4 / MUSCLE UPTAKE', uptakeSub:'glucose enters the muscle cell',
+  location:'CYTOSOL', locationSub:'glycolysis location',
+  pathway:'GLYCOLYSIS', pathwaySub:'rapid carbohydrate breakdown'
+ },
+ fat:{
+  label:'FA', color:'#f2a11b',
+  steps:[
+   ['Fatty acids are circulating.','Fatty acids are available for delivery to working tissues.'],
+   ['Fatty acids reach the muscle.','Fatty acids are transported toward the working muscle cell.'],
+   ['Fatty acids are directed toward the mitochondrion.','Fatty-acid handling prepares substrate for mitochondrial oxidation.'],
+   ['β-oxidation begins.','Fatty acids undergo β-oxidation, producing acetyl-CoA, NADH and FADH₂.'],
+   ['ATP can be resynthesised oxidatively.','The products support oxidative ATP production.']
+  ],
+  uptake:'FATTY ACID HANDLING', uptakeSub:'fatty acids reach the working cell',
+  location:'MITOCHONDRION', locationSub:'site of β-oxidation',
+  pathway:'β-OXIDATION', pathwaySub:'fatty-acid oxidation'
+ },
+ protein:{
+  label:'AA', color:'#7e66b6',
+  steps:[
+   ['Amino acids are available.','Amino acids are the products of protein digestion and can be available to tissues.'],
+   ['Amino acids reach the muscle.','Amino acids can be taken up by tissues according to metabolic needs.'],
+   ['Amino acids enter metabolic pathways.','Amino acids may be deaminated and their carbon skeletons can enter energy-related pathways.'],
+   ['TCA-linked pathways receive carbon skeletons.','Their carbon skeletons can enter pathways linked to TCA intermediates or gluconeogenesis.'],
+   ['ATP support depends on pathway entry.','Amino acids can contribute to energy metabolism, usually to a smaller extent than carbohydrate and fat.']
+  ],
+  uptake:'AMINO ACID UPTAKE', uptakeSub:'amino acids enter the working tissue',
+  location:'CELL', locationSub:'metabolic entry points vary',
+  pathway:'TCA-LINKED PATHWAYS', pathwaySub:'carbon skeleton utilisation'
+ }
+};
+let selectedSubstrate='glucose',journeyStep=0,journeyTimer=null;
+function selectSubstrate(type,btn){
+ selectedSubstrate=type;journeyStep=0;
+ document.querySelectorAll('.substrate-select .tab').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+ renderJourney();
+}
+function renderJourney(){
+ const d=journeyData[selectedSubstrate],s=d.steps[journeyStep];
+ document.getElementById('journeyStatus').textContent=`Step ${journeyStep+1} of 5`;
+ document.getElementById('stepBadge').textContent=`STEP ${journeyStep+1}`;
+ document.getElementById('journeyTitle').textContent=s[0];
+ document.getElementById('journeyDesc').textContent=s[1];
+ document.getElementById('travellerLabel').textContent=d.label;
+ document.getElementById('traveller').style.background=d.color;
+ document.getElementById('uptakeNodeTitle').textContent=d.uptake;
+ document.getElementById('uptakeNodeSub').textContent=d.uptakeSub;
+ document.getElementById('locationTitle').textContent=d.location;
+ document.getElementById('locationSub').textContent=d.locationSub;
+ document.getElementById('pathwayTitle').textContent=d.pathway;
+ document.getElementById('pathwaySub').textContent=d.pathwaySub;
+ const nodes=document.querySelectorAll('.stage-node');
+ nodes.forEach((n,i)=>{n.classList.toggle('active',i===journeyStep);n.classList.toggle('done',i<journeyStep)});
+ const positions=[7,27,47,67,87];
+ document.getElementById('traveller').style.left=positions[journeyStep]+'%';
+ document.getElementById('journeyProgressBar').style.width=((journeyStep+1)/5*100)+'%';
+ document.getElementById('nextJourneyBtn').textContent=journeyStep===4?'Back to start ↺':'Next step →';
+}
+function nextJourney(){
+ if(journeyStep===4){journeyStep=0}else journeyStep++;
+ renderJourney();
+}
+function previousJourney(){
+ if(journeyStep===0){journeyStep=4}else journeyStep--;
+ renderJourney();
+}
+function playJourney(){
+ clearInterval(journeyTimer);
+ journeyStep=0;renderJourney();
+ journeyTimer=setInterval(()=>{
+   if(journeyStep<4){journeyStep++;renderJourney()}
+   else{clearInterval(journeyTimer)}
+ },1200);
+}
+function resetJourney(){clearInterval(journeyTimer);journeyStep=0;renderJourney()}
+function showModel(){document.getElementById('model').style.display='block';localStorage.setItem('tce504_section6_summary',document.getElementById('summaryAnswer').value)}
+const saved=localStorage.getItem('tce504_section6_summary');if(saved)document.getElementById('summaryAnswer').value=saved;
+</script>
+</body>
+</html>
