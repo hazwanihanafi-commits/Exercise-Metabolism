@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TCE504 • Section 09 • Pyruvate → Lactate or Acetyl-CoA</title>
+<style>
+*{box-sizing:border-box} :root{--p:#53257f;--p2:#7042a0;--g:#ffb703;--ink:#182133;--muted:#667085;--line:#e3e7ee;--bg:#f4f6fa;--pink:#ec4f7a;--blue:#3298df;--green:#2e8b70;--red:#c94d5f}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+button,textarea,input{font:inherit}
+.top{height:64px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.brand{font-weight:900;color:var(--p)}.tag{font-size:12px;font-weight:800;color:var(--muted)}
+.wrap{max-width:1120px;margin:auto;padding:28px 20px 70px}
+.hero{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;border-radius:28px;padding:32px;box-shadow:0 9px 28px rgba(35,20,60,.1)}
+.eyebrow{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;font-weight:900;color:var(--p);margin-bottom:8px}.hero .eyebrow{color:#fff;opacity:.9}
+h1{font-size:clamp(40px,6vw,64px);line-height:.96;letter-spacing:-2px;margin:0 0 14px}h2{font-size:30px;margin:0 0 10px}h3{margin:0 0 7px}
+.lead{font-size:17px;line-height:1.6;color:#536074;max-width:930px}.hero .lead{color:#eee8f6}
+.section{background:#fff;border:1px solid var(--line);border-radius:26px;padding:28px;margin-top:22px;box-shadow:0 7px 25px rgba(35,20,60,.045)}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}.num{background:var(--p);color:#fff;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:900;white-space:nowrap}
+.visual{margin-top:18px;background:#faf9fc;border:1px solid var(--line);border-radius:20px;padding:10px;overflow:hidden}.visual svg{width:100%;height:auto;display:block}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px}.box h3{color:var(--p)}.box p{margin:0;color:#596579;font-size:14px;line-height:1.5}
+.check{margin-top:17px;background:#faf9fc;border:1px solid var(--line);border-radius:17px;padding:18px}.qlabel{font-size:11px;letter-spacing:1px;color:var(--p);font-weight:900}.q{font-size:19px;font-weight:900;line-height:1.42;margin-top:6px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.opt{border:1px solid #d7dbe5;background:#fff;border-radius:12px;padding:12px;text-align:left;font-weight:700;cursor:pointer}.opt.correct{background:#edf8f1;border-color:#86c99a;color:#14532d}.opt.wrong{background:#fff3f3;border-color:#e2a0a0;color:#8a1c1c}
+.feedback{display:none;margin-top:10px;padding:12px;border-radius:12px;line-height:1.5}.feedback.show{display:block;background:#edf8f1;border:1px solid #bfe6ca;color:#14532d}
+.anim{margin-top:18px;background:linear-gradient(180deg,#fbfbff,#f3eef8);border:1px solid #e1d9ec;border-radius:21px;padding:18px}
+.anim-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.anim-head b{color:var(--p)}.anim-head span{font-size:12px;color:var(--muted);font-weight:700}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.ctrl{border:1px solid #d7dbe5;background:#fff;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer}.ctrl.primary{background:var(--p);color:#fff;border-color:var(--p)}
+.branch{display:grid;grid-template-columns:1fr 80px 1fr;align-items:center;gap:12px}.branch-card{border:2px solid var(--line);border-radius:18px;padding:18px;background:#fff;min-height:160px}.branch-card.lact{border-color:#efc7d4;background:#fff3f6}.branch-card.aer{border-color:#cfe0f2;background:#f2f8fd}.branch-card h3{font-size:20px}.branch-card p{font-size:13px;color:#596579;line-height:1.5;margin:5px 0 0}.center-node{border:2px solid var(--p);background:#f7f2fb;border-radius:50%;width:115px;height:115px;display:grid;place-items:center;text-align:center;margin:auto;font-weight:900;color:var(--p);font-size:16px}
+.flow-arrow{font-size:34px;color:var(--p);font-weight:900;text-align:center}
+.live-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:13px}
+.live-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}
+.molecule{display:flex;align-items:center;justify-content:center;gap:8px;min-height:100px}.ball{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:10px;font-weight:900;box-shadow:0 4px 9px rgba(0,0,0,.13)}.ball.p{background:var(--p)}.ball.g{background:var(--g);color:#4c3500}.ball.b{background:var(--blue)}.ball.r{background:var(--red)}.ball.gr{background:var(--green)}.pulse{animation:pulse 1s ease-in-out infinite}.move{animation:move 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}@keyframes move{0%{transform:translateX(0)}50%{transform:translateX(12px)}100%{transform:translateX(0)}}
+.status{margin-top:12px;background:#f7f4fa;border-radius:13px;padding:12px;line-height:1.5;color:#596579}.status b{color:var(--p)}
+.cycle{position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.cycle svg{width:100%;height:auto}
+.slider{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px;margin-top:16px}.slider input{width:100%}.readouts{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:10px}.read{background:#f7f4fa;border-radius:12px;padding:11px;text-align:center}.read b{display:block;color:var(--p);font-size:18px}.read span{font-size:10px;color:var(--muted)}
+.case{background:linear-gradient(135deg,#53257f,#6f3ea1);color:#fff;border-radius:20px;padding:21px;margin-top:18px}.case h2{color:#fff}.case p{color:#eee8f6;line-height:1.5}.case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:13px}.casebox{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);border-radius:14px;padding:13px}.casebox b{color:#ffcf4a;display:block;margin-bottom:4px}.casebox span{font-size:13px;line-height:1.45}
+textarea{width:100%;min-height:110px;border:1px solid #d7dbe5;border-radius:12px;padding:12px;resize:vertical}
+.model{display:none;margin-top:10px;background:#edf8f1;border:1px solid #bfe6ca;color:#14532d;border-radius:12px;padding:12px;line-height:1.55}
+.takehome{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.take{border:1px solid var(--line);border-radius:15px;padding:15px;background:#fff}.take b{display:block;color:var(--p);margin-bottom:5px}.take p{margin:0;font-size:13px;color:#596579;line-height:1.45}
+.next{margin-top:22px;background:#eef7f3;border-left:5px solid var(--green);border-radius:15px;padding:18px 20px;line-height:1.5}.next b{color:#176b55}
+@media(max-width:850px){.g3,.g4,.live-grid,.case-grid,.takehome,.readouts{grid-template-columns:1fr 1fr}.branch{grid-template-columns:1fr}.flow-arrow{transform:rotate(90deg)}.options,.g2{grid-template-columns:1fr}}
+@media(max-width:580px){.top{padding:0 13px}.wrap{padding:19px 13px 50px}.hero,.section{padding:20px}.g3,.g4,.live-grid,.case-grid,.takehome,.readouts{grid-template-columns:1fr}h1{font-size:42px}}
+
+.athlete-answer-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:17px}
+.athlete-qcard{display:grid;grid-template-columns:48px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-radius:16px;background:#fff;padding:15px}
+.athlete-qnum{width:36px;height:36px;border-radius:50%;background:var(--p);color:#fff;display:grid;place-items:center;font-weight:900}
+.athlete-q{font-size:16px;font-weight:900;color:var(--p);line-height:1.35}
+.athlete-a{margin-top:6px;color:#596579;font-size:14px;line-height:1.55}
+.reasoning-chain{margin-top:14px;background:#f5f0fa;border:1px solid #ddd2e9;border-radius:15px;padding:14px 16px;line-height:1.5}
+.reasoning-chain b{display:block;color:var(--p);font-size:11px;letter-spacing:1px;margin-bottom:5px}
+.reasoning-chain span{font-size:14px;font-weight:800;color:#4f3c63}
+.athlete-typed{margin-top:15px}
+
+</style>
+</head>
+<body>
+<header class="top"><div class="brand">TCE 504 • Applied Exercise Physiology</div><div class="tag">09 / PYRUVATE</div></header>
+<main class="wrap">
+
+<section class="hero">
+<div class="eyebrow">SECTION 09 • METABOLIC BRANCH POINT</div>
+<h1>Pyruvate → Lactate or Acetyl-CoA</h1>
+<p class="lead">After glycolysis, pyruvate becomes a <b>decision point</b>. Depending on metabolic conditions, it can be reduced to lactate to regenerate NAD⁺, or converted to acetyl-CoA and enter mitochondrial oxidative metabolism.</p>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 1 • THE BRANCH POINT</div><h2>Where does pyruvate go next?</h2><p class="lead">Do not think of pyruvate as having only one destination. The next step depends on the metabolic conditions in the working cell.</p></div><div class="num">01</div></div>
+<div class="visual">
+<svg viewBox="0 0 1000 400" role="img" aria-label="Pyruvate branches to lactate or acetyl-CoA">
+<defs><marker id="a1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6Z" fill="#53257f"/></marker></defs>
+<rect x="18" y="18" width="964" height="364" rx="24" fill="#fbf9fd"/>
+<rect x="390" y="118" width="220" height="145" rx="72" fill="#f1eaf8" stroke="#53257f" stroke-width="4"/>
+<text x="500" y="170" text-anchor="middle" fill="#53257f" font-size="22" font-weight="900">PYRUVATE</text><text x="500" y="198" text-anchor="middle" fill="#667085" font-size="14">from glycolysis</text><text x="500" y="225" text-anchor="middle" fill="#667085" font-size="14">3-carbon product</text>
+<rect x="58" y="92" width="270" height="210" rx="22" fill="#fff0f5" stroke="#efc9d6" stroke-width="2"/>
+<text x="193" y="128" text-anchor="middle" fill="#9b3459" font-size="20" font-weight="900">PATH A • LACTATE</text><text x="193" y="161" text-anchor="middle" fill="#596579" font-size="14">Pyruvate + NADH + H⁺</text><text x="193" y="190" text-anchor="middle" fill="#53257f" font-size="17" font-weight="900">⇌ Lactate + NAD⁺</text><text x="193" y="230" text-anchor="middle" fill="#596579" font-size="13">Rapid NAD⁺ regeneration</text><text x="193" y="251" text-anchor="middle" fill="#596579" font-size="13">helps glycolysis continue</text><text x="193" y="278" text-anchor="middle" fill="#9b3459" font-size="12" font-weight="800">Cytosol</text>
+<rect x="672" y="92" width="270" height="210" rx="22" fill="#eef6ff" stroke="#cfe0f2" stroke-width="2"/>
+<text x="807" y="128" text-anchor="middle" fill="#1e67a0" font-size="20" font-weight="900">PATH B • ACETYL-CoA</text><text x="807" y="161" text-anchor="middle" fill="#596579" font-size="14">Pyruvate</text><text x="807" y="191" text-anchor="middle" fill="#53257f" font-size="17" font-weight="900">→ Acetyl-CoA</text><text x="807" y="230" text-anchor="middle" fill="#596579" font-size="13">Pyruvate dehydrogenase complex</text><text x="807" y="251" text-anchor="middle" fill="#596579" font-size="13">Mitochondrial matrix → TCA</text><text x="807" y="278" text-anchor="middle" fill="#1e67a0" font-size="12" font-weight="800">Oxidative metabolism</text>
+<path d="M390 180 C350 175 328 174 298 174" stroke="#53257f" stroke-width="5" marker-end="url(#a1)" fill="none"/>
+<path d="M610 180 C650 175 672 174 704 174" stroke="#53257f" stroke-width="5" marker-end="url(#a1)" fill="none"/>
+<text x="500" y="345" text-anchor="middle" fill="#53257f" font-size="17" font-weight="900">ONE PRODUCT • TWO MAJOR DIRECTIONS</text>
+</svg>
+</div>
+<div class="check"><div class="qlabel">STOP & THINK</div><div class="q">Which statement best describes pyruvate after glycolysis?</div>
+<div class="options"><button class="opt" onclick="check(this,true,'q1')">It can be reduced to lactate or converted to acetyl-CoA depending on metabolic conditions.</button><button class="opt" onclick="check(this,false,'q1')">It must always become lactate.</button><button class="opt" onclick="check(this,false,'q1')">It must always become ATP directly.</button><button class="opt" onclick="check(this,false,'q1')">It always leaves the muscle immediately.</button></div><div id="q1" class="feedback"></div></div>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 2 • LACTATE PATHWAY</div><h2>Why form lactate?</h2><p class="lead">The important question is not simply “does lactate appear?” — ask <b>what happens to NAD⁺?</b></p></div><div class="num">02</div></div>
+
+<div class="anim">
+<div class="anim-head"><b>INTERACTIVE • NAD⁺ REGENERATION</b><span id="lacStatus">Step 1 of 3</span></div>
+<div class="live-grid">
+<div class="live-card">
+<div class="molecule" id="lacMolecule"><div class="ball p pulse">PYR</div><div style="font-size:30px;color:#53257f;font-weight:900">→</div><div class="ball r">LAC</div></div>
+<div class="controls"><button class="ctrl primary" onclick="lacStep(0)">1 • Pyruvate</button><button class="ctrl" onclick="lacStep(1)">2 • LDH reaction</button><button class="ctrl" onclick="lacStep(2)">3 • NAD⁺ restored</button></div>
+</div>
+<div class="live-card"><div class="qlabel">WHAT TO NOTICE</div><div class="status"><b id="lacTitle">Pyruvate arrives from glycolysis.</b><br><span id="lacText">Pyruvate is available in the cytosol after glycolysis.</span></div><div class="status"><b>Reaction</b><br>Pyruvate + NADH + H⁺ ⇌ Lactate + NAD⁺</div></div>
+</div>
+</div>
+
+<div class="visual">
+<svg viewBox="0 0 1000 320" role="img" aria-label="Lactate dehydrogenase regenerates NAD plus">
+<defs><marker id="a2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6Z" fill="#53257f"/></marker></defs>
+<rect x="18" y="18" width="964" height="284" rx="24" fill="#fffafc"/>
+<rect x="65" y="86" width="230" height="130" rx="20" fill="#fff0f5" stroke="#efc9d6"/><text x="180" y="122" text-anchor="middle" fill="#9b3459" font-size="20" font-weight="900">PYRUVATE</text><text x="180" y="151" text-anchor="middle" fill="#667085" font-size="13">from glycolysis</text><text x="180" y="182" text-anchor="middle" fill="#53257f" font-size="13">3-carbon molecule</text>
+<rect x="382" y="86" width="236" height="130" rx="20" fill="#f6effa" stroke="#dfd4e9"/><text x="500" y="122" text-anchor="middle" fill="#53257f" font-size="18" font-weight="900">LACTATE</text><text x="500" y="151" text-anchor="middle" fill="#667085" font-size="13">DEHYDROGENASE</text><text x="500" y="182" text-anchor="middle" fill="#596579" font-size="13">enzyme mediating the reaction</text>
+<rect x="705" y="86" width="230" height="130" rx="20" fill="#eef6ff" stroke="#cfe0f2"/><text x="820" y="122" text-anchor="middle" fill="#1e67a0" font-size="20" font-weight="900">LACTATE</text><text x="820" y="151" text-anchor="middle" fill="#596579" font-size="13">NAD⁺ regenerated</text><text x="820" y="182" text-anchor="middle" fill="#596579" font-size="13">glycolysis can continue</text>
+<path d="M295 151 H378" stroke="#53257f" stroke-width="5" marker-end="url(#a2)"/><path d="M618 151 H700" stroke="#53257f" stroke-width="5" marker-end="url(#a2)"/>
+<text x="500" y="257" text-anchor="middle" fill="#53257f" font-size="17" font-weight="900">Key idea: lactate formation is linked to NAD⁺ regeneration.</text>
+</svg>
+</div>
+
+<div class="check"><div class="qlabel">CHECK THE MECHANISM</div><div class="q">Why can lactate formation allow glycolysis to continue?</div>
+<div class="options"><button class="opt" onclick="check(this,true,'q2')">It regenerates NAD⁺ needed for continued glycolysis.</button><button class="opt" onclick="check(this,false,'q2')">It creates oxygen inside the cytosol.</button><button class="opt" onclick="check(this,false,'q2')">It turns lactate directly into ATP.</button><button class="opt" onclick="check(this,false,'q2')">It stops glucose breakdown.</button></div><div id="q2" class="feedback"></div></div>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 3 • ACETYL-CoA PATHWAY</div><h2>Pyruvate can also enter mitochondrial oxidative metabolism.</h2><p class="lead">Pyruvate dehydrogenase converts pyruvate to acetyl-CoA in the mitochondrial matrix. Acetyl-CoA then enters the TCA cycle.</p></div><div class="num">03</div></div>
+<div class="visual">
+<svg viewBox="0 0 1000 350" role="img" aria-label="Pyruvate to acetyl-CoA to TCA">
+<defs><marker id="a3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6Z" fill="#53257f"/></marker></defs>
+<rect x="18" y="18" width="964" height="314" rx="24" fill="#f6f9fc"/>
+<rect x="48" y="92" width="210" height="150" rx="20" fill="#fff0f5" stroke="#efc9d6"/><text x="153" y="128" text-anchor="middle" fill="#9b3459" font-size="20" font-weight="900">PYRUVATE</text><text x="153" y="160" text-anchor="middle" fill="#667085" font-size="14">3-carbon product</text><text x="153" y="198" text-anchor="middle" fill="#596579" font-size="13">from glycolysis</text>
+<path d="M258 167 H345" stroke="#53257f" stroke-width="5" marker-end="url(#a3)"/>
+<rect x="350" y="76" width="300" height="180" rx="22" fill="#eef6ff" stroke="#cfe0f2"/><text x="500" y="112" text-anchor="middle" fill="#1e67a0" font-size="19" font-weight="900">MITOCHONDRIAL MATRIX</text><text x="500" y="146" text-anchor="middle" fill="#53257f" font-size="18" font-weight="900">PYRUVATE DEHYDROGENASE</text><text x="500" y="178" text-anchor="middle" fill="#596579" font-size="14">Pyruvate → acetyl-CoA</text><text x="500" y="209" text-anchor="middle" fill="#596579" font-size="13">link reaction before TCA</text>
+<path d="M650 167 H738" stroke="#53257f" stroke-width="5" marker-end="url(#a3)"/>
+<circle cx="837" cy="165" r="92" fill="#f2eef8" stroke="#cfc2df" stroke-width="3"/><text x="837" y="157" text-anchor="middle" fill="#53257f" font-size="18" font-weight="900">TCA</text><text x="837" y="181" text-anchor="middle" fill="#596579" font-size="13">acetyl-CoA enters</text><text x="500" y="302" text-anchor="middle" fill="#53257f" font-size="16" font-weight="900">Acetyl-CoA → TCA cycle → NADH + FADH₂ → ETC</text>
+</svg>
+</div>
+
+<div class="grid g3" style="margin-top:15px"><div class="box"><h3>Where?</h3><p>Mitochondrial matrix.</p></div><div class="box"><h3>Enzyme complex</h3><p>Pyruvate dehydrogenase complex.</p></div><div class="box"><h3>Why?</h3><p>Links glycolysis to mitochondrial oxidative metabolism.</p></div></div>
+
+<div class="check"><div class="qlabel">CHECK THE LINK</div><div class="q">What is the key fate of pyruvate when it enters mitochondrial oxidative metabolism?</div>
+<div class="options"><button class="opt" onclick="check(this,true,'q3')">It is converted to acetyl-CoA and enters the TCA cycle.</button><button class="opt" onclick="check(this,false,'q3')">It becomes glucose directly inside the mitochondrion.</button><button class="opt" onclick="check(this,false,'q3')">It becomes PCr.</button><button class="opt" onclick="check(this,false,'q3')">It bypasses the mitochondrion and enters the nucleus.</button></div><div id="q3" class="feedback"></div></div>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 4 • CORI CYCLE</div><h2>Lactate can travel beyond the muscle.</h2><p class="lead">Lactate can move through the blood and be handled by other tissues. In the liver, lactate can contribute to glucose production.</p></div><div class="num">04</div></div>
+
+<div class="visual">
+<svg viewBox="0 0 1000 400" role="img" aria-label="Cori cycle lactate muscle blood liver glucose">
+<defs><marker id="a4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6Z" fill="#53257f"/></marker><marker id="a4g" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6Z" fill="#ffb703"/></marker></defs>
+<rect x="18" y="18" width="964" height="364" rx="24" fill="#fbf9fd"/>
+<rect x="65" y="98" width="230" height="165" rx="22" fill="#53257f"/><text x="180" y="138" text-anchor="middle" fill="#fff" font-size="20" font-weight="900">MUSCLE</text><text x="180" y="170" text-anchor="middle" fill="#ffcf55" font-size="14">Pyruvate → lactate</text><text x="180" y="198" text-anchor="middle" fill="#fff" font-size="13">lactate enters blood</text><text x="180" y="230" text-anchor="middle" fill="#fff" font-size="12">during high glycolytic flux</text>
+<rect x="385" y="98" width="230" height="165" rx="22" fill="#eef6ff" stroke="#cfe0f2"/><text x="500" y="138" text-anchor="middle" fill="#1e67a0" font-size="20" font-weight="900">BLOOD</text><text x="500" y="171" text-anchor="middle" fill="#596579" font-size="13">Lactate transport</text><text x="500" y="198" text-anchor="middle" fill="#596579" font-size="13">between tissues</text>
+<rect x="705" y="98" width="230" height="165" rx="22" fill="#fff8df" stroke="#f0dfaa"/><text x="820" y="138" text-anchor="middle" fill="#8b6500" font-size="20" font-weight="900">LIVER</text><text x="820" y="170" text-anchor="middle" fill="#596579" font-size="13">Lactate → glucose</text><text x="820" y="198" text-anchor="middle" fill="#596579" font-size="13">gluconeogenesis</text>
+<path d="M295 150 H375" stroke="#53257f" stroke-width="5" marker-end="url(#a4)"/><path d="M615 180 H695" stroke="#53257f" stroke-width="5" marker-end="url(#a4)"/><path d="M705 225 C590 326 405 326 295 225" fill="none" stroke="#ffb703" stroke-width="5" marker-end="url(#a4g)"/>
+<text x="500" y="339" text-anchor="middle" fill="#53257f" font-size="16" font-weight="900">Liver-produced glucose can return to the circulation and support the wider metabolism story.</text>
+</svg>
+</div>
+
+<div class="check"><div class="qlabel">THINK BEYOND THE MUSCLE</div><div class="q">What does the Cori-cycle concept remind you?</div>
+<div class="options"><button class="opt" onclick="check(this,true,'q4')">Lactate is a transferable metabolic intermediate, not simply a waste product.</button><button class="opt" onclick="check(this,false,'q4')">Lactate can never leave muscle.</button><button class="opt" onclick="check(this,false,'q4')">The liver cannot handle lactate.</button><button class="opt" onclick="check(this,false,'q4')">Lactate is stored as ATP.</button></div><div id="q4" class="feedback"></div></div>
+</section>
+
+<section class="section">
+<div class="head"><div><div class="eyebrow">PART 5 • APPLY IT</div><h2>Now explain a hard 400-m effort.</h2><p class="lead">Use the same reasoning chain: <b>ATP demand → glycolysis → pyruvate → lactate or acetyl-CoA → downstream metabolism</b>.</p></div><div class="num">05</div></div>
+
+<div class="slider">
+<div class="qlabel">INTERACTIVE • CHANGE THE EXERCISE CONTEXT</div>
+<div class="q">How intense is the effort?</div>
+<input id="intensity" type="range" min="1" max="10" value="8" oninput="updateIntensity()">
+<div class="readouts"><div class="read"><b id="iValue">8 / 10</b><span>relative intensity</span></div><div class="read"><b id="iPath">High glycolytic flux</b><span>metabolic emphasis</span></div><div class="read"><b id="iFate">Lactate formation can rise</b><span>pyruvate handling</span></div></div>
+</div>
+
+<div class="case">
+<h2>Think about the athlete.</h2>
+<p>A runner performs a high-intensity 400-m effort. ATP demand is high, glycolysis contributes rapidly, and pyruvate is produced.</p>
+<div class="case-grid"><div class="casebox"><b>QUESTION 1</b><span>Why can lactate formation increase?</span></div><div class="casebox"><b>QUESTION 2</b><span>What happens to NAD⁺?</span></div><div class="casebox"><b>QUESTION 3</b><span>What can happen to lactate after it enters blood?</span></div></div>
+</div>
+
+<div class="athlete-answer-grid">
+  <div class="athlete-qcard">
+    <div class="athlete-qnum">01</div>
+    <div class="athlete-qcontent">
+      <div class="athlete-q">Why can lactate formation increase?</div>
+      <div class="athlete-a"><b>Answer:</b> ATP demand is very high and glycolytic flux increases, producing pyruvate rapidly. When lactate production exceeds immediate utilisation/clearance, more pyruvate is converted to lactate.</div>
+    </div>
+  </div>
+
+  <div class="athlete-qcard">
+    <div class="athlete-qnum">02</div>
+    <div class="athlete-qcontent">
+      <div class="athlete-q">What happens to NAD⁺?</div>
+      <div class="athlete-a"><b>Answer:</b> NAD⁺ is regenerated. Pyruvate is reduced to lactate using NADH, regenerating NAD⁺ so glycolysis can continue producing ATP.</div>
+    </div>
+  </div>
+
+  <div class="athlete-qcard">
+    <div class="athlete-qnum">03</div>
+    <div class="athlete-qcontent">
+      <div class="athlete-q">What can happen to lactate after it enters blood?</div>
+      <div class="athlete-a"><b>Answer:</b> Lactate can be transported to other tissues and oxidised as a fuel, particularly by the heart and oxidative muscle fibres. It can also be taken up by the liver and contribute to glucose production through gluconeogenesis.</div>
+    </div>
+  </div>
+</div>
+
+<div class="reasoning-chain">
+  <b>THE REASONING CHAIN</b>
+  <span>High ATP demand → ↑ glycolysis → ↑ pyruvate → lactate formation → NAD⁺ regenerated → glycolysis continues → lactate transported / used by other tissues</span>
+</div>
+
+<div class="check athlete-typed">
+  <div class="qlabel">NOW EXPLAIN IT YOURSELF</div>
+  <div class="q">Write one short explanation linking the three answers above.</div>
+  <textarea id="applyAnswer" placeholder="Type your explanation here..."></textarea>
+  <div class="controls"><button class="ctrl primary" onclick="showModel()">Show model answer</button></div>
+  <div class="model" id="model"><b>Model answer:</b> During a high-intensity 400-m effort, ATP demand and glycolytic flux rise, producing pyruvate rapidly. Some pyruvate is reduced to lactate, which regenerates NAD⁺ and allows glycolysis to continue. Lactate can then enter the blood, be oxidised by other tissues or contribute to glucose production in the liver.</div>
+</div>
+</section>
+
+<section class="section">
+<div class="eyebrow">KEY TAKE-HOME MESSAGES</div>
+<div class="takehome">
+<div class="take"><b>01 • Pyruvate is a branch point</b><p>After glycolysis, pyruvate can move toward lactate formation or acetyl-CoA depending on metabolic conditions.</p></div>
+<div class="take"><b>02 • NAD⁺ matters</b><p>Lactate formation regenerates NAD⁺ and supports continued glycolysis.</p></div>
+<div class="take"><b>03 • Mitochondrial route</b><p>Pyruvate → acetyl-CoA in the mitochondrial matrix → TCA cycle.</p></div>
+<div class="take"><b>04 • Lactate can travel</b><p>Lactate can be transported and oxidised or contribute to glucose production.</p></div>
+</div>
+</section>
+
+<section class="section">
+<div class="eyebrow">CHECK YOUR UNDERSTANDING</div>
+<div class="check" style="background:#fff"><div class="q">1. Why is pyruvate called a metabolic branch point?</div><div class="options"><button class="opt" onclick="check(this,true,'f1')">A. It can be directed toward lactate or acetyl-CoA.</button><button class="opt" onclick="check(this,false,'f1')">B. It is itself ATP.</button><button class="opt" onclick="check(this,false,'f1')">C. It only exists in the liver.</button><button class="opt" onclick="check(this,false,'f1')">D. It always becomes lactate.</button></div><div id="f1" class="feedback"></div></div>
+<div class="check" style="background:#fff"><div class="q">2. What is regenerated during pyruvate → lactate conversion?</div><div class="options"><button class="opt" onclick="check(this,true,'f2')">A. NAD⁺</button><button class="opt" onclick="check(this,false,'f2')">B. ATP synthase</button><button class="opt" onclick="check(this,false,'f2')">C. Oxygen</button><button class="opt" onclick="check(this,false,'f2')">D. PCr</button></div><div id="f2" class="feedback"></div></div>
+<div class="check" style="background:#fff"><div class="q">3. In one sentence, explain why lactate should not be described simply as “waste.”</div><textarea id="finalAnswer" placeholder="Type your answer here..."></textarea><div class="controls"><button class="ctrl primary" onclick="showFinalModel()">Show model answer</button></div><div class="model" id="finalModel"><b>Model answer:</b> Lactate is a metabolically useful intermediate: its formation is linked to NAD⁺ regeneration, and lactate can be transported and oxidised or contribute to glucose production.</div></div>
+</section>
+
+<div class="next"><b>NEXT → SECTION 10: KREBS / TCA CYCLE</b><br>Now follow acetyl-CoA into the mitochondrial matrix and see why the TCA cycle is essential for producing NADH and FADH₂ for the ETC.</div>
+</main>
+
+<script>
+function check(btn,correct,id){
+ const g=btn.parentElement;g.querySelectorAll('.opt').forEach(b=>b.classList.remove('correct','wrong'));
+ btn.classList.add(correct?'correct':'wrong');
+ const f=document.getElementById(id);f.className='feedback show';
+ f.innerHTML=correct?'<b>Correct.</b> Carry this mechanism into the next pathway.':'<b>Not quite.</b> Re-read the pathway and focus on the role of pyruvate, NAD⁺ and acetyl-CoA.';
+}
+const lac=[
+ ['Pyruvate arrives from glycolysis.','Pyruvate is available in the cytosol after glycolysis.'],
+ ['LDH mediates the reaction.','Lactate dehydrogenase mediates the reversible pyruvate ⇌ lactate reaction.'],
+ ['NAD⁺ is regenerated.','Regenerating NAD⁺ allows glycolysis to continue when pyruvate is reduced to lactate.']
+];
+function lacStep(i){
+ document.getElementById('lacStatus').textContent=`Step ${i+1} of 3`;
+ document.getElementById('lacTitle').textContent=lac[i][0];
+ document.getElementById('lacText').textContent=lac[i][1];
+ document.querySelectorAll('.molecule .ball').forEach(x=>x.classList.remove('pulse'));
+ if(i===0)document.querySelector('.molecule .p').classList.add('pulse');
+ if(i===1)document.querySelector('.molecule .r').classList.add('pulse');
+ if(i===2){document.querySelector('.molecule .r').classList.add('pulse');document.getElementById('lacTitle').textContent='NAD⁺ restored — glycolysis can continue.'}
+}
+function updateIntensity(){
+ const v=+document.getElementById('intensity').value;
+ document.getElementById('iValue').textContent=v+' / 10';
+ document.getElementById('iPath').textContent=v<=3?'Lower glycolytic emphasis':v<=6?'Mixed pathway contribution':v<=8?'High glycolytic flux':'Very high glycolytic demand';
+ document.getElementById('iFate').textContent=v<=4?'More pyruvate can enter oxidative pathways':'Lactate formation can become increasingly important';
+}
+function showModel(){document.getElementById('model').style.display='block';localStorage.setItem('tce504_s9_apply',document.getElementById('applyAnswer').value)}
+function showFinalModel(){document.getElementById('finalModel').style.display='block';localStorage.setItem('tce504_s9_final',document.getElementById('finalAnswer').value)}
+const saved=localStorage.getItem('tce504_s9_apply');if(saved)document.getElementById('applyAnswer').value=saved;
+const saved2=localStorage.getItem('tce504_s9_final');if(saved2)document.getElementById('finalAnswer').value=saved2;
+lacStep(0);updateIntensity();
+</script>
+</body>
+</html>
