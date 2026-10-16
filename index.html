@@ -141,6 +141,14 @@ window.addEventListener('message',e=>{
       else if(Math.abs(target-oldHeight)>16) frame.style.height=target+'px';
     }
   }
+  if(d.type==='tce-pretest-completed' && current===1){
+    const payload=d.data||{};
+    if(payload.type==='pretest'){
+      try{localStorage.setItem('tce504_pretest_pending',JSON.stringify(payload))}catch(err){}
+      sendToSheet(payload).then(()=>showNotice('Pre-Test sent to Google Apps Script. Check Pre_Test sheet and Apps Script Executions to verify.',true))
+      .catch(err=>{console.error('Pre-Test send failed',err);showNotice('Pre-Test not sent. Please check internet connection and Apps Script deployment.',false)});
+    }
+  }
   if(d.type==='tce-section-data' && Number(d.section)===current) latestFrameData=d.data;
 });
 renderSection();
