@@ -42,7 +42,7 @@ iframe{display:block;width:100%;border:0;min-height:800px;background:#fff}
 <header class="top">
   <div class="top-inner">
     <div class="brand">TCE504 · EXERCISE METABOLISM</div>
-    <div class="sub">Complete 27-section interactive learning journey · PKTAAB · USM · </div>
+    <div class="sub">Complete 27-section interactive learning journey · PKTAAB · USM · Single-file GitHub Pages version</div>
     <div class="toolbar">
       <div class="mode"><span>MODE</span><button id="studentBtn" class="active" onclick="setMode('student')">Student</button><button id="lecturerBtn" onclick="setMode('lecturer')">Lecturer</button></div>
       <div class="mode"><span>SECTION</span><button class="navbtn" onclick="go(-1)">← Previous</button><button class="navbtn" onclick="go(1)">Next →</button></div>
@@ -55,7 +55,7 @@ iframe{display:block;width:100%;border:0;min-height:800px;background:#fff}
   <div class="cardbar">
     <div class="navgroup"><button class="navbtn" onclick="go(-1)">← Previous</button><button class="navbtn" onclick="go(1)">Next →</button></div>
     <div class="section-title" id="sectionTitle">01 · Before We Start</div>
-    <button class="savebtn" id="saveBtn" onclick="saveCurrentSection()">Save Section Progress</button><button class="savebtn" id="retryPreBtn" onclick="retryPreTest()" style="display:none">Resend Pre-Test</button>
+    <button class="savebtn" id="saveBtn" onclick="saveCurrentSection()">Save Section Progress</button>
   </div>
   <div id="notice" class="notice"></div>
   <div class="viewer"><iframe id="sectionFrame" title="TCE504 section"></iframe></div>
@@ -67,8 +67,6 @@ const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzawMrdcdA55T
 const SECTION_NAMES = ["Before We Start", "Learning Objectives", "See the Problem — The Athlete Question", "Food → Substrates", "Energy & ATP", "Digestion → Cellular Fuel", "ATP-PCr / Phosphagen", "Glycolysis", "Pyruvate → Lactate or Acetyl-CoA", "Krebs / TCA Cycle", "ETC → Oxidative Phosphorylation", "Fat & Protein Metabolism", "All Energy Systems Together", "Rest → Marathon", "Athlete Journey", "Acute Response", "Immediate Recovery", "Chronic Adaptation", "Monitoring + Calculators", "Metabolism Detective Lab", "Case-Based Learning", "Data Interpretation", "Practical Application", "Complete Physiology Map", "Post-Test", "Reflection", "Patient Situation — Clinical Application"];
 
 let current=1, mode='student', latestFrameData=null;
-function updateRetryButton(){let b=document.getElementById('retryPreBtn');b.style.display=current===1&&localStorage.getItem('tce504_pretest_pending')?'inline-block':'none';}
-async function retryPreTest(){const raw=localStorage.getItem('tce504_pretest_pending');if(!raw){showNotice('No completed Pre-Test stored in this browser.',false);return;}const b=document.getElementById('retryPreBtn');b.disabled=true;b.textContent='Sending…';try{const p=JSON.parse(raw);p.type='pretest';console.log('TCE504 PRETEST SEND', {type:p.type,score:p.score,percentage:p.percentage,matricPresent:!!p.matric});await sendToSheet(p);showNotice('Pre-Test request sent. Verify Pre_Test tab and Apps Script Executions (no-cors cannot confirm save).');}catch(e){console.error('TCE504 Pre-Test send error',e);showNotice('Pre-Test request failed: '+e.message,false);}finally{b.disabled=false;b.textContent='Resend Pre-Test';}}
 
 
 function renderSection(){
@@ -82,7 +80,6 @@ function renderSection(){
   document.getElementById('sectionTitle').textContent=String(current).padStart(2,'0')+' · '+SECTION_NAMES[current-1];
   document.getElementById('progressText').textContent='Section '+current+' / 27';
   document.getElementById('progressFill').style.width=(current/27*100)+'%';
-  updateRetryButton();
   /* Navigation does not forcibly scroll the page. */
 }
 function go(delta){ const n=current+delta; if(n<1||n>27)return; current=n; latestFrameData=null; renderSection(); }
@@ -148,8 +145,8 @@ window.addEventListener('message',e=>{
     const payload=d.data||{};
     if(payload.type==='pretest'){
       try{localStorage.setItem('tce504_pretest_pending',JSON.stringify(payload))}catch(err){}
-      sendToSheet(payload).then(()=>showNotice('Pre-Test sent to Google Apps Script. Check Pre_Test sheet and Apps Script Executions to verify.',true))
-      .catch(err=>{console.error('Pre-Test send failed',err);showNotice('Pre-Test not sent. Please check internet connection and Apps Script deployment.',false)});
+      // Section 1 submits directly; do not send the same record twice.
+      showNotice('Pre-Test finished. Check Pre_Test sheet to confirm the record.',true);
     }
   }
   if(d.type==='tce-section-data' && Number(d.section)===current) latestFrameData=d.data;
