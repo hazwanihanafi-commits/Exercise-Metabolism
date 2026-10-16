@@ -86,31 +86,47 @@ function go(delta){ const n=current+delta; if(n<1||n>27)return; current=n; lates
 function setMode(m){mode=m; document.getElementById('studentBtn').classList.toggle('active',m==='student'); document.getElementById('lecturerBtn').classList.toggle('active',m==='lecturer'); document.getElementById('modeText').textContent=m==='student'?'Student Mode':'Lecturer Mode'; try{document.getElementById('sectionFrame').contentWindow.postMessage({type:'tce-mode',mode:m},'*')}catch(e){}}
 function showNotice(msg,ok=true){const n=document.getElementById('notice');n.textContent=msg;n.className='notice show '+(ok?'ok':'warn');setTimeout(()=>n.className='notice',5000)}
 function identity(){
-  const d={};
+  const result={name:'',matric:'',email:''};
+  function merge(obj){if(!obj||typeof obj!=='object')return;
+    result.name=result.name||String(obj.name||obj.studentName||'').trim();
+    result.matric=result.matric||String(obj.matric||obj.studentMatric||obj.matricNo||'').trim();
+    result.email=result.email||String(obj.email||obj.studentEmail||'').trim();
+  }
   try{
+    const saved=localStorage.getItem('tceStudent')||localStorage.getItem('student');
+    if(saved){try{merge(JSON.parse(saved))}catch(e){}}
+    merge({name:localStorage.getItem('studentName'),matric:localStorage.getItem('studentMatric'),email:localStorage.getItem('studentEmail')});
     const doc=document.getElementById('sectionFrame').contentDocument;
-    ['name','matric','email','postName','postMatric','postEmail'].forEach(id=>{const e=doc.getElementById(id);if(e&&e.value)d[id]=e.value.trim()});
-    const ls=doc.defaultView.localStorage;
-    ['student','tceStudent','studentName','studentMatric','studentEmail'].forEach(k=>{try{if(ls.getItem(k))d[k]=ls.getItem(k)}catch(e){}})
-  }catch(e){}
-  return d;
+    if(doc){
+      const value=id=>{const el=doc.getElementById(id);return el?el.value.trim():''};
+      merge({name:value('name')||value('postName'),matric:value('matric')||value('postMatric'),email:value('email')||value('postEmail')});
+      const inner=doc.defaultView.localStorage;
+      if(inner){for(const k of ['tceStudent','student']){try{merge(JSON.parse(inner.getItem(k)||'null'))}catch(e){}}
+        merge({name:inner.getItem('studentName'),matric:inner.getItem('studentMatric'),email:inner.getItem('studentEmail')});}
+    }
+  }catch(e){console.warn('Could not read all student identity fields',e)}
+  return result;
 }
 async function sendToSheet(payload){
-  try{await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});return true}catch(e){return false}
+  // Google Apps Script cross-origin responses are opaque in no-cors mode.
+  // A resolved request only means the browser sent it, not that Sheets saved it.
+  await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
 }
 async function saveCurrentSection(){
   const btn=document.getElementById('saveBtn');btn.disabled=true;btn.classList.add('saving');btn.textContent='Saving…';
   try{
     latestFrameData=null;
     document.getElementById('sectionFrame').contentWindow.postMessage({type:'tce-save'},'*');
-    await new Promise(r=>setTimeout(r,120));
+    await new Promise(r=>setTimeout(r,350));
     const id=identity();
-    const payload={type:'section_response',course:'TCE504',topic:'Exercise Metabolism',section:current,sectionTitle:SECTION_NAMES[current-1],mode,...id,frameData:latestFrameData||{},timestamp:new Date().toISOString()};
-    const ok=await sendToSheet(payload);
+    const data=latestFrameData||{};
+    const payload={type:'section_response',course:'TCE504',topic:'Exercise Metabolism',section:current,sectionTitle:SECTION_NAMES[current-1],mode,...id,responses:JSON.stringify(data),timestamp:new Date().toISOString()};
     try{localStorage.setItem('tce504_section_'+current,JSON.stringify(payload))}catch(e){}
-    showNotice(ok?'Section '+current+' progress sent to Google Sheet ✓':'Section '+current+' saved locally. Google Sheet response could not be confirmed.',ok);
-  }catch(e){showNotice('Saved locally, but an error occurred while preparing the Sheet record.',false)}
-  btn.disabled=false;btn.classList.remove('saving');btn.textContent='Save Section Progress';
+    await sendToSheet(payload);
+    showNotice('Section '+current+' sent. Check Section_Response in Google Sheets to confirm it was recorded.',true);
+    if(!id.matric)showNotice('Sent without matric number. Complete your student details first so records can be matched.',false);
+  }catch(e){console.error('Google Sheets submission failed',e);showNotice('Could not send to Google Sheets. Section saved in this browser; check connection and Apps Script deployment.',false)}
+  finally{btn.disabled=false;btn.classList.remove('saving');btn.textContent='Save Section Progress';}
 }
 window.addEventListener('message',e=>{
   const d=e.data||{};
