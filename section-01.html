@@ -189,6 +189,7 @@ h1{font-size:clamp(42px,6vw,76px);line-height:.96;margin:13px 0 20px;letter-spac
 
 <script>
 let current=1, q=0, score=0, answered=false;
+let preAnswers=[];
 const questions=[
  {q:"You're 10 seconds into an all-out sprint. Which system can regenerate ATP most rapidly at the start?",a:["ATP-PCr","Fat oxidation","Protein metabolism"],c:0,e:"The ATP-PCr system provides very rapid ATP regeneration for the earliest high-intensity effort."},
  {q:"After digestion, which nutrient can enter glycolysis directly after being converted to glucose?",a:["Carbohydrate","Fatty acid","Protein only"],c:0,e:"Glucose from carbohydrate can enter glycolysis in the cytosol."},
@@ -214,7 +215,7 @@ function startQuiz(){
  const email=document.getElementById('email').value.trim();
  if(!name||!matric||!email){alert("Please complete your name, matric number and USM email.");return}
  localStorage.setItem("tceStudent",JSON.stringify({name,matric,email}));
- q=0;score=0;loadQ();go(3);
+ q=0;score=0;preAnswers=[];loadQ();go(3);
 }
 function loadQ(){
  answered=false;
@@ -232,6 +233,7 @@ function loadQ(){
 function answer(i,btn){
  if(answered)return; answered=true;
  const qs=questions[q];
+ preAnswers[q]={question:qs.q,selected:qs.a[i],correctAnswer:qs.a[qs.c],correct:i===qs.c};
  document.querySelectorAll('.answer').forEach((b,j)=>{if(j===qs.c)b.classList.add('correct')});
  if(i===qs.c){score++;btn.classList.add('correct')}
  else btn.classList.add('wrong');
@@ -247,6 +249,20 @@ function nextQ(){
   document.getElementById('finalScore').textContent=`${score} / ${questions.length}`;
   document.getElementById('resultText').textContent=score>=4?"You already have a strong starting point. Now let's build the physiology behind it.":"Perfect. These are your starting predictions. Now we'll build the physiology step by step.";
   go(4);
+  const student=JSON.parse(localStorage.getItem('tceStudent')||'{}');
+  const payload={
+    type:'pretest',name:student.name||'',matric:student.matric||'',email:student.email||'',
+    score:score,percentage:Math.round(score/questions.length*100),
+    missed:preAnswers.filter(a=>!a.correct).map(a=>a.question).join(' | '),
+    answers:preAnswers,course:'TCE504',topic:'Exercise Metabolism',timestamp:new Date().toISOString()
+  };
+  try{localStorage.setItem('tce504_pretest_pending',JSON.stringify(payload))}catch(err){}
+  parent.postMessage({type:'tce-pretest-completed',data:payload},'*');
+  // Send directly from this frame; the parent does not send a duplicate.
+  fetch('https://script.google.com/macros/s/AKfycbzawMrdcdA55TrrjW7PlIApkwDrgxirOVUJM4mZ4EpKnOw0F7r3yEN4ml5ht3viDm9N/exec',{
+    method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)
+  }).then(()=>console.log('Pre-Test request dispatched; verify in Pre_Test sheet'))
+    .catch(err=>console.error('Pre-Test network failure',err));
  }
 }
 function finish(){go(1)}
