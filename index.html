@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>TCE504 • Exercise Metabolism • Complete 27 Sections</title>
+<style>
+:root{--purple:#53257f;--purple2:#3f1d61;--gold:#ffb703;--ink:#1f2340;--muted:#667085;--bg:#f5f6fa;--card:#fff;--line:#e4e6ee;}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+.top{position:sticky;top:0;z-index:1000;background:linear-gradient(135deg,var(--purple2),var(--purple));color:#fff;box-shadow:0 3px 14px rgba(0,0,0,.15)}
+.top-inner{max-width:1500px;margin:auto;padding:16px 22px 12px}
+.brand{font-size:27px;font-weight:800;letter-spacing:.2px}
+.sub{margin-top:3px;opacity:.9;font-size:14px}
+.toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:13px}
+.mode{display:flex;gap:7px;align-items:center;font-size:13px;font-weight:700}
+.mode button,.navbtn,.savebtn{border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:9px 16px;background:rgba(255,255,255,.12);color:#fff;font-weight:800;cursor:pointer}
+.mode button.active{background:var(--gold);color:#201500;border-color:var(--gold)}
+.progress-wrap{background:#fff;border-bottom:1px solid var(--line);padding:10px 18px;position:sticky;top:106px;z-index:900}
+.progress-row{max-width:1500px;margin:auto;display:flex;align-items:center;gap:12px;font-size:12px;font-weight:700}
+.progress{height:7px;background:#ececf2;border-radius:999px;overflow:hidden;flex:1}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--gold));transition:width .25s}
+.shell{max-width:1500px;margin:auto;padding:12px 14px 50px}
+.cardbar{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;display:flex;align-items:center;gap:8px;justify-content:space-between;box-shadow:0 4px 18px rgba(31,35,64,.05);position:sticky;top:145px;z-index:800}
+.navgroup{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.navbtn,.savebtn{color:var(--ink);background:#fff;border:1px solid #d7d9e2;border-radius:10px}
+.navbtn.primary{background:#fff;border-color:#cfd2dc}
+.savebtn{font-weight:800;padding:10px 14px}
+.savebtn.saving{opacity:.65}
+.section-title{font-weight:800;font-size:14px;text-align:center;min-width:240px}
+.viewer{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(31,35,64,.07)}
+iframe{display:block;width:100%;border:0;min-height:800px;background:#fff}
+.notice{display:none;margin:10px 0;padding:11px 13px;border-radius:10px;font-size:13px}
+.notice.show{display:block}
+.notice.ok{background:#ecfdf3;color:#166534;border:1px solid #bbf7d0}
+.notice.warn{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}
+.footer{text-align:center;color:#7b8190;font-size:12px;margin:16px 0}
+@media(max-width:700px){.brand{font-size:21px}.sub{font-size:12px}.progress-wrap{top:91px}.cardbar{top:137px}.section-title{min-width:0;flex:1;font-size:12px}.navbtn,.savebtn{padding:9px 10px;font-size:12px}.shell{padding:8px 5px 30px}.viewer{border-radius:10px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">TCE504 · EXERCISE METABOLISM</div>
+    <div class="sub">Complete 27-section interactive learning journey · PKTAAB · USM · Single-file GitHub Pages version</div>
+    <div class="toolbar">
+      <div class="mode"><span>MODE</span><button id="studentBtn" class="active" onclick="setMode('student')">Student</button><button id="lecturerBtn" onclick="setMode('lecturer')">Lecturer</button></div>
+      <div class="mode"><span>SECTION</span><button class="navbtn" onclick="go(-1)">← Previous</button><button class="navbtn" onclick="go(1)">Next →</button></div>
+    </div>
+  </div>
+</header>
+<div class="progress-wrap"><div class="progress-row"><span id="progressText">Section 1 / 27</span><div class="progress"><div id="progressFill"></div></div><span id="modeText">Student Mode</span></div></div>
+
+<main class="shell">
+  <div class="cardbar">
+    <div class="navgroup"><button class="navbtn" onclick="go(-1)">← Previous</button><button class="navbtn" onclick="go(1)">Next →</button></div>
+    <div class="section-title" id="sectionTitle">01 · Before We Start</div>
+    <button class="savebtn" id="saveBtn" onclick="saveCurrentSection()">Save Section Progress</button>
+  </div>
+  <div id="notice" class="notice"></div>
+  <div class="viewer"><iframe id="sectionFrame" title="TCE504 section"></iframe></div>
+  <div class="footer">TCE504 Applied Exercise Physiology · Exercise Metabolism · USM</div>
+</main>
+
+<script>
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzawMrdcdA55TrrjW7PlIApkwDrgxirOVUJM4mZ4EpKnOw0F7r3yEN4ml5ht3viDm9N/exec";
+const SECTION_NAMES = ["Before We Start", "Learning Objectives", "See the Problem — The Athlete Question", "Food → Substrates", "Energy & ATP", "Digestion → Cellular Fuel", "ATP-PCr / Phosphagen", "Glycolysis", "Pyruvate → Lactate or Acetyl-CoA", "Krebs / TCA Cycle", "ETC → Oxidative Phosphorylation", "Fat & Protein Metabolism", "All Energy Systems Together", "Rest → Marathon", "Athlete Journey", "Acute Response", "Immediate Recovery", "Chronic Adaptation", "Monitoring + Calculators", "Metabolism Detective Lab", "Case-Based Learning", "Data Interpretation", "Practical Application", "Complete Physiology Map", "Post-Test", "Reflection", "Patient Situation — Clinical Application"];
+
+let current=1, mode='student', latestFrameData=null;
+
+
+function renderSection(){
+  const frame=document.getElementById('sectionFrame');
+  frame.onload=()=>{
+    setTimeout(()=>{try{frame.contentWindow.postMessage({type:'tce-mode',mode},'*')}catch(e){}},100);
+  };
+  frame.style.height='800px';
+  frame.removeAttribute('srcdoc');
+  frame.src='section-'+String(current).padStart(2,'0')+'.html';
+  document.getElementById('sectionTitle').textContent=String(current).padStart(2,'0')+' · '+SECTION_NAMES[current-1];
+  document.getElementById('progressText').textContent='Section '+current+' / 27';
+  document.getElementById('progressFill').style.width=(current/27*100)+'%';
+  /* Navigation does not forcibly scroll the page. */
+}
+function go(delta){ const n=current+delta; if(n<1||n>27)return; current=n; latestFrameData=null; renderSection(); }
+function setMode(m){mode=m; document.getElementById('studentBtn').classList.toggle('active',m==='student'); document.getElementById('lecturerBtn').classList.toggle('active',m==='lecturer'); document.getElementById('modeText').textContent=m==='student'?'Student Mode':'Lecturer Mode'; try{document.getElementById('sectionFrame').contentWindow.postMessage({type:'tce-mode',mode:m},'*')}catch(e){}}
+function showNotice(msg,ok=true){const n=document.getElementById('notice');n.textContent=msg;n.className='notice show '+(ok?'ok':'warn');setTimeout(()=>n.className='notice',5000)}
+function identity(){
+  const result={name:'',matric:'',email:''};
+  function merge(obj){if(!obj||typeof obj!=='object')return;
+    result.name=result.name||String(obj.name||obj.studentName||'').trim();
+    result.matric=result.matric||String(obj.matric||obj.studentMatric||obj.matricNo||'').trim();
+    result.email=result.email||String(obj.email||obj.studentEmail||'').trim();
+  }
+  try{
+    const saved=localStorage.getItem('tceStudent')||localStorage.getItem('student');
+    if(saved){try{merge(JSON.parse(saved))}catch(e){}}
+    merge({name:localStorage.getItem('studentName'),matric:localStorage.getItem('studentMatric'),email:localStorage.getItem('studentEmail')});
+    const doc=document.getElementById('sectionFrame').contentDocument;
+    if(doc){
+      const value=id=>{const el=doc.getElementById(id);return el?el.value.trim():''};
+      merge({name:value('name')||value('postName'),matric:value('matric')||value('postMatric'),email:value('email')||value('postEmail')});
+      const inner=doc.defaultView.localStorage;
+      if(inner){for(const k of ['tceStudent','student']){try{merge(JSON.parse(inner.getItem(k)||'null'))}catch(e){}}
+        merge({name:inner.getItem('studentName'),matric:inner.getItem('studentMatric'),email:inner.getItem('studentEmail')});}
+    }
+  }catch(e){console.warn('Could not read all student identity fields',e)}
+  return result;
+}
+async function sendToSheet(payload){
+  // Google Apps Script cross-origin responses are opaque in no-cors mode.
+  // A resolved request only means the browser sent it, not that Sheets saved it.
+  await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+}
+async function saveCurrentSection(){
+  const sectionAtSave=current;
+  const childWindow=document.getElementById('sectionFrame').contentWindow;
+  const btn=document.getElementById('saveBtn');btn.disabled=true;btn.classList.add('saving');btn.textContent='Saving…';
+  try{
+    latestFrameData=null;
+    childWindow.postMessage({type:'tce-save'},'*');
+    await new Promise(r=>setTimeout(r,350));
+    const id=identity();
+    const data=latestFrameData||{};
+    const payload={type:'section_response',course:'TCE504',topic:'Exercise Metabolism',section:sectionAtSave,sectionTitle:SECTION_NAMES[sectionAtSave-1],mode,...id,responses:JSON.stringify(data),timestamp:new Date().toISOString()};
+    try{localStorage.setItem('tce504_section_'+sectionAtSave,JSON.stringify(payload))}catch(e){}
+    await sendToSheet(payload);
+    showNotice('Section '+sectionAtSave+' sent to Google Apps Script. Verify in Section_Response sheet.',true);
+    try{childWindow.postMessage({type:'tce-save-status',section:sectionAtSave,ok:true},'*')}catch(e){}
+    if(!id.matric)showNotice('Sent without matric number. Complete your student details first so records can be matched.',false);
+  }catch(e){console.error('Google Sheets submission failed',e);showNotice('Could not send to Google Apps Script. Section saved locally; check connection.',false);try{childWindow.postMessage({type:'tce-save-status',section:sectionAtSave,ok:false},'*')}catch(x){}}
+  finally{btn.disabled=false;btn.classList.remove('saving');btn.textContent='Save Section Progress';}
+}
+window.addEventListener('message',e=>{
+  const d=e.data||{};
+  if(d.type==='tce-height' && Number(d.section)===current){
+    const frame=document.getElementById('sectionFrame');
+    const reported=Number(d.height);
+    if(Number.isFinite(reported)){
+      const target=Math.max(800,Math.ceil(reported+12));
+      const oldHeight=parseFloat(frame.style.height)||800;
+      // Slide 1: never shrink its iframe after content loads (prevents feedback/jumping).
+      if(current===1){ if(target>oldHeight+16) frame.style.height=target+'px'; }
+      else if(Math.abs(target-oldHeight)>16) frame.style.height=target+'px';
+    }
+  }
+  if(d.type==='tce-pretest-completed' && current===1){
+    const payload=d.data||{};
+    if(payload.type==='pretest'){
+      try{localStorage.setItem('tce504_pretest_pending',JSON.stringify(payload))}catch(err){}
+      // Section 1 submits directly; do not send the same record twice.
+      showNotice('Pre-Test finished. Check Pre_Test sheet to confirm the record.',true);
+    }
+  }
+  if(d.type==='tce-save-request' && e.source===document.getElementById('sectionFrame').contentWindow && Number(d.section)===current){
+    saveCurrentSection();
+  }
+  if(d.type==='tce-navigate'){
+    const target=Number(d.section);
+    if(e.source===document.getElementById('sectionFrame').contentWindow && Number.isInteger(target) && target>=1 && target<=27){
+      current=target; latestFrameData=null; renderSection();
+    }
+  }
+  if(d.type==='tce-section-data' && Number(d.section)===current) latestFrameData=d.data;
+});
+renderSection();
+</script>
+</body>
+</html>
