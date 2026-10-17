@@ -152,6 +152,19 @@ window.addEventListener('message',e=>{
       showNotice('Pre-Test finished. Check Pre_Test sheet to confirm the record.',true);
     }
   }
+  if(d.type==='tce-website-feedback' && current===27 && e.source===document.getElementById('sectionFrame').contentWindow){
+    const id=identity();
+    const payload={type:'section_response',course:'TCE504',topic:'Exercise Metabolism',section:27,sectionTitle:'Website Feedback',mode,...id,responses:JSON.stringify(d.data||{}),timestamp:new Date().toISOString()};
+    try{localStorage.setItem('tce504_website_feedback_payload',JSON.stringify(payload))}catch(err){}
+    sendToSheet(payload).then(()=>{
+      showNotice('Website feedback sent. Verify in Section_Response sheet (Website Feedback).',true);
+      try{e.source.postMessage({type:'tce-website-feedback-status',ok:true},'*')}catch(err){}
+    }).catch(err=>{
+      console.error('Feedback sending failed',err);
+      showNotice('Feedback could not be sent. Please try again.',false);
+      try{e.source.postMessage({type:'tce-website-feedback-status',ok:false},'*')}catch(x){}
+    });
+  }
   if(d.type==='tce-save-request' && e.source===document.getElementById('sectionFrame').contentWindow && Number(d.section)===current){
     saveCurrentSection();
   }

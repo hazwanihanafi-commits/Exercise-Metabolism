@@ -322,5 +322,51 @@ updateIntensity();
  });
 })();
 </script>
+
+<style>
+#tce-feedback-form{max-width:850px;margin:45px auto 120px;padding:28px;background:white;border:1px solid #e7deee;border-radius:22px;box-shadow:0 10px 30px #24133412;font-family:Arial,sans-serif;color:#292039}
+#tce-feedback-form h2{color:#53257f;margin:0 0 12px}#tce-feedback-form p{line-height:1.55}
+.tce-fb-field{margin:18px 0}.tce-fb-field label{display:block;font-weight:700;margin-bottom:8px}
+.tce-fb-field select,.tce-fb-field textarea{width:100%;box-sizing:border-box;border:1px solid #c9c3d2;border-radius:10px;padding:12px;font:inherit;background:#fff}
+.tce-fb-field textarea{min-height:90px;resize:vertical}#tce-fb-submit{background:#53257f;color:#fff;border:0;border-radius:12px;padding:14px 22px;font-weight:800;cursor:pointer}#tce-fb-submit:disabled{opacity:.65}
+#tce-fb-status{margin-top:12px;font-size:14px;line-height:1.5}
+</style>
+<section id="tce-feedback-form" aria-labelledby="tce-fb-title">
+<h2 id="tce-fb-title">📝 Student Feedback — TCE504 Interactive Website</h2>
+<p>Thank you for completing the learning journey! Please tell us about your experience. Your feedback will help improve this course. Rate each statement from 1 (Strongly disagree) to 5 (Strongly agree).</p>
+<div id="tce-fb-ratings"></div>
+<div class="tce-fb-field"><label for="tce-fb-best">What did you like most about the website?</label><textarea id="tce-fb-best" maxlength="1500" placeholder="Share what worked well for you..."></textarea></div>
+<div class="tce-fb-field"><label for="tce-fb-improve">What should we improve?</label><textarea id="tce-fb-improve" maxlength="1500" placeholder="Share your suggestions..."></textarea></div>
+<div class="tce-fb-field"><label for="tce-fb-comments">Any other comments? (optional)</label><textarea id="tce-fb-comments" maxlength="1500" placeholder="Optional feedback..."></textarea></div>
+<button id="tce-fb-submit" type="button">📨 Submit Website Feedback</button><div id="tce-fb-status" role="status" aria-live="polite"></div>
+</section>
+<script>
+(function(){
+ const labels=['The website is easy to navigate','The explanations are clear and understandable','The interactive activities help me learn','The visual design makes learning engaging','The Pre-Test and Post-Test help me evaluate my understanding','Overall, this website improves my learning experience'];
+ const holder=document.getElementById('tce-fb-ratings');
+ labels.forEach(function(label,i){
+   const wrap=document.createElement('div');wrap.className='tce-fb-field';
+   const lab=document.createElement('label');lab.htmlFor='tce-fb-rating-'+i;lab.textContent=(i+1)+'. '+label;
+   const select=document.createElement('select');select.id='tce-fb-rating-'+i;select.required=true;
+   [['','Select a rating'],['1','1 — Strongly disagree'],['2','2 — Disagree'],['3','3 — Neutral'],['4','4 — Agree'],['5','5 — Strongly agree']].forEach(function(pair){const opt=document.createElement('option');opt.value=pair[0];opt.textContent=pair[1];select.appendChild(opt)});
+   wrap.append(lab,select);holder.appendChild(wrap);
+ });
+ const button=document.getElementById('tce-fb-submit'),status=document.getElementById('tce-fb-status');
+ button.addEventListener('click',function(){
+   const ratings=labels.map(function(label,i){return {statement:label,rating:Number(document.getElementById('tce-fb-rating-'+i).value)}});
+   if(ratings.some(function(x){return !x.rating})){status.textContent='Please rate all six statements before submitting.';return}
+   if(window.parent===window){status.textContent='Please open this page through the main TCE504 course website.';return}
+   const data={form:'Website Feedback',ratings:ratings,likedMost:document.getElementById('tce-fb-best').value.trim(),improvements:document.getElementById('tce-fb-improve').value.trim(),comments:document.getElementById('tce-fb-comments').value.trim(),timestamp:new Date().toISOString()};
+   try{localStorage.setItem('tce504_website_feedback_pending',JSON.stringify(data))}catch(e){}
+   button.disabled=true;status.textContent='Sending your feedback...';
+   window.parent.postMessage({type:'tce-website-feedback',section:27,data:data},'*');
+ });
+ window.addEventListener('message',function(e){
+   if(e.source!==window.parent||!e.data||e.data.type!=='tce-website-feedback-status')return;
+   button.disabled=false;
+   status.textContent=e.data.ok?'Feedback sent! Thank you. Your submission is awaiting confirmation in Google Sheets.':'Unable to send. Your feedback is saved in this browser; please try again.';
+ });
+})();
+</script>
 </body>
 </html>

@@ -128,13 +128,17 @@ function select(i,j){
  document.querySelectorAll(`[id^="q${i}o"]`).forEach(x=>x.classList.remove("selected"));
  document.getElementById(`q${i}o${j}`).classList.add("selected");
 }
-function submitTest(){
+async function submitTest(){
  let score=0,answered=0;
  qs.forEach((q,i)=>{
    const fb=document.getElementById("fb"+i);
    if(answers[i]!==undefined){answered++;if(answers[i]===q[2]){score++;fb.className="feedback show ok";fb.innerHTML="✓ Correct."}else{fb.className="feedback show bad";fb.innerHTML=`Review: the best answer is <b>${String.fromCharCode(65+q[2])}</b>.`}}
    else{fb.className="feedback show bad";fb.innerHTML="Please answer this question."; }
  });
+ if(answered!==qs.length){
+   alert('Please answer all '+qs.length+' questions before submitting your Post-Test.');
+   return;
+ }
  const pct=Math.round(score/qs.length*100);
  const r=document.getElementById("result");
  r.classList.remove("hidden");
@@ -142,6 +146,36 @@ function submitTest(){
  document.getElementById("review").style.display="block";
  localStorage.setItem("tcePostScore",JSON.stringify({score,pct}));
  localStorage.setItem("tcePostSubmitted","1");
+ // Save a recoverable local copy before attempting the Google Sheets submission.
+ let student={};
+ try{student=JSON.parse(localStorage.getItem('tceStudent')||'{}')||{}}catch(e){}
+ const payload={type:'posttest',course:'TCE504',topic:'Exercise Metabolism',
+   name:student.name||localStorage.getItem('studentName')||'',
+   matric:student.matric||localStorage.getItem('studentMatric')||'',
+   email:student.email||localStorage.getItem('studentEmail')||'',
+   score:score,percentage:pct,
+   missed:qs.filter((question,i)=>answers[i]!==question[2]).map(question=>question[0]).join(' | '),
+   answers:qs.map((question,i)=>({question:question[0],selected:question[1][answers[i]],correctAnswer:question[1][question[2]],correct:answers[i]===question[2]})),
+   timestamp:new Date().toISOString()};
+ localStorage.setItem('tce504_posttest_pending',JSON.stringify(payload));
+ const status=document.createElement('p');
+ status.style.fontWeight='bold';
+ status.textContent='Sending Post-Test to Google Sheets…';
+ r.appendChild(status);
+ if(!payload.name||!payload.matric||!payload.email){
+   status.textContent='Student details missing. Please return to Section 1 and enter your name, matric and email before submitting.';
+ }else{
+   try{
+     await fetch('https://script.google.com/macros/s/AKfycbzawMrdcdA55TrrjW7PlIApkwDrgxirOVUJM4mZ4EpKnOw0F7r3yEN4ml5ht3viDm9N/exec',{
+       method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)
+     });
+     status.textContent='Post-Test sent. Please check the Post_Test Google Sheet to confirm it was recorded. Keep a screenshot of your score.';
+   }catch(error){
+     status.textContent='Could not send Post-Test. Your result is saved in this browser. Please keep a screenshot and inform your lecturer.';
+     console.error('Post-Test submission error:',error);
+   }
+ }
+
  window.scrollTo({top:r.offsetTop-20,behavior:"smooth"});
 }
 function resetTest(){
