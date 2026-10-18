@@ -45,17 +45,85 @@
 <div class="footer">TCE504 Applied Exercise Physiology • Exercise Metabolism • PKTAAB, USM</div>
 </div>
 <script>
-const GAS_URL='https://script.google.com/macros/s/AKfycbzawMrdcdA55TrrjW7PlIApkDrgxirOVUJM4mZ4EpKnOw0F7r3yEN4ml5ht3viDm9N/exec';
+const GAS_URL='https://script.google.com/macros/s/AKfycbzawMrdcdA55TrrjW7PlIApkwDrgxirOVUJM4mZ4EpKnOw0F7r3yEN4ml5ht3viDm9N/exec';
+
+function getStudentIdentity(){
+  let stored={};
+  for(const key of ['tceStudent','student']){
+    try{const x=JSON.parse(localStorage.getItem(key)||'null');if(x&&typeof x==='object')stored={...stored,...x}}catch(e){}
+  }
+  const first=(...vals)=>vals.map(x=>String(x||'').trim()).find(Boolean)||'';
+  return {
+    name:first(stored.name,stored.studentName,localStorage.getItem('tceName'),localStorage.getItem('studentName')),
+    matric:first(stored.matric,stored.studentMatric,stored.matricNo,localStorage.getItem('tceMatric'),localStorage.getItem('studentMatric'),localStorage.getItem('matricNo')),
+    email:first(stored.email,stored.studentEmail,localStorage.getItem('tceEmail'),localStorage.getItem('studentEmail'),localStorage.getItem('email'))
+  };
+}
+function newRequestId(){
+  if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();
+  return Date.now()+'-'+Math.random().toString(36).slice(2)+'-'+Math.random().toString(36).slice(2);
+}
+function checkReceipt(url,requestId){
+  return new Promise((resolve,reject)=>{
+    const callback='tceReceiptCallback';
+    let script, timer;
+    function finish(result,error){clearTimeout(timer);if(script)script.remove();delete window[callback];if(error)reject(error);else resolve(result)}
+    window[callback]=result=>finish(result,null);
+    script=document.createElement('script');
+    script.src=url+'?receipt='+encodeURIComponent(requestId)+'&callback='+callback+'&_='+Date.now();
+    script.onerror=()=>finish(null,new Error('Receipt lookup failed'));
+    timer=setTimeout(()=>finish(null,new Error('Receipt lookup timed out')),4500);
+    document.head.appendChild(script);
+  });
+}
+async function submitAndConfirm(url,payload){
+  await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+  for(let attempt=0;attempt<6;attempt++){
+    await new Promise(r=>setTimeout(r,1100+attempt*400));
+    try{
+      const receipt=await checkReceipt(url,payload.requestId);
+      if(receipt&&receipt.saved===true&&receipt.requestId===payload.requestId)return true;
+      if(receipt&&receipt.pending===false&&receipt.ok===false)throw new Error('Google Sheets rejected submission');
+    }catch(e){if(attempt===5)throw e}
+  }
+  throw new Error('No confirmation received from Google Sheets');
+}
+
 let confidence='';
 document.querySelectorAll('#confidence button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#confidence button').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');confidence=b.dataset.v;document.getElementById('confidenceValue').value=confidence}));
 function pct(key){try{const x=JSON.parse(localStorage.getItem(key)||'{}');return typeof x.pct==='number'?x.pct:null}catch(e){return null}}
 function showResults(){const pre=pct('tcePreScore'),post=pct('tcePostScore');document.getElementById('preScore').textContent=pre==null?'—':pre+'%';document.getElementById('postScore').textContent=post==null?'—':post+'%';document.getElementById('gain').textContent=pre!=null&&post!=null?((post-pre>=0?'+':'')+(post-pre)+' pp'):'—';document.getElementById('completion').classList.add('show')}
-document.getElementById('reflectionForm').addEventListener('submit',async e=>{
- e.preventDefault(); if(!confidence){document.getElementById('status').textContent='Please select your confidence level.';return}
- const d={name:localStorage.getItem('tceName')||localStorage.getItem('studentName')||'',matric:localStorage.getItem('tceMatric')||localStorage.getItem('matricNo')||'',email:localStorage.getItem('tceEmail')||localStorage.getItem('email')||'',course:'TCE504',topic:'Exercise Metabolism',reflection1:document.getElementById('ref1').value.trim(),reflection2:document.getElementById('ref2').value.trim(),reflection3:document.getElementById('ref3').value.trim(),question:document.getElementById('ref4').value.trim(),confidence,submission:'Completed'};
- localStorage.setItem('ref1',d.reflection1);localStorage.setItem('ref2',d.reflection2);localStorage.setItem('ref3',d.reflection3);localStorage.setItem('ref4',d.question);localStorage.setItem('tceReflectionCompleted','1');localStorage.setItem('tceConfidence',confidence);
- document.getElementById('status').textContent='Reflection saved locally ✓';showResults();
- try{await fetch(GAS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({type:'reflection',...d})});document.getElementById('status').textContent='Reflection saved ✓'}catch(err){document.getElementById('status').textContent='Reflection saved locally ✓ (online submission unavailable)'}
+ document.getElementById('reflectionForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const status=document.getElementById('status');
+  if(!confidence){status.textContent='Please select your confidence level.';return}
+  const student=getStudentIdentity();
+  const d={type:'reflection',...student,course:'TCE504',topic:'Exercise Metabolism',
+    reflection1:document.getElementById('ref1').value.trim(),
+    reflection2:document.getElementById('ref2').value.trim(),
+    reflection3:document.getElementById('ref3').value.trim(),
+    reflection4:document.getElementById('ref4').value.trim(),
+    question:'',confidence,submission:'Completed',timestamp:new Date().toISOString(),requestId:newRequestId()};
+  localStorage.setItem('ref1',d.reflection1);localStorage.setItem('ref2',d.reflection2);
+  localStorage.setItem('ref3',d.reflection3);localStorage.setItem('ref4',d.reflection4);
+  localStorage.setItem('tceConfidence',confidence);
+  localStorage.setItem('tce504_reflection_pending',JSON.stringify(d));
+  showResults();
+  if(!d.name||!d.matric||!d.email){
+    status.textContent='Reflection saved on this device, but student details are missing. Return to Section 1, complete your details, and resubmit the reflection.';
+    return;
+  }
+  const button=document.querySelector('#reflectionForm button[type="submit"]');
+  button.disabled=true;status.textContent='Sending reflection and checking Google Sheets confirmation…';
+  try{
+    await submitAndConfirm(GAS_URL,d);
+    localStorage.removeItem('tce504_reflection_pending');
+    localStorage.setItem('tceReflectionCompleted','1');
+    status.textContent='✓ Reflection confirmed saved in Google Sheets (Reflection).';
+  }catch(err){
+    status.textContent='Reflection saved locally, but not confirmed in Google Sheets. Please try again; keep a screenshot if needed.';
+    console.error('Reflection submission:',err);
+  }finally{button.disabled=false;}
 });
 ['ref1','ref2','ref3','ref4'].forEach(id=>{const v=localStorage.getItem(id);if(v)document.getElementById(id).value=v});const cv=localStorage.getItem('tceConfidence');if(cv){confidence=cv;const b=document.querySelector('[data-v="'+cv+'"]');if(b){b.classList.add('selected');document.getElementById('confidenceValue').value=cv}}if(localStorage.getItem('tceReflectionCompleted')==='1')showResults();
 </script>

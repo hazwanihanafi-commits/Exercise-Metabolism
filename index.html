@@ -125,7 +125,7 @@ async function saveCurrentSection(){
     const payload={type:'section_response',course:'TCE504',topic:'Exercise Metabolism',section:sectionAtSave,sectionTitle:SECTION_NAMES[sectionAtSave-1],mode,...id,responses:JSON.stringify(data),timestamp:new Date().toISOString()};
     try{localStorage.setItem('tce504_section_'+sectionAtSave,JSON.stringify(payload))}catch(e){}
     await sendToSheet(payload);
-    showNotice('Section '+sectionAtSave+' sent to Google Apps Script. Verify in Section_Response sheet.',true);
+    showNotice('Section '+sectionAtSave+' request sent (not verified). Please confirm in Section_Response sheet.',false);
     try{childWindow.postMessage({type:'tce-save-status',section:sectionAtSave,ok:true},'*')}catch(e){}
     if(!id.matric)showNotice('Sent without matric number. Complete your student details first so records can be matched.',false);
   }catch(e){console.error('Google Sheets submission failed',e);showNotice('Could not send to Google Apps Script. Section saved locally; check connection.',false);try{childWindow.postMessage({type:'tce-save-status',section:sectionAtSave,ok:false},'*')}catch(x){}}
@@ -157,7 +157,7 @@ window.addEventListener('message',e=>{
     const payload={type:'section_response',course:'TCE504',topic:'Exercise Metabolism',section:27,sectionTitle:'Website Feedback',mode,...id,responses:JSON.stringify(d.data||{}),timestamp:new Date().toISOString()};
     try{localStorage.setItem('tce504_website_feedback_payload',JSON.stringify(payload))}catch(err){}
     sendToSheet(payload).then(()=>{
-      showNotice('Website feedback sent. Verify in Section_Response sheet (Website Feedback).',true);
+      showNotice('Website feedback request sent (not verified). Check Section_Response sheet.',false);
       try{e.source.postMessage({type:'tce-website-feedback-status',ok:true},'*')}catch(err){}
     }).catch(err=>{
       console.error('Feedback sending failed',err);

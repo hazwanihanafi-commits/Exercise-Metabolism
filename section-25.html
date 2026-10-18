@@ -113,6 +113,49 @@ const qs=[
 ["During increasing exercise intensity, which is most likely?",["ATP demand decreases","Relative carbohydrate contribution tends to rise","Oxidative metabolism disappears","All pathways stop"],1]
 ];
 
+
+function getStudentIdentity(){
+  let stored={};
+  for(const key of ['tceStudent','student']){
+    try{const x=JSON.parse(localStorage.getItem(key)||'null');if(x&&typeof x==='object')stored={...stored,...x}}catch(e){}
+  }
+  const first=(...vals)=>vals.map(x=>String(x||'').trim()).find(Boolean)||'';
+  return {
+    name:first(stored.name,stored.studentName,localStorage.getItem('tceName'),localStorage.getItem('studentName')),
+    matric:first(stored.matric,stored.studentMatric,stored.matricNo,localStorage.getItem('tceMatric'),localStorage.getItem('studentMatric'),localStorage.getItem('matricNo')),
+    email:first(stored.email,stored.studentEmail,localStorage.getItem('tceEmail'),localStorage.getItem('studentEmail'),localStorage.getItem('email'))
+  };
+}
+function newRequestId(){
+  if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();
+  return Date.now()+'-'+Math.random().toString(36).slice(2)+'-'+Math.random().toString(36).slice(2);
+}
+function checkReceipt(url,requestId){
+  return new Promise((resolve,reject)=>{
+    const callback='tceReceiptCallback';
+    let script, timer;
+    function finish(result,error){clearTimeout(timer);if(script)script.remove();delete window[callback];if(error)reject(error);else resolve(result)}
+    window[callback]=result=>finish(result,null);
+    script=document.createElement('script');
+    script.src=url+'?receipt='+encodeURIComponent(requestId)+'&callback='+callback+'&_='+Date.now();
+    script.onerror=()=>finish(null,new Error('Receipt lookup failed'));
+    timer=setTimeout(()=>finish(null,new Error('Receipt lookup timed out')),4500);
+    document.head.appendChild(script);
+  });
+}
+async function submitAndConfirm(url,payload){
+  await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+  for(let attempt=0;attempt<6;attempt++){
+    await new Promise(r=>setTimeout(r,1100+attempt*400));
+    try{
+      const receipt=await checkReceipt(url,payload.requestId);
+      if(receipt&&receipt.saved===true&&receipt.requestId===payload.requestId)return true;
+      if(receipt&&receipt.pending===false&&receipt.ok===false)throw new Error('Google Sheets rejected submission');
+    }catch(e){if(attempt===5)throw e}
+  }
+  throw new Error('No confirmation received from Google Sheets');
+}
+
 const answers={};
 const quiz=document.getElementById("quiz");
 
@@ -129,6 +172,7 @@ function select(i,j){
  document.getElementById(`q${i}o${j}`).classList.add("selected");
 }
 async function submitTest(){
+  if(window.tcePostSaving)return;
  let score=0,answered=0;
  qs.forEach((q,i)=>{
    const fb=document.getElementById("fb"+i);
@@ -165,16 +209,17 @@ async function submitTest(){
  if(!payload.name||!payload.matric||!payload.email){
    status.textContent='Student details missing. Please return to Section 1 and enter your name, matric and email before submitting.';
  }else{
+   window.tcePostSaving=true;
    try{
-     await fetch('https://script.google.com/macros/s/AKfycbzawMrdcdA55TrrjW7PlIApkwDrgxirOVUJM4mZ4EpKnOw0F7r3yEN4ml5ht3viDm9N/exec',{
-       method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)
-     });
-     status.textContent='Post-Test sent. Please check the Post_Test Google Sheet to confirm it was recorded. Keep a screenshot of your score.';
-   }catch(error){
-     status.textContent='Could not send Post-Test. Your result is saved in this browser. Please keep a screenshot and inform your lecturer.';
-     console.error('Post-Test submission error:',error);
-   }
- }
+      await submitAndConfirm('https://script.google.com/macros/s/AKfycbzawMrdcdA55TrrjW7PlIApkwDrgxirOVUJM4mZ4EpKnOw0F7r3yEN4ml5ht3viDm9N/exec',payload);
+      localStorage.removeItem('tce504_posttest_pending');
+      localStorage.setItem('tcePostSubmitted','1');
+      status.textContent='✓ Post-Test confirmed saved in Google Sheets (Post_Test).';
+    }catch(error){
+      status.textContent='Post-Test not yet confirmed in Google Sheets. Your result is saved on this device. Please try submitting again, or share a screenshot with your lecturer.';
+      console.error('Post-Test submission error:',error);
+    }finally{window.tcePostSaving=false;}
+  }
 
  window.scrollTo({top:r.offsetTop-20,behavior:"smooth"});
 }
